@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Movie } from "./Models/Movie";
-import { endpoints } from "./endpoints";
+import { Movie } from "./shared/models/movie";
+import { endpoints } from "./services/endpoints";
 
 export const Test = () => {
   const [movie, setMovie] = useState<Movie>();
@@ -18,6 +18,7 @@ export const Test = () => {
     axios
       .get(`${endpoints.getMovieWith(movieId)}`)
       .then((res) => {
+        // eslint-disable-next-line
         setMovie(res.data);
       })
       .catch((err) => {
@@ -31,7 +32,13 @@ export const Test = () => {
         Test! Data for movie with id {movieId}: {movie?.title}, {movie?.year}
       </div>
       <div>
-        <button onClick={() => handleMovieId()}>Try another movieId</button>
+        <button
+          onClick={() => {
+            handleMovieId();
+          }}
+        >
+          Try another movieId
+        </button>
       </div>
     </>
   );

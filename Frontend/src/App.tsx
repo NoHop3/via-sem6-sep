@@ -1,26 +1,38 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { Test } from "./Test";
+import { Routes, Route } from "react-router-dom";
+
+import { Home, Error, Movies } from "./pages";
+import { Header, BottomNavigation, Snackbar } from "./components";
+import { useGetDeviceType } from "./shared/utils/hooks/useGetDeviceType";
+import { DeviceTypes } from "./shared/utils/enums/deviceTypes";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "./shared/utils/typescript/reduxTypes";
+import { setNotificationVisibility } from "./shared/store/notification-store";
 
 function App() {
+  const notification = useAppSelector(
+    (state) => state.notifications.notification,
+  );
+  const dispatch = useAppDispatch();
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'>
-          Learn React
-        </a>
-        Testing connection to API
-        <Test />
-      </header>
+    <div className="App">
+      <Header children={<></>} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+
+      {/* Look into better notification handling: https://stackoverflow.com/questions/67642607/reactmaterial-ui-multiple-snackbar  */}
+      <Snackbar
+        open={notification.open}
+        message={notification.message}
+        type={notification.type}
+        onClose={() => dispatch(setNotificationVisibility(false))}
+        autoHideDuration={4000}
+      />
+      {useGetDeviceType() !== DeviceTypes.DESKTOP && <BottomNavigation />}
     </div>
   );
 }
