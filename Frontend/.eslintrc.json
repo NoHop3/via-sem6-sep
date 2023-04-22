@@ -35,7 +35,7 @@
                 "plugin:@typescript-eslint/recommended-requiring-type-checking"
             ],
             "parserOptions": {
-                "project": ["./tsconfig.json"]
+                "project": "./tsconfig.eslint.json"
             },
             "rules": {  
                 "@typescript-eslint/explicit-function-return-type": "off",
@@ -53,9 +53,8 @@
     "ecmaFeatures": {
             "jsx": true
         },
-        "tsconfigRootDir": "./Frontend/",
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": ["tsconfig.json"]
+        "project": "./tsconfig.eslint.json"
     }
 }
