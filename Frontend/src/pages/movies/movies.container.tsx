@@ -24,11 +24,10 @@ export const _Movies = (props: MovieProps) => {
     movieId && movieId !== 0 && getMovieWith(movieId);
   }, [movieId, getMovieWith]);
 
-  console.log(movie);
   return (
-    <StyledMovieCardWrapper>
+    <>
       {!isLoading ? (
-        <>
+        <StyledMovieCardWrapper>
           <MovieCard {...movie} />
           <Button
             variant={"contained"}
@@ -39,10 +38,10 @@ export const _Movies = (props: MovieProps) => {
               handleMovieIdChange();
             }}
           />
-        </>
+        </StyledMovieCardWrapper>
       ) : (
         <StyledCircularProgress disableShrink size={"6rem"} />
       )}
-    </StyledMovieCardWrapper>
+    </>
   );
 };

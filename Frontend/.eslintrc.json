@@ -53,8 +53,9 @@
     "ecmaFeatures": {
             "jsx": true
         },
+        "tsconfigRootDir": "./Frontend/",
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": ["./tsconfig.json"]
+        "project": ["tsconfig.json"]
     }
 }
