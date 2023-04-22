@@ -1,0 +1,9 @@
+{
+  "eslint.workingDirectories": [
+    "via-sem6-sep/frontend",
+    "frontend",
+    "src",
+    "frontend/.eslintrc.json",
+    "frontend/tsconfig.eslint.json"
+  ]
+}
