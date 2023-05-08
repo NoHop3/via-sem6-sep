@@ -1,5 +1,6 @@
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,16 +12,20 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var provider = builder.Services.BuildServiceProvider();
-var configuration = provider.GetRequiredService<IConfiguration>();
-builder.Services
-.AddDbContext<MyDbContext>(options =>
+var configuration =builder.Configuration
+                          .AddJsonFile("appsettings.json")
+                          .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json")
+                          .AddEnvironmentVariables();//provider.GetRequiredService<IConfiguration>();
+
+var connectionString = provider.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<MyDbContext>(options =>
 {
-    options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlite(connectionString);
 });
 
 builder.Services.AddCors(options =>
 {
-    var frontendUrl = configuration.GetValue<string>("frontend_url")!;
+    var frontendUrl = provider.GetRequiredService<IConfiguration>().GetValue<string>("frontend_url")!;
     options.AddDefaultPolicy(builder =>
     {
         builder.WithOrigins(frontendUrl)
