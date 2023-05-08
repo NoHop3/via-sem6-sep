@@ -20,7 +20,7 @@ To run the project in Docker container open terminal in via-sem6-sep and run:
 docker compose up -d
 ```
 
-The -d option detaches the process from the terminal. If you want to have the logs in the terminal run the command without it.  
+The -d option detaches the process from the terminal. If you want to have the logs in the terminal run the command without it.
 Run the following command to stop the application:
 
 ```
