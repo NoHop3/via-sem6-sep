@@ -1,11 +1,11 @@
 version: "3"
 services:
   backend:
-    image: 'sep6_backend:latest'
+    image: "sep6_backend:latest"
     build:
-        context: ./sep6-backend
-        dockerfile: Backend/Dockerfile
-    container_name: 'sep6_backend_container'
+      context: ./sep6-backend
+      dockerfile: Backend/Dockerfile
+    container_name: "sep6_backend_container"
     ports:
       - 5001:5001
     environment:
@@ -16,14 +16,14 @@ services:
       - sep6_network
 
   client:
-    image: 'sep6_frontend:latest'
+    image: "sep6_frontend:latest"
     build:
-        context: ./sep6-frontend
-        dockerfile: Frontend/Dockerfile
-    container_name: 'sep6_frontend_container'
+      context: ./sep6-frontend
+      dockerfile: Frontend/Dockerfile
+    container_name: "sep6_frontend_container"
     ports:
       - 3000:3000
-    environment: 
+    environment:
       - NODE_ENV=production
       - REACT_APP_API_URL=http://backend:5001/api
       - API_URL=http://backend:5001/api
