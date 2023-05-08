@@ -8,14 +8,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Backend", Version = "v1" });
+    c.SwaggerDoc("v1", new() {
+        Title = "Backend", Version = "v1"
+    });
 });
 
 var provider = builder.Services.BuildServiceProvider();
 var configuration =builder.Configuration
-                          .AddJsonFile("appsettings.json")
-                          .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json")
-                          .AddEnvironmentVariables();//provider.GetRequiredService<IConfiguration>();
+                   .AddJsonFile("appsettings.json")
+                   .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json")
+                   .AddEnvironmentVariables();//provider.GetRequiredService<IConfiguration>();
 
 var connectionString = provider.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<MyDbContext>(options =>
@@ -29,8 +31,8 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(builder =>
     {
         builder.WithOrigins(frontendUrl)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
