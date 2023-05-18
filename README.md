@@ -19,3 +19,6 @@ Run the following command to stop the application:
 ```
 docker compose down
 ```
+Example request
+http://localhost:5001/api/Movie/60144
+```
