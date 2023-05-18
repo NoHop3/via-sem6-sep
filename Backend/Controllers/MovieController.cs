@@ -21,18 +21,18 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        // GET: api/Movies
-        // Don't call this as it returns 355672 movies!!!!!
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        // GET: api/Movies/0/10
+        [HttpGet("{skip}/{limit}")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int skip, int limit)
         {
             if (_context.Movies == null)
             {
                 return NotFound();
             }
-            var r = await _context.Movies.ToListAsync();
-            Console.WriteLine(r.Count);
-            return r;
+            // return response containing list of movies as well as the total number of movies
+            var movies = await _context.Movies.Skip(skip).Take(limit).ToListAsync();
+            var total = await _context.Movies.CountAsync();
+            return Ok(new { movies, total });
         }
 
         // GET: api/Movie/5
