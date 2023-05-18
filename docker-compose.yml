@@ -9,7 +9,7 @@ services:
     ports:
       - 5001:5001
     environment:
-      - frontend_url=http://client:300
+      - frontend_url=http://localhost:3000
     volumes:
       - ./Backend:/app/db
     networks:
@@ -25,8 +25,8 @@ services:
       - 3000:3000
     environment: 
       - NODE_ENV=production
-      - REACT_APP_API_URL=http://backend:5001/api
-      - API_URL=http://backend:5001/api
+      - REACT_APP_API_URL=http://localhost:5001/api
+      - API_URL=http://localhost:5001/api
     networks:
       - sep6_network
 

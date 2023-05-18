@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:13.12.0-alpine
+FROM node:16.13-alpine
 
 # set working directory
 WORKDIR /app
@@ -19,5 +19,5 @@ RUN npm install cors
 COPY . ./
 RUN npm run build
 # start app
-#CMD ["serve", "-s", "build"]
-CMD ["npm", "start", "build"]
+CMD ["serve", "-s", "build"]
+#CMD ["npm", "start", "build"]
