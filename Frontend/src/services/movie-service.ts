@@ -41,7 +41,7 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
 export const getMovies = (skip: number, take: number) => (dispatch: any) => {
   dispatch(setIsLoading(true));
   axios
-    .get(`${endpoints.getMovies((skip - 1) * 10, take)}`)
+    .get(`${endpoints.getMovies((skip - 1) * 12, take)}`)
     .then((res: any) => {
       dispatch(setMovies(res.data.movies));
       dispatch(setTotal(res.data.total));
