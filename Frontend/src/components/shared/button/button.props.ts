@@ -1,10 +1,17 @@
 import {
   ButtonPropsColorOverrides,
+  ButtonPropsSizeOverrides,
   ButtonPropsVariantOverrides,
 } from "@mui/material";
 import { OverridableStringUnion } from "@mui/types";
 
 export interface ButtonProps {
+  size:
+    | OverridableStringUnion<
+        "small" | "medium" | "large",
+        ButtonPropsSizeOverrides
+      >
+    | undefined;
   variant:
     | OverridableStringUnion<
         "text" | "outlined" | "contained",
@@ -26,4 +33,5 @@ export interface ButtonProps {
   text: string;
   onClick: () => void;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }

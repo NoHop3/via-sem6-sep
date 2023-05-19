@@ -1,6 +1,14 @@
 import { CircularProgress, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 
+export const StyledMoviePageWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`;
+
 export const StyledMovieGrid = styled(Grid)`
   display grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));

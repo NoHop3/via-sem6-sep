@@ -19,10 +19,22 @@ export const MovieCardWrapper = styled(Box)`
   }
 `;
 
+export const MovieTitle = styled(Typography)`
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+`;
+
 export const MovieInfoWrapper = styled(Box)`
   width: calc(100% - 2rem);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-areas:
+    "image info"
+    "image info"
+    "image info"
+    "image button";
   grid-gap: 1rem;
   margin: 1rem 0;
   padding: 1rem;
@@ -31,10 +43,23 @@ export const MovieInfoWrapper = styled(Box)`
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
+    grid-template-areas:
+      "image"
+      "info"
+      "button";
   }
 `;
 
+export const MovieImage = styled.img`
+  grid-area: image;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+`;
+
 export const MovieInfo = styled(Typography)`
+  grid-area: info;
   margin: 0 0.5rem;
   font-size: 1rem;
   font-weight: 400;
