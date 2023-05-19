@@ -1,7 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 const baseUrl = process.env.REACT_APP_API_URL!;
+const omdbApiKey = process.env.REACT_APP_OMDB_API_KEY!;
+const omdbUrl = "https://www.omdbapi.com/";
 export const endpoints = {
   getMovies: (skip: number, take: number) => `${baseUrl}/Movie/${skip}/${take}`,
   getMovieWith: (id: number) => `${baseUrl}/Movie/${id}`,
-  getMovieReviews: (id: number) => `${baseUrl}/movieReviews/`,
+  getOmdbMovieWith: (id: number) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
 };

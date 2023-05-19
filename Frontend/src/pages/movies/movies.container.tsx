@@ -35,7 +35,6 @@ export const _Movies = (props: MovieProps) => {
             onChange={handlePageChange}
             size="large"
           />
-
           <StyledMovieGrid container>
             {movies.map((movie) => (
               <StyledMovieCardWrapper key={movie.id}>
@@ -45,7 +44,7 @@ export const _Movies = (props: MovieProps) => {
           </StyledMovieGrid>
 
           <Pagination
-            count={Math.ceil(total / 10)}
+            count={Math.ceil(total / 12)}
             page={page}
             defaultPage={1}
             onChange={handlePageChange}
