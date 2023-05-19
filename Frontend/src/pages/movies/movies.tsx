@@ -18,9 +18,9 @@ const mapStateToProps = (state: ApplicationState) => ({
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(
     {
+      setPage,
       getMovieWith: services.getMovieWith,
       getMovies: services.getMovies,
-      setPage,
     },
     dispatch,
   );

@@ -1,25 +1,44 @@
-import { type Movie } from "../../shared/models";
+import { useState } from "react";
+import { Movie } from "../../shared/models";
 import { _Button as Button } from "../shared/button/button";
 import {
-  MovieCardWrapper,
+  MovieButtonLoading,
+  MovieGridWrapper,
   MovieImage,
+  MovieImageLoading,
   MovieInfo,
-  MovieInfoWrapper,
+  MovieInfoLoading,
   MovieTitle,
+  MovieTitleLoading,
 } from "./movieCard.styles";
 
 export const _MovieCard = ({ ...props }: Movie) => {
+  const [loaded, setLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setLoaded(true);
+  };
+
   return (
-    <MovieCardWrapper>
-      <MovieTitle>{props.title}</MovieTitle>
-      <MovieInfoWrapper>
-        <MovieImage
-          src={
-            "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png"
-          }
-          alt={props.title + " image"}
-        />
+    <MovieGridWrapper>
+      {loaded ? <MovieTitle>{props.title}</MovieTitle> : <MovieTitleLoading />}
+      {!loaded && <MovieImageLoading />}
+      <MovieImage
+        src={
+          props.posterUrl
+            ? props.posterUrl
+            : "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png"
+        }
+        alt={props.title + " image"}
+        onLoad={handleImageLoad}
+        style={{ display: loaded ? "block" : "none" }}
+      />
+      {loaded ? (
         <MovieInfo>Year: {props.year}</MovieInfo>
+      ) : (
+        <MovieInfoLoading />
+      )}
+      {loaded ? (
         <Button
           size={"small"}
           variant={"contained"}
@@ -31,7 +50,9 @@ export const _MovieCard = ({ ...props }: Movie) => {
           }}
           style={{ gridArea: "button" }}
         />
-      </MovieInfoWrapper>
-    </MovieCardWrapper>
+      ) : (
+        <MovieButtonLoading />
+      )}
+    </MovieGridWrapper>
   );
 };

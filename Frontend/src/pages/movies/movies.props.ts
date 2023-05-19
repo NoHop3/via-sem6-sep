@@ -6,7 +6,7 @@ export interface MovieProps {
   isLoading: boolean;
   page: number;
   total: number;
-  getMovieWith: (movieId: number) => void;
   getMovies: (skip: number, take: number) => void;
+  getMovieWith: (movieId: number) => void;
   setPage: (page: number) => void;
 }

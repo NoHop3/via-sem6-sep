@@ -38,12 +38,20 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
     });
 };
 
-export const getMovies = (skip: number, take: number) => (dispatch: any) => {
-  dispatch(setIsLoading(true));
-  axios
-    .get(`${endpoints.getMovies((skip - 1) * 12, take)}`)
-    .then((res: any) => {
-      dispatch(setMovies(res.data.movies));
+export const getMovies =
+  (skip: number, take: number) => async (dispatch: any) => {
+    dispatch(setIsLoading(true));
+    try {
+      const res = await axios.get(
+        `${endpoints.getMovies((skip - 1) * 12, take)}`,
+      );
+      const moviesWithPosters = await Promise.all(
+        res.data.movies.map(async (movie: any) => {
+          const posterUrl = await getMoviePosterFor(movie.id);
+          return { ...movie, posterUrl };
+        }),
+      );
+      dispatch(setMovies(moviesWithPosters));
       dispatch(setTotal(res.data.total));
       dispatch(
         setNotification({
@@ -52,8 +60,7 @@ export const getMovies = (skip: number, take: number) => (dispatch: any) => {
           message: `Movies were fetched successfully!`,
         }),
       );
-    })
-    .catch((err: any) => {
+    } catch (err) {
       dispatch(
         setNotification({
           open: true,
@@ -62,8 +69,17 @@ export const getMovies = (skip: number, take: number) => (dispatch: any) => {
         }),
       );
       throw err;
-    })
-    .finally(() => {
+    } finally {
       dispatch(setIsLoading(false));
-    });
+    }
+  };
+
+const getMoviePosterFor = async (id: number): Promise<string> => {
+  try {
+    const res = await axios.get(`${endpoints.getOmdbMovieWith(id)}`);
+    return res.data.Poster === "N/A" ? "" : res.data.Poster;
+  } catch (err) {
+    console.error(err);
+    return "";
+  }
 };
