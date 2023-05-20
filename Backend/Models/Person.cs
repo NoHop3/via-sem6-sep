@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models;
-public class Person
+public partial class Person
 {
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; } = "";
-    public int Year { get; set; }
+    public long Id { get; set; }
+    public string Name { get; set; } = null!;
+    public int? Birth { get; set; }
 }

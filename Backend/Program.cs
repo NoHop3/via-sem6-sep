@@ -1,4 +1,5 @@
 using Backend.Data;
+using Backend.Data.Abstraction;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -22,6 +23,9 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieRatingRepository, MovieRatingRepository>();
 
 builder.Services.AddCors(options =>
 {

@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models;
-public class MovieRating
+public partial class MovieRating
 {
-    [Key]
-    public int MovieId { get; set; }
-    public float Rating { get; set; }
-    public int Votes { get; set; }
+    public long MovieId { get; set; }
+    public double Rating { get; set; }
+    public long Votes { get; set; }
+
+    public virtual Movie Movie { get; set; } = null!;
 }

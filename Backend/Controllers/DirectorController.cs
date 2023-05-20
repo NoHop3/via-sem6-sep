@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using Backend.Data.Abstraction;
 
 namespace Backend.Controllers
 {
@@ -14,125 +15,38 @@ namespace Backend.Controllers
     [ApiController]
     public class DirectorController : ControllerBase
     {
-        private readonly MyDbContext _context;
+        private readonly IPersonRepository _repository;
 
-        public DirectorController(MyDbContext context)
+        public DirectorController(IPersonRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Directors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Director>>> GetDirectors()
         {
-            if (_context.Directors == null)
+            var directors = await _repository.GetAllDirectors();
+            if (directors.Count == 0)
             {
                 return NotFound();
             }
-            return await _context.Directors.ToListAsync();
+            return Ok(directors);
         }
 
         // GET: api/Director/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Director>> GetDirector(int id)
         {
-            if (_context.Directors == null)
-            {
-                return NotFound();
-            }
-            var director = await _context.Directors.FindAsync(id);
-
+            var director = await _repository.GetStarOrDirectorById(id);
             if (director == null)
             {
                 return NotFound();
             }
 
-            return director;
+            return Ok(director);
         }
 
-        // PUT: api/Director/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDirector(int id, Director director)
-        {
-            if (id != director.MovieId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(director).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DirectorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Director
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Director>> PostDirector(Director director)
-        {
-            if (_context.Directors == null)
-            {
-                return Problem("Entity set 'MyDbContext.Directors'  is null.");
-            }
-            _context.Directors.Add(director);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (DirectorExists(director.MovieId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetDirector", new { id = director.MovieId }, director);
-        }
-
-        // DELETE: api/Director/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDirector(int id)
-        {
-            if (_context.Directors == null)
-            {
-                return NotFound();
-            }
-            var director = await _context.Directors.FindAsync(id);
-            if (director == null)
-            {
-                return NotFound();
-            }
-
-            _context.Directors.Remove(director);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool DirectorExists(int id)
-        {
-            return (_context.Directors?.Any(e => e.MovieId == id)).GetValueOrDefault();
-        }
+       
     }
 }
