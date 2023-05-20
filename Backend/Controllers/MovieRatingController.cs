@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using Backend.Data.Abstraction;
 
 namespace Backend.Controllers
 {
@@ -9,40 +10,23 @@ namespace Backend.Controllers
     [ApiController]
     public class MovieRatingController : ControllerBase
     {
-        private readonly MyDbContext _context;
+        private readonly IMovieRatingRepository _repository;
 
-        public MovieRatingController(MyDbContext context)
+        public MovieRatingController(IMovieRatingRepository repository)
         {
-            _context = context;
-        }
-
-        // GET: api/MovieRatings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieRating>>> GetMovieRatings()
-        {
-            if (_context.MovieRatings == null)
-            {
-                return NotFound();
-            }
-            return await _context.MovieRatings.ToListAsync();
+            _repository = repository;
         }
 
         // GET: api/MovieRating/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MovieRating>> GetMovieRating(int id)
+        [HttpGet("{movieId}")]
+        public async Task<ActionResult<MovieRating>> GetMovieRating(long movieId)
         {
-            if (_context.MovieRatings == null)
+            var rating = await _repository.GetMovieRating(movieId);
+            if (rating == null)
             {
                 return NotFound();
             }
-            var movieRating = await _context.MovieRatings.FindAsync(id);
-
-            if (movieRating == null)
-            {
-                return NotFound();
-            }
-
-            return movieRating;
+            return Ok(rating);
         }
 
         // PUT: api/MovieRating/5
@@ -54,23 +38,13 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(movieRating).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.AddRating(movieRating);
             }
-            catch (DbUpdateConcurrencyException)
+            catch(Exception e)
             {
-                if (!MovieRatingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(e);
             }
 
             return NoContent();
@@ -81,39 +55,16 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<MovieRating>> PostMovieRating(MovieRating movieRating)
         {
-            if (_context.MovieRatings == null)
+            try
             {
-                return Problem("Entity set 'MyDbContext.MovieRatings'  is null.");
+                await _repository.AddRating(movieRating);
             }
-            _context.MovieRatings.Add(movieRating);
-            await _context.SaveChangesAsync();
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
 
             return CreatedAtAction("GetMovieRating", new { id = movieRating.MovieId }, movieRating);
-        }
-
-        // DELETE: api/MovieRating/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMovieRating(int id)
-        {
-            if (_context.MovieRatings == null)
-            {
-                return NotFound();
-            }
-            var movieRating = await _context.MovieRatings.FindAsync(id);
-            if (movieRating == null)
-            {
-                return NotFound();
-            }
-
-            _context.MovieRatings.Remove(movieRating);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool MovieRatingExists(int id)
-        {
-            return (_context.MovieRatings?.Any(e => e.MovieId == id)).GetValueOrDefault();
         }
     }
 }

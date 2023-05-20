@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using Backend.Data.Abstraction;
 
 namespace Backend.Controllers
 {
@@ -9,125 +10,50 @@ namespace Backend.Controllers
     [ApiController]
     public class StarController : ControllerBase
     {
-        private readonly MyDbContext _context;
+        private readonly IPersonRepository _repository;
 
-        public StarController(MyDbContext context)
+        public StarController(IPersonRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Stars
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Star>>> GetStars()
         {
-            if (_context.Stars == null)
+            var stars = await _repository.GetAllStars();
+            if (stars.Count == 0)
             {
                 return NotFound();
             }
-            return await _context.Stars.ToListAsync();
+            return Ok(stars);
         }
 
         // GET: api/Star/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Star>> GetStar(int id)
+        public async Task<ActionResult<Star>> GetStar(long id)
         {
-            if (_context.Stars == null)
-            {
-                return NotFound();
-            }
-            var star = await _context.Stars.FindAsync(id);
-
+            var star = await _repository.GetStarOrDirectorById(id);
             if (star == null)
             {
                 return NotFound();
             }
-
-            return star;
+            return Ok(star);
         }
 
-        // PUT: api/Star/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStar(int id, Star star)
+        // GET: api/Star/5/Movies
+        [HttpGet("{id}/Movies")]
+        public async Task<ActionResult<Dictionary<long, List<Movie>>>> GetStarAllMovies(long id)
         {
-            if (id != star.MovieId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(star).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StarExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Star
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Star>> PostStar(Star star)
-        {
-            if (_context.Stars == null)
-            {
-                return Problem("Entity set 'MyDbContext.Stars'  is null.");
-            }
-            _context.Stars.Add(star);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (StarExists(star.MovieId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetStar", new { id = star.MovieId }, star);
-        }
-
-        // DELETE: api/Star/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStar(int id)
-        {
-            if (_context.Stars == null)
-            {
-                return NotFound();
-            }
-            var star = await _context.Stars.FindAsync(id);
-            if (star == null)
+            var stars = await _repository.GetStarAllMovies(id);
+            if (stars.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.Stars.Remove(star);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(stars);
         }
 
-        private bool StarExists(int id)
-        {
-            return (_context.Stars?.Any(e => e.MovieId == id)).GetValueOrDefault();
-        }
+    
     }
 }

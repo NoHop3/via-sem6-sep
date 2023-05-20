@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using Backend.Data.Abstraction;
 
 namespace Backend.Controllers
 {
@@ -14,114 +15,66 @@ namespace Backend.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly MyDbContext _context;
+        private readonly IMovieRepository _repository;
 
-        public MovieController(MyDbContext context)
+        public MovieController(IMovieRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Movies/0/10
         [HttpGet("{skip}/{limit}")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int skip, int limit)
         {
-            if (_context.Movies == null)
+            var movies = await _repository.GetMoviesLimit(skip, limit);
+            if (movies.Count == 0)
             {
                 return NotFound();
             }
             // return response containing list of movies as well as the total number of movies
-            var movies = await _context.Movies.Skip(skip).Take(limit).ToListAsync();
-            var total = await _context.Movies.CountAsync();
+            var total = await _repository.GetMoviesCount();
             return Ok(new { movies, total });
         }
 
         // GET: api/Movie/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<Movie>> GetMovie(long id)
         {
-            if (_context.Movies == null)
-            {
-                return NotFound();
-            }
-            var movie = await _context.Movies.FindAsync(id);
-
+            var movie = await _repository.GetMovieById(id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return movie;
+            return Ok(movie);
         }
 
-        // PUT: api/Movie/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        // GET: api/Movie/5/Stars
+        [HttpGet("{id}/Stars")]
+        public async Task<ActionResult<Movie>> GetMovieStars(long id)
         {
-            if (id != movie.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(movie).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MovieExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Movie
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
-        {
-            if (_context.Movies == null)
-            {
-                return Problem("Entity set 'MyDbContext.Movies'  is null.");
-            }
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
-        }
-
-        // DELETE: api/Movie/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMovie(int id)
-        {
-            if (_context.Movies == null)
-            {
-                return NotFound();
-            }
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
+            var stars = await _repository.GetMovieStars(id);
+            if (stars.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(stars);
         }
 
-        private bool MovieExists(int id)
+        // GET: api/Movie/5/Directors
+        [HttpGet("{id}/Directors")]
+        public async Task<ActionResult<Movie>> GetMovieDirectors(long id)
         {
-            return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
+            var directors = await _repository.GetMovieDirectors(id);
+            if (directors.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(directors);
         }
+
+   
     }
 }
