@@ -8,7 +8,10 @@ import {
 } from "../shared/store/movie-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
+import { Person } from "../shared/models/person";
+import { MovieRating } from "../shared/models/rating";
 
+// #region getMovieWithId
 export const getMovieWith = (id: number) => (dispatch: any) => {
   dispatch(setIsLoading(true));
   axios
@@ -37,7 +40,79 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
       dispatch(setIsLoading(false));
     });
 };
+// #endregion
 
+// #region getMovieDetails
+export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
+  dispatch(setIsLoading(true));
+  try {
+    const [movie, stars, director, rating] = await Promise.all([
+      axios.get(`${endpoints.getMovieWith(id)}`),
+      getMovieStarsFor(id),
+      getMovieDirectorFor(id),
+      getMovieRatingFor(id),
+    ]);
+    dispatch(
+      setMovie({
+        ...movie.data,
+        stars,
+        director,
+        rating,
+      }),
+    );
+    dispatch(
+      setNotification({
+        open: true,
+        type: "success",
+        message: `Movie details for id ${id} were fetched successfully!`,
+      }),
+    );
+  } catch (err) {
+    dispatch(
+      setNotification({
+        open: true,
+        type: "error",
+        message: `Movie details for id ${id} were not fetched!`,
+      }),
+    );
+    throw err;
+  } finally {
+    dispatch(setIsLoading(false));
+  }
+};
+
+const getMovieStarsFor = async (id: number): Promise<Person[]> => {
+  try {
+    const res = await axios.get(`${endpoints.getStarsForMovie(id)}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
+
+const getMovieDirectorFor = async (id: number): Promise<Person> => {
+  try {
+    const res = await axios.get(`${endpoints.getDirectorsForMovie(id)}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return { id: 0, name: "Unknown", birth: 0 };
+  }
+};
+
+const getMovieRatingFor = async (id: number): Promise<MovieRating> => {
+  try {
+    const res = await axios.get(`${endpoints.getRatingForMovie(id)}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return { id: 0, rating: 0, votes: 0, movie: { id: 0, title: "", year: 0 } };
+  }
+};
+// endregion
+
+// #region getMovies
 export const getMovies =
   (skip: number, take: number) => async (dispatch: any) => {
     dispatch(setIsLoading(true));
@@ -75,11 +150,17 @@ export const getMovies =
   };
 
 const getMoviePosterFor = async (id: number): Promise<string> => {
+  const defaultPosterUrl =
+    "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png";
   try {
     const res = await axios.get(`${endpoints.getOmdbMovieWith(id)}`);
-    return res.data.Poster === "N/A" ? "" : res.data.Poster;
+    if (res.data.Poster) {
+      return res.data.Poster === "N/A" ? defaultPosterUrl : res.data.Poster;
+    }
+    return defaultPosterUrl;
   } catch (err) {
     console.error(err);
-    return "";
+    return defaultPosterUrl;
   }
 };
+// #endregion

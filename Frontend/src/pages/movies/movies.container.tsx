@@ -1,23 +1,37 @@
 import { useEffect } from "react";
-
-import { type MovieProps } from "./movies.props";
+import { useNavigate } from "react-router-dom";
+import { Pagination } from "@mui/material";
 import { MovieCard } from "../../components";
+import { StyledCircularProgress } from "../../styles";
 import {
   StyledMoviePageWrapper,
   StyledMovieGrid,
   StyledMovieCardWrapper,
-  StyledCircularProgress,
 } from "./movies.styles";
-import { Pagination } from "@mui/material";
+import { type MovieProps } from "./movies.props";
 
 export const _Movies = (props: MovieProps) => {
-  const { isLoading, movies, page, total, getMovies, setPage } = props;
+  const navigate = useNavigate();
+  const {
+    isLoading,
+    movies,
+    page,
+    total,
+    getMovies,
+    getMovieDetailsFor,
+    setPage,
+  } = props;
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
     setPage(value);
+  };
+
+  const handleMovieCardClick = (id: number) => {
+    getMovieDetailsFor(id);
+    navigate(`/movies/${id}`);
   };
 
   useEffect(() => {
@@ -38,7 +52,7 @@ export const _Movies = (props: MovieProps) => {
           <StyledMovieGrid container>
             {movies.map((movie) => (
               <StyledMovieCardWrapper key={movie.id}>
-                <MovieCard {...movie} />
+                <MovieCard {...movie} onMovieClick={handleMovieCardClick} />
               </StyledMovieCardWrapper>
             ))}
           </StyledMovieGrid>
