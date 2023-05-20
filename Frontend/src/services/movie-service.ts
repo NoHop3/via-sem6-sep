@@ -46,15 +46,17 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
 export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
   dispatch(setIsLoading(true));
   try {
-    const [movie, stars, director, rating] = await Promise.all([
+    const [movie, stars, director, rating, posterUrl] = await Promise.all([
       axios.get(`${endpoints.getMovieWith(id)}`),
       getMovieStarsFor(id),
       getMovieDirectorFor(id),
       getMovieRatingFor(id),
+      getMoviePosterFor(id),
     ]);
     dispatch(
       setMovie({
         ...movie.data,
+        posterUrl,
         stars,
         director,
         rating,
@@ -91,13 +93,13 @@ const getMovieStarsFor = async (id: number): Promise<Person[]> => {
   }
 };
 
-const getMovieDirectorFor = async (id: number): Promise<Person> => {
+const getMovieDirectorFor = async (id: number): Promise<Person[]> => {
   try {
     const res = await axios.get(`${endpoints.getDirectorsForMovie(id)}`);
     return res.data;
   } catch (err) {
     console.error(err);
-    return { id: 0, name: "Unknown", birth: 0 };
+    return [];
   }
 };
 

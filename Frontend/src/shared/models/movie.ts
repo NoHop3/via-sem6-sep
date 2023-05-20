@@ -7,6 +7,6 @@ export interface Movie {
   year: number;
   posterUrl?: string;
   stars?: Person[];
-  director?: Person;
+  director?: Person[];
   rating?: MovieRating;
 }

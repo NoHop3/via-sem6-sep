@@ -18,7 +18,7 @@ export const _MovieDetails = (props: MovieDetailsProps) => {
   };
   const { isLoading, movie } = props;
   const { title, year, director, posterUrl, rating, stars } = movie;
-
+  console.log(loaded);
   return (
     <MovieDetailsPageWrapper>
       {isLoading ? (
@@ -46,19 +46,19 @@ export const _MovieDetails = (props: MovieDetailsProps) => {
           {loaded ? (
             <MovieDetailsInfo>
               <MovieDetailsInfoItem>Year: {year}</MovieDetailsInfoItem>
-              {director && (
-                <MovieDetailsInfoItem>
-                  Director: {director.name}
+              {director?.map((x) => (
+                <MovieDetailsInfoItem key={x.id}>
+                  Director: {x.name}
                 </MovieDetailsInfoItem>
-              )}
-              {rating && (
+              ))}
+              {rating?.rating !== 0 && (
                 <MovieDetailsInfoItem>
                   Rating: {rating?.rating}
                 </MovieDetailsInfoItem>
               )}
               {stars?.map((star) => (
                 <MovieDetailsInfoItem key={star.id}>
-                  Star: {star.name}
+                  Staring: {star.name}
                 </MovieDetailsInfoItem>
               ))}
             </MovieDetailsInfo>

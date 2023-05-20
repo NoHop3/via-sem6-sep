@@ -26,7 +26,7 @@ export const MovieDetailsGrid = styled(Grid)`
   padding: 1rem;
   border-radius: 1rem;
   background-color: #fff;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0.5rem 0.1rem ${({ theme }) => theme.palette.primary.main};
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
@@ -51,7 +51,10 @@ export const MovieDetailsGrid = styled(Grid)`
 export const MovieDetailsTitle = styled(Typography)`
   grid-area: title;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-align: center;
+  box-shadow: 0 0 0.25rem 0.05rem ${({ theme }) => theme.palette.primary.main};
   color: ${({ theme }) => theme.palette.primary.dark};
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -61,9 +64,9 @@ export const MovieDetailsTitle = styled(Typography)`
 export const MovieDetailsImage = styled.img`
   grid-area: image;
   width: 100%;
-  height: 20rem;
+  height: 40rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0 0.5rem 0.25rem ${({ theme }) => theme.palette.primary.dark};
+  box-shadow: 0 0 0.25rem 0.05rem ${({ theme }) => theme.palette.primary.main};
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
@@ -76,6 +79,8 @@ export const MovieDetailsInfo = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.25rem 0.05rem ${({ theme }) => theme.palette.primary.main};
   padding: 1rem;
   @media (max-width: 768px) {
     padding: 0;
@@ -83,10 +88,10 @@ export const MovieDetailsInfo = styled.div`
 `;
 
 export const MovieDetailsInfoItem = styled(Typography)`
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.palette.primary.dark};
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 `;
