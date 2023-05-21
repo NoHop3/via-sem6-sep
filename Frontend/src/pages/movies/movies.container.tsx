@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 import { Pagination } from "@mui/material";
 import { MovieCard } from "../../components";
 import { StyledCircularProgress } from "../../styles";
@@ -12,6 +13,7 @@ import { type MovieProps } from "./movies.props";
 
 export const _Movies = (props: MovieProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     isLoading,
     movies,
@@ -21,22 +23,26 @@ export const _Movies = (props: MovieProps) => {
     getMovieDetailsFor,
     setPage,
   } = props;
+  const queryStrings = queryString.parse(useLocation().search);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
-    setPage(value);
+    navigate(`/movies?page=${value}`);
   };
+
+  useEffect(() => {
+    navigate(`/movies?page=${page}`);
+    queryString.parse(location.search);
+    setPage(Number(queryStrings.page) || 1);
+    getMovies(Number(queryStrings.page) || 1, 12);
+  }, [location.search, setPage, queryStrings.page, getMovies, navigate, page]);
 
   const handleMovieCardClick = (id: number) => {
     getMovieDetailsFor(id);
     navigate(`/movies/${id}`);
   };
-
-  useEffect(() => {
-    getMovies(page, 12);
-  }, [getMovies, page]);
 
   return (
     <StyledMoviePageWrapper>

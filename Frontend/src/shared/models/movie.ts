@@ -5,8 +5,19 @@ export interface Movie {
   id: number;
   title: string;
   year: number;
+  details: MovieDetails;
   posterUrl?: string;
   stars?: Person[];
   director?: Person[];
   rating?: MovieRating;
+}
+
+export interface MovieDetails {
+  rated?: string;
+  released?: string;
+  runtime?: string;
+  plot?: string;
+  genre?: string;
+  language?: string;
+  country?: string;
 }

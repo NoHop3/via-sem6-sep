@@ -4,5 +4,5 @@ export interface MovieRating {
   id: number;
   rating: number;
   votes: number;
-  movie: Movie;
+  movie?: Movie;
 }

@@ -10,6 +10,7 @@ import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
 import { Person } from "../shared/models/person";
 import { MovieRating } from "../shared/models/rating";
+import { MovieDetails } from "../shared/models/movie";
 
 // #region getMovieWithId
 export const getMovieWith = (id: number) => (dispatch: any) => {
@@ -46,17 +47,20 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
 export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
   dispatch(setIsLoading(true));
   try {
-    const [movie, stars, director, rating, posterUrl] = await Promise.all([
-      axios.get(`${endpoints.getMovieWith(id)}`),
-      getMovieStarsFor(id),
-      getMovieDirectorFor(id),
-      getMovieRatingFor(id),
-      getMoviePosterFor(id),
-    ]);
+    const [movie, stars, director, rating, posterUrl, details] =
+      await Promise.all([
+        axios.get(`${endpoints.getMovieWith(id)}`),
+        getMovieStarsFor(id),
+        getMovieDirectorFor(id),
+        getMovieRatingFor(id),
+        getMoviePosterFor(id),
+        getOmdbMovieDetailsFor(id),
+      ]);
     dispatch(
       setMovie({
         ...movie.data,
         posterUrl,
+        details,
         stars,
         director,
         rating,
@@ -109,7 +113,33 @@ const getMovieRatingFor = async (id: number): Promise<MovieRating> => {
     return res.data;
   } catch (err) {
     console.error(err);
-    return { id: 0, rating: 0, votes: 0, movie: { id: 0, title: "", year: 0 } };
+    return { id: 0, rating: 0, votes: 0 };
+  }
+};
+
+const getOmdbMovieDetailsFor = async (id: number): Promise<MovieDetails> => {
+  try {
+    const res = await axios.get(`${endpoints.getOmdbMovieWith(id)}`);
+    return {
+      rated: res.data.Rated,
+      released: res.data.Released,
+      runtime: res.data.Runtime,
+      plot: res.data.Plot,
+      genre: res.data.Genre,
+      language: res.data.Language,
+      country: res.data.Country,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      rated: "N/A",
+      released: "N/A",
+      runtime: "N/A",
+      plot: "N/A",
+      genre: "N/A",
+      language: "N/A",
+      country: "N/A",
+    };
   }
 };
 // endregion

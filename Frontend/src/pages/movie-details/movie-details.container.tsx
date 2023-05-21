@@ -18,7 +18,8 @@ export const _MovieDetails = (props: MovieDetailsProps) => {
   };
   const { isLoading, movie } = props;
   const { title, year, director, posterUrl, rating, stars } = movie;
-  console.log(loaded);
+  const { released, runtime, genre, plot, language, country, rated } =
+    movie.details;
   return (
     <MovieDetailsPageWrapper>
       {isLoading ? (
@@ -45,22 +46,38 @@ export const _MovieDetails = (props: MovieDetailsProps) => {
           />
           {loaded ? (
             <MovieDetailsInfo>
-              <MovieDetailsInfoItem>Year: {year}</MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Rated">{rated}</MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Year"> {year}</MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Released">
+                {released}
+              </MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Runtime">
+                {runtime}
+              </MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Genre">{genre}</MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Plot"> {plot}</MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Language">
+                {language}
+              </MovieDetailsInfoItem>
+              <MovieDetailsInfoItem label="Country">
+                {country}
+              </MovieDetailsInfoItem>
+
               {director?.map((x) => (
-                <MovieDetailsInfoItem key={x.id}>
-                  Director: {x.name}
+                <MovieDetailsInfoItem label="Director" key={x.id}>
+                  {x.name}
+                </MovieDetailsInfoItem>
+              ))}
+              {stars?.map((star) => (
+                <MovieDetailsInfoItem label="Starring" key={star.id}>
+                  {star.name}
                 </MovieDetailsInfoItem>
               ))}
               {rating?.rating !== 0 && (
-                <MovieDetailsInfoItem>
-                  Rating: {rating?.rating}
+                <MovieDetailsInfoItem label="Rating">
+                  {rating?.rating}
                 </MovieDetailsInfoItem>
               )}
-              {stars?.map((star) => (
-                <MovieDetailsInfoItem key={star.id}>
-                  Staring: {star.name}
-                </MovieDetailsInfoItem>
-              ))}
             </MovieDetailsInfo>
           ) : (
             <StyledLoadingGridItem gridArea="info" />
