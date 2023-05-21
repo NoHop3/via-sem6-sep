@@ -1,6 +1,8 @@
 import {
   StyledCircularProgress,
   StyledLoadingGridItem,
-} from "../styles/loading/loading.styles";
+} from "./loading/loading.styles";
 
-export { StyledCircularProgress, StyledLoadingGridItem };
+import { StyledTypography } from "./typography/typography.styles";
+
+export { StyledCircularProgress, StyledLoadingGridItem, StyledTypography };

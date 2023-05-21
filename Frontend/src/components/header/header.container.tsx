@@ -18,12 +18,16 @@ import {
   Button,
   IconButton,
   Drawer,
-  Popper,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import ThemeIcon from "@mui/icons-material/Brightness6";
+import { HeaderProps } from "./header.props";
+import { DeviceTypes } from "../../shared/utils/enums/deviceTypes";
+import { useGetDeviceType } from "../../shared/utils/hooks/useGetDeviceType";
+import { ThemeDialog } from "../theme-dialog/theme-dialog";
+import { ThemeDialogProps } from "../theme-dialog/theme-dialog.props";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,12 +71,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-interface Props {
-  window?: () => Window;
-  children: React.ReactElement;
-}
-
-function HideOnScroll(props: Props) {
+function HideOnScroll(props: HeaderProps) {
   const { children, window } = props;
   const trigger = useScrollTrigger({
     target: window != null ? window() : undefined,
@@ -91,12 +90,33 @@ const navItems: NavItem[] = [
   { name: "Movies", path: "/movies" },
 ];
 
-export const _Header = (props: Props) => {
-  const [openPopper, setOpenPopper] = React.useState(false);
+export const _Header = (props: HeaderProps) => {
+  const [openThemeDialog, setOpenThemeDialog] = React.useState(false);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const themeDialogProps: ThemeDialogProps = {
+    mode: theme.palette.mode,
+    main: theme.palette.primary.main,
+    contrastText: theme.palette.primary.contrastText,
+    dark: theme.palette.primary.dark,
+    light: theme.palette.primary.light,
+    background: theme.palette.background.default,
+    open: openThemeDialog,
+    fullScreen: useGetDeviceType() !== DeviceTypes.DESKTOP,
+    onClose: () => {
+      setOpenThemeDialog(false);
+    },
+    onSave: () => {
+      handleSaveTheme();
+    },
+  };
+
+  const handleSaveTheme = () => {
+    setOpenThemeDialog(false);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -166,9 +186,10 @@ export const _Header = (props: Props) => {
               aria-label="theming button"
               edge="end"
               onClick={() => {
-                setOpenPopper(!openPopper);
+                setOpenThemeDialog(true);
               }}
-              sx={{ ml: 2, display: { lg: "none" } }}
+              color={"inherit"}
+              sx={{ ml: 2, pt: 2, display: { xs: "none", lg: "block" } }}
             >
               <ThemeIcon />
             </IconButton>
@@ -185,6 +206,8 @@ export const _Header = (props: Props) => {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
+      <ThemeDialog {...themeDialogProps} />
+
       <Box component="nav">
         <Drawer
           anchor="right"
