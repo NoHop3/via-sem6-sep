@@ -18,10 +18,12 @@ import {
   Button,
   IconButton,
   Drawer,
+  Popper,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
+import ThemeIcon from "@mui/icons-material/Brightness6";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -90,6 +92,7 @@ const navItems: NavItem[] = [
 ];
 
 export const _Header = (props: Props) => {
+  const [openPopper, setOpenPopper] = React.useState(false);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useTheme();
@@ -158,6 +161,18 @@ export const _Header = (props: Props) => {
               />
             </Search>
             <Divider />
+            <IconButton
+              size="large"
+              aria-label="theming button"
+              edge="end"
+              onClick={() => {
+                setOpenPopper(!openPopper);
+              }}
+              sx={{ ml: 2, display: { lg: "none" } }}
+            >
+              <ThemeIcon />
+            </IconButton>
+
             <IconButton
               color="inherit"
               aria-label="open drawer"

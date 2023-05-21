@@ -3,11 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
 import { StyledEngineProvider } from "@mui/material";
-import { ThemeProvider as ScThemeProvider } from "styled-components";
-import { theme } from "./shared/utils/theming/defaultTheme";
 import { Provider } from "react-redux";
 import { configureAppStore } from "./shared/store/configure-store";
 
@@ -18,13 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={configureAppStore()}>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <ScThemeProvider theme={theme}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </ScThemeProvider>
-        </ThemeProvider>
+        <App />
       </StyledEngineProvider>
     </Provider>
   </React.StrictMode>,
