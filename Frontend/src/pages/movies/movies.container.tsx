@@ -35,13 +35,13 @@ export const _Movies = (props: MovieProps) => {
   useEffect(() => {
     navigate(`/movies?page=${page}`);
     queryString.parse(location.search);
-    setPage(Number(queryStrings.page) || 1);
-    getMovies(Number(queryStrings.page) || 1, 12);
+    setPage(Number(queryStrings.page) || page);
+    getMovies(Number(queryStrings.page) || page, 12);
   }, [location.search, setPage, queryStrings.page, getMovies, navigate, page]);
 
   const handleMovieCardClick = (id: number) => {
-    getMovieDetailsFor(id);
     navigate(`/movies/${id}`);
+    getMovieDetailsFor(id);
   };
 
   return (
@@ -55,6 +55,7 @@ export const _Movies = (props: MovieProps) => {
             onChange={handlePageChange}
             size="large"
           />
+
           <StyledMovieGrid container>
             {movies.map((movie) => (
               <StyledMovieCardWrapper key={movie.id}>
