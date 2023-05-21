@@ -1,5 +1,7 @@
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider as ScThemeProvider } from "styled-components";
+import { useCustomTheme } from "./shared/utils/hooks/useCustomTheme";
 import { Home, Error, Movies, MovieDetails } from "./pages";
 import { Header, BottomNavigation, Snackbar } from "./components";
 import { useGetDeviceType } from "./shared/utils/hooks/useGetDeviceType";
@@ -14,27 +16,33 @@ function App() {
   const notification = useAppSelector(
     (state) => state.notifications.notification,
   );
+  const theme = useCustomTheme();
   const dispatch = useAppDispatch();
   return (
-    <div className="App">
-      <Header children={<></>} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/movies/:id" element={<MovieDetails />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
-
-      {/* Look into better notification handling: https://stackoverflow.com/questions/67642607/reactmaterial-ui-multiple-snackbar  */}
-      <Snackbar
-        open={notification.open}
-        message={notification.message}
-        type={notification.type}
-        onClose={() => dispatch(setNotificationVisibility(false))}
-        autoHideDuration={4000}
-      />
-      {useGetDeviceType() !== DeviceTypes.DESKTOP && <BottomNavigation />}
-    </div>
+    <ThemeProvider theme={theme}>
+      <ScThemeProvider theme={theme}>
+        <BrowserRouter>
+          <div className="App">
+            <Header children={<></>} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/movies" element={<Movies />} />
+              <Route path="/movies/:id" element={<MovieDetails />} />
+              <Route path="*" element={<Error />} />
+            </Routes>
+            <Snackbar
+              open={notification.open}
+              message={notification.message}
+              type={notification.type}
+              onClose={() => dispatch(setNotificationVisibility(false))}
+              autoHideDuration={4000}
+            />
+            {useGetDeviceType() !== DeviceTypes.DESKTOP && <BottomNavigation />}
+          </div>
+          ;
+        </BrowserRouter>
+      </ScThemeProvider>
+    </ThemeProvider>
   );
 }
 
