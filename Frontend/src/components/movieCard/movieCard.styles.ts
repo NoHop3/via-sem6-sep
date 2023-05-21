@@ -1,20 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import styled from "styled-components";
 
-const loadingStyles = `
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  border-radius: 5px;
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-`;
-
-export const MovieGridWrapper = styled(Grid)`
+export const MovieGrid = styled(Grid)`
   width: calc(100% - 2rem);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -48,12 +35,6 @@ export const MovieTitle = styled(Typography)`
   text-align: center;
 `;
 
-export const MovieTitleLoading = styled.div`
-  height: 3rem;
-  grid-area: title;
-  ${loadingStyles}
-`;
-
 export const MovieImage = styled.img`
   grid-area: image;
   width: 200px;
@@ -62,26 +43,9 @@ export const MovieImage = styled.img`
   border-radius: 1rem;
 `;
 
-export const MovieImageLoading = styled.div`
-  grid-area: image;
-  width: 200px;
-  height: 250px;
-  ${loadingStyles}
-`;
-
 export const MovieInfo = styled(Typography)`
   grid-area: info;
   font-size: 1rem;
   font-weight: 400;
   text-align: center;
-`;
-
-export const MovieInfoLoading = styled.div`
-  grid-area: info;
-  ${loadingStyles}
-`;
-
-export const MovieButtonLoading = styled.div`
-  grid-area: button;
-  ${loadingStyles}
 `;

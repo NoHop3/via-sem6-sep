@@ -1,29 +1,26 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit";
 
-import { _Movies } from "./movies.container";
+import { _MovieDetails } from "./movie-details.container";
 import { services } from "../../services";
 import { type ApplicationState } from "../../shared/store/app-state";
 import { type AppDispatch } from "../../shared/store/app-thunk";
-import { setPage } from "../../shared/store/movie-store";
 
 const mapStateToProps = (state: ApplicationState) => ({
-  movies: state.movies.movies,
-  isLoading: state.movies.isLoading,
   movie: state.movies.movie,
-  page: state.movies.page,
-  total: state.movies.total,
+  isLoading: state.movies.isLoading,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(
     {
-      setPage,
       getMovieDetailsFor: services.getMovieDetailsFor,
-      getMovies: services.getMovies,
     },
     dispatch,
   );
 };
 
-export const Movies = connect(mapStateToProps, mapDispatchToProps)(_Movies);
+export const MovieDetails = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(_MovieDetails);

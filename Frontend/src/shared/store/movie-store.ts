@@ -15,6 +15,7 @@ const initialState: MovieStore = {
     id: 0,
     title: "",
     year: 0,
+    details: {},
   },
   isLoading: false,
   page: 1,

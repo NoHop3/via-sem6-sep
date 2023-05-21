@@ -1,28 +1,48 @@
 import { useEffect } from "react";
-
-import { type MovieProps } from "./movies.props";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
+import { Pagination } from "@mui/material";
 import { MovieCard } from "../../components";
+import { StyledCircularProgress } from "../../styles";
 import {
   StyledMoviePageWrapper,
   StyledMovieGrid,
   StyledMovieCardWrapper,
-  StyledCircularProgress,
 } from "./movies.styles";
-import { Pagination } from "@mui/material";
+import { type MovieProps } from "./movies.props";
 
 export const _Movies = (props: MovieProps) => {
-  const { isLoading, movies, page, total, getMovies, setPage } = props;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    isLoading,
+    movies,
+    page,
+    total,
+    getMovies,
+    getMovieDetailsFor,
+    setPage,
+  } = props;
+  const queryStrings = queryString.parse(useLocation().search);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
-    setPage(value);
+    navigate(`/movies?page=${value}`);
   };
 
   useEffect(() => {
-    getMovies(page, 12);
-  }, [getMovies, page]);
+    navigate(`/movies?page=${page}`);
+    queryString.parse(location.search);
+    setPage(Number(queryStrings.page) || page);
+    getMovies(Number(queryStrings.page) || page, 12);
+  }, [location.search, setPage, queryStrings.page, getMovies, navigate, page]);
+
+  const handleMovieCardClick = (id: number) => {
+    navigate(`/movies/${id}`);
+    getMovieDetailsFor(id);
+  };
 
   return (
     <StyledMoviePageWrapper>
@@ -35,10 +55,11 @@ export const _Movies = (props: MovieProps) => {
             onChange={handlePageChange}
             size="large"
           />
+
           <StyledMovieGrid container>
             {movies.map((movie) => (
               <StyledMovieCardWrapper key={movie.id}>
-                <MovieCard {...movie} />
+                <MovieCard {...movie} onMovieClick={handleMovieCardClick} />
               </StyledMovieCardWrapper>
             ))}
           </StyledMovieGrid>

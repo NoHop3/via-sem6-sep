@@ -7,6 +7,6 @@ export interface MovieProps {
   page: number;
   total: number;
   getMovies: (skip: number, take: number) => void;
-  getMovieWith: (movieId: number) => void;
+  getMovieDetailsFor: (id: number) => void;
   setPage: (page: number) => void;
 }

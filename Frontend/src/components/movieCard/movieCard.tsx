@@ -1,18 +1,15 @@
 import { useState } from "react";
-import { Movie } from "../../shared/models";
 import { _Button as Button } from "../shared/button/button";
 import {
-  MovieButtonLoading,
-  MovieGridWrapper,
+  MovieGrid,
   MovieImage,
-  MovieImageLoading,
   MovieInfo,
-  MovieInfoLoading,
   MovieTitle,
-  MovieTitleLoading,
 } from "./movieCard.styles";
+import { MovieCardProps } from "./movieCard.props";
+import { StyledLoadingGridItem } from "../../styles";
 
-export const _MovieCard = ({ ...props }: Movie) => {
+export const _MovieCard = ({ ...props }: MovieCardProps) => {
   const [loaded, setLoaded] = useState(false);
 
   const handleImageLoad = () => {
@@ -20,15 +17,21 @@ export const _MovieCard = ({ ...props }: Movie) => {
   };
 
   return (
-    <MovieGridWrapper>
-      {loaded ? <MovieTitle>{props.title}</MovieTitle> : <MovieTitleLoading />}
-      {!loaded && <MovieImageLoading />}
+    <MovieGrid>
+      {loaded ? (
+        <MovieTitle>{props.title}</MovieTitle>
+      ) : (
+        <StyledLoadingGridItem gridArea="title" height="3rem" />
+      )}
+      {!loaded && (
+        <StyledLoadingGridItem
+          gridArea="image"
+          width="12.5rem"
+          height="16rem"
+        />
+      )}
       <MovieImage
-        src={
-          props.posterUrl
-            ? props.posterUrl
-            : "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png"
-        }
+        src={props.posterUrl}
         alt={props.title + " image"}
         onLoad={handleImageLoad}
         style={{ display: loaded ? "block" : "none" }}
@@ -36,7 +39,7 @@ export const _MovieCard = ({ ...props }: Movie) => {
       {loaded ? (
         <MovieInfo>Year: {props.year}</MovieInfo>
       ) : (
-        <MovieInfoLoading />
+        <StyledLoadingGridItem gridArea="info" />
       )}
       {loaded ? (
         <Button
@@ -46,13 +49,13 @@ export const _MovieCard = ({ ...props }: Movie) => {
           disabled={false}
           text={"See more"}
           onClick={() => {
-            alert("Clicked");
+            props.onMovieClick(props.id);
           }}
           style={{ gridArea: "button" }}
         />
       ) : (
-        <MovieButtonLoading />
+        <StyledLoadingGridItem gridArea="button" />
       )}
-    </MovieGridWrapper>
+    </MovieGrid>
   );
 };

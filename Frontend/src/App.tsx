@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import { Home, Error, Movies } from "./pages";
+import { Home, Error, Movies, MovieDetails } from "./pages";
 import { Header, BottomNavigation, Snackbar } from "./components";
 import { useGetDeviceType } from "./shared/utils/hooks/useGetDeviceType";
 import { DeviceTypes } from "./shared/utils/enums/deviceTypes";
@@ -21,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
+        <Route path="/movies/:id" element={<MovieDetails />} />
         <Route path="*" element={<Error />} />
       </Routes>
 

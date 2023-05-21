@@ -5,5 +5,8 @@ const omdbUrl = "https://www.omdbapi.com/";
 export const endpoints = {
   getMovies: (skip: number, take: number) => `${baseUrl}/Movie/${skip}/${take}`,
   getMovieWith: (id: number) => `${baseUrl}/Movie/${id}`,
+  getStarsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Stars`,
+  getDirectorsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Directors`,
+  getRatingForMovie: (id: number) => `${baseUrl}/MovieRating/${id}`,
   getOmdbMovieWith: (id: number) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
 };

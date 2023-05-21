@@ -26,4 +26,5 @@ export const theme = createTheme({
       xl: 1280,
     },
   },
+  spacing: 8,
 });
