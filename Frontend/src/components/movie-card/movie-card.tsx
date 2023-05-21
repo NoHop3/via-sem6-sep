@@ -5,8 +5,8 @@ import {
   MovieImage,
   MovieInfo,
   MovieTitle,
-} from "./movieCard.styles";
-import { MovieCardProps } from "./movieCard.props";
+} from "./movie-card.styles";
+import { MovieCardProps } from "./movie-card.props";
 import { StyledLoadingGridItem } from "../../styles";
 
 export const _MovieCard = ({ ...props }: MovieCardProps) => {

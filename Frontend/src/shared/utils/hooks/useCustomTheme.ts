@@ -10,6 +10,7 @@ export const useCustomTheme = () => {
             main: "#880000",
             dark: "#121212",
             light: "#fffefc",
+            contrastText: "#ffcc00",
           },
           secondary: {
             light: "#0066ff",
@@ -18,6 +19,11 @@ export const useCustomTheme = () => {
           },
           background: {
             default: "#fffefc",
+          },
+          text: {
+            primary: "#121212",
+            secondary: "#880000",
+            disabled: "#000000",
           },
         },
         components: {},

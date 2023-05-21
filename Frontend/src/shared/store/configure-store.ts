@@ -3,6 +3,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, type History } from "history";
 import movieReducer from "./movie-store";
 import notificationReducer from "./notification-store";
+import themeReducer from "./theme-store";
 
 export const history = createBrowserHistory();
 
@@ -11,6 +12,7 @@ const createRootReducer = (history: History) =>
     router: connectRouter(history),
     movies: movieReducer,
     notifications: notificationReducer,
+    theme: themeReducer,
   });
 
 export let store: ReturnType<typeof configureAppStore>;

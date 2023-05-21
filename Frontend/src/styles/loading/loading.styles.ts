@@ -1,13 +1,13 @@
 import { CircularProgress } from "@mui/material";
 import styled from "styled-components";
 
-interface loadingProps {
+interface LoadingProps {
   height?: string;
   width?: string;
   gridArea?: string;
 }
 
-export const StyledLoadingGridItem = styled.div<loadingProps>`
+export const StyledLoadingGridItem = styled.div<LoadingProps>`
   grid-area: ${(p) => p.gridArea};
   height: ${(p) => p.height};
   width: ${(p) => p.width};
