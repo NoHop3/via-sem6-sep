@@ -61,7 +61,7 @@ const themeSlice = createSlice({
     setTextThemeDisabled(state, action: PayloadAction<string>) {
       state.theme.text.disabled = action.payload;
     },
-    setThemeColorBackground(state, action: PayloadAction<string>) {
+    setBackgroundColor(state, action: PayloadAction<string>) {
       state.theme.background = action.payload;
     },
     setThemeDivider(state, action: PayloadAction<string>) {
@@ -77,6 +77,6 @@ export const {
   setPrimaryThemeMain,
   setPrimaryThemeDark,
   setPrimaryThemeLight,
-  setThemeColorBackground,
+  setBackgroundColor,
   setPrimaryThemeContrastText,
 } = themeSlice.actions;
