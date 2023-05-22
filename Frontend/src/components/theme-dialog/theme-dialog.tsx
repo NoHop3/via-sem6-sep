@@ -10,7 +10,7 @@ import {
   setPrimaryThemeMain,
   setPrimaryThemeDark,
   setPrimaryThemeLight,
-  setThemeColorBackground,
+  setBackgroundColor,
   setPrimaryThemeContrastText,
 } from "../../shared/store/theme-store";
 
@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
       setPrimaryThemeMain,
       setPrimaryThemeDark,
       setPrimaryThemeLight,
-      setThemeColorBackground,
+      setBackgroundColor,
       setPrimaryThemeContrastText,
     },
     dispatch,

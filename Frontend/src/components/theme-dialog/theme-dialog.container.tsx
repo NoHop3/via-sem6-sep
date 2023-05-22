@@ -1,4 +1,5 @@
 import { _Button as Button } from "../shared/button/button";
+import { _ColorPicker as ColorPicker } from "../color-picker/color-picker";
 import { StyledTypography } from "../../styles";
 import { ThemeDialogProps } from "./theme-dialog.props";
 import {
@@ -6,12 +7,14 @@ import {
   StyledThemeDialogHeader,
   StyledThemeDialogBody,
   StyledThemeDialogFooter,
+  StyledThemeDialogBodyRow,
 } from "./theme-dialog.styles";
 
 import { useGetDeviceType } from "../../shared/utils/hooks/useGetDeviceType";
 import { DeviceTypes } from "../../shared/utils/enums/deviceTypes";
 
 export const _ThemeDialog = (props: ThemeDialogProps) => {
+  const { primary } = props.theme;
   const handleThemeSave = () => {
     props.onClose();
   };
@@ -20,13 +23,30 @@ export const _ThemeDialog = (props: ThemeDialogProps) => {
     <StyledThemeDialog
       open={props.open}
       onClose={props.onClose}
+      fullWidth
       fullScreen={useGetDeviceType() !== DeviceTypes.DESKTOP}
     >
       <StyledThemeDialogHeader>
         <StyledTypography variant="h3">Change theme</StyledTypography>
       </StyledThemeDialogHeader>
       <StyledThemeDialogBody>
-        <StyledTypography variant="body1">Theme body</StyledTypography>
+        <StyledThemeDialogBodyRow>
+          <ColorPicker
+            title="Primary color"
+            color={primary.main}
+            onColorChange={props.setPrimaryThemeMain}
+          />
+          <ColorPicker
+            title="Light color"
+            color={primary.light}
+            onColorChange={props.setPrimaryThemeMain}
+          />
+          <ColorPicker
+            title="Dark color"
+            color={primary.dark}
+            onColorChange={props.setPrimaryThemeMain}
+          />
+        </StyledThemeDialogBodyRow>
       </StyledThemeDialogBody>
       <StyledThemeDialogFooter>
         <Button
@@ -34,7 +54,7 @@ export const _ThemeDialog = (props: ThemeDialogProps) => {
           variant={"contained"}
           color={"primary"}
           disabled={false}
-          text={"Close"}
+          text={"Save"}
           onClick={props.onClose}
         />
         <Button
@@ -42,7 +62,7 @@ export const _ThemeDialog = (props: ThemeDialogProps) => {
           variant={"contained"}
           color={"primary"}
           disabled={false}
-          text={"Save"}
+          text={"Close"}
           onClick={handleThemeSave}
         />
       </StyledThemeDialogFooter>

@@ -2,7 +2,7 @@ import type { StoryObj } from "@storybook/react";
 import { useState } from "react";
 
 import { _ThemeDialog as ThemeDialog } from "./theme-dialog.container";
-import { Theme } from "../../shared/models/theme";
+import { ThemeDialogProps } from "./theme-dialog.props";
 
 export default {
   title: "ThemeDialog",
@@ -13,19 +13,50 @@ type Story = StoryObj<typeof ThemeDialog>;
 export const ThemeDialogStory: Story = () => {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState({
-    mode: "light",
+    mode: "light" as "light" | "dark",
     primary: {
       main: "#880000",
       dark: "#121212",
       light: "#fffefc",
       contrastText: "#ffcc00",
     },
+    text: {
+      primary: "#000000",
+      secondary: "#ffffff",
+      disabled: "#888888",
+    },
+
     background: "#fffefc",
   });
 
-  const handleThemeChange = (theme: Theme) => {
-    setTheme(theme);
-    setOpen(false);
+  const dialogProps: ThemeDialogProps = {
+    open,
+    onClose: () => {
+      setOpen(false);
+    },
+    theme,
+    setTheme,
+    setBackgroundColor: (color: string) => {
+      setTheme({ ...theme, background: color });
+    },
+    setPrimaryThemeMain: (color: string) => {
+      setTheme({ ...theme, primary: { ...theme.primary, main: color } });
+    },
+    setPrimaryThemeDark: (color: string) => {
+      setTheme({ ...theme, primary: { ...theme.primary, dark: color } });
+    },
+    setPrimaryThemeLight: (color: string) => {
+      setTheme({ ...theme, primary: { ...theme.primary, light: color } });
+    },
+    setPrimaryThemeContrastText: (color: string) => {
+      setTheme({
+        ...theme,
+        primary: { ...theme.primary, contrastText: color },
+      });
+    },
+    setThemeMode: (mode: "light" | "dark") => {
+      setTheme({ ...theme, mode });
+    },
   };
 
   return (
@@ -37,14 +68,7 @@ export const ThemeDialogStory: Story = () => {
       >
         Open
       </button>
-      <ThemeDialog
-        open={open}
-        {...theme}
-        onClose={() => {
-          setOpen(false);
-        }}
-        onThemeChange={handleThemeChange}
-      />
+      <ThemeDialog {...dialogProps} />
     </div>
   );
 };

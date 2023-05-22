@@ -24,6 +24,25 @@ export const lightTheme = createTheme({
     },
     divider: "#00000026",
   },
+  components: {},
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 480,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
+  spacing: 8,
+  typography: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+  },
 });
 
 export const darkTheme = createTheme({
@@ -31,6 +50,17 @@ export const darkTheme = createTheme({
   palette: {
     ...lightTheme.palette,
     mode: "dark",
+    primary: {
+      main: "#5c6bc0",
+      dark: "#26418f",
+      light: "#8e99f3",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      light: "#0066ff",
+      main: "#0044ff",
+      contrastText: "#ffcc00",
+    },
     background: {
       default: "#121212",
     },

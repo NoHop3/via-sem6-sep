@@ -1,13 +1,17 @@
 import { Theme } from "../../shared/models/theme";
 
-export interface ThemeDialogProps {
+export interface ThemeDialogProps extends DialogProps {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  setThemeMode: (mode: "light" | "dark") => void;
+  setPrimaryThemeMain: (color: string) => void;
+  setPrimaryThemeDark: (color: string) => void;
+  setPrimaryThemeLight: (color: string) => void;
+  setPrimaryThemeContrastText: (color: string) => void;
+  setBackgroundColor: (color: string) => void;
+}
+
+export interface DialogProps {
   open: boolean;
   onClose: () => void;
-  onThemeChange?: (theme: Theme) => void;
-  onThemeModeChange?: (mode: "light" | "dark") => void;
-  onThemeColorMainChange?: (color: string) => void;
-  onThemeColorDarkChange?: (color: string) => void;
-  onThemeColorLightChange?: (color: string) => void;
-  onThemeColorBackgroundChange?: (color: string) => void;
-  onThemeContrastTextChange?: (color: string) => void;
 }

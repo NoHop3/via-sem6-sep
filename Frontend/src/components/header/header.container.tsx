@@ -25,7 +25,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ThemeIcon from "@mui/icons-material/Brightness6";
 import { HeaderProps } from "./header.props";
 import { ThemeDialog } from "../theme-dialog/theme-dialog";
-import { ThemeDialogProps } from "../theme-dialog/theme-dialog.props";
+import { DialogProps } from "../theme-dialog/theme-dialog.props";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -95,7 +95,7 @@ export const _Header = (props: HeaderProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const themeDialogProps: ThemeDialogProps = {
+  const themeDialogProps: DialogProps = {
     open: openThemeDialog,
     onClose: () => {
       setOpenThemeDialog(false);
