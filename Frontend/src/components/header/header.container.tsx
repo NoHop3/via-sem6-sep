@@ -25,7 +25,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ThemeIcon from "@mui/icons-material/Brightness6";
 import { HeaderProps } from "./header.props";
 import { ThemeDialog } from "../theme-dialog/theme-dialog";
-import { DialogProps } from "../theme-dialog/theme-dialog.props";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -95,13 +94,6 @@ export const _Header = (props: HeaderProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const themeDialogProps: DialogProps = {
-    open: openThemeDialog,
-    onClose: () => {
-      setOpenThemeDialog(false);
-    },
-  };
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -142,7 +134,10 @@ export const _Header = (props: HeaderProps) => {
       <HideOnScroll {...props}>
         <AppBar
           component="nav"
-          style={{ backgroundColor: theme.palette.primary.dark }}
+          style={{
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.text.primary,
+          }}
         >
           <Toolbar>
             <Box sx={{ flexGrow: 1 }}>
@@ -190,7 +185,13 @@ export const _Header = (props: HeaderProps) => {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-      <ThemeDialog {...themeDialogProps} />
+
+      <ThemeDialog
+        open={openThemeDialog}
+        onClose={() => {
+          setOpenThemeDialog(false);
+        }}
+      />
 
       <Box component="nav">
         <Drawer

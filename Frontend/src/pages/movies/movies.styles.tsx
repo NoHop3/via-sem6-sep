@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Box } from "@mui/material";
+import { Grid, Box, Pagination } from "@mui/material";
 import styled from "styled-components";
 
 export const StyledMoviePageWrapper = styled(Box)`
@@ -40,10 +40,6 @@ export const StyledMovieCardWrapper = styled(Box)`
   }
 `;
 
-export const StyledCircularProgress = styled(CircularProgress)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -48px 0 0 -48px;
-  color: ${({ theme }) => theme.palette.primary.dark};
+export const StyledPagination = styled(Pagination)`
+  color: ${({ theme }) => theme.palette.primary.contrastText};
 `;

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
-import { Pagination } from "@mui/material";
 import { MovieCard } from "../../components";
 import { StyledCircularProgress } from "../../styles";
 import {
   StyledMoviePageWrapper,
   StyledMovieGrid,
   StyledMovieCardWrapper,
+  StyledPagination,
 } from "./movies.styles";
 import { type MovieProps } from "./movies.props";
 
@@ -48,7 +48,7 @@ export const _Movies = (props: MovieProps) => {
     <StyledMoviePageWrapper>
       {!isLoading ? (
         <>
-          <Pagination
+          <StyledPagination
             count={Math.ceil(total / 12)}
             page={page}
             defaultPage={1}
@@ -64,7 +64,7 @@ export const _Movies = (props: MovieProps) => {
             ))}
           </StyledMovieGrid>
 
-          <Pagination
+          <StyledPagination
             count={Math.ceil(total / 12)}
             page={page}
             defaultPage={1}

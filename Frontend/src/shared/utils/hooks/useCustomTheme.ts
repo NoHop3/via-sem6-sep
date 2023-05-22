@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 import { useAppSelector } from "../typescript/reduxTypes";
 
 export const useCustomTheme = () => {
-  const customTheme = useAppSelector((state) => state.theme.theme);
+  const customTheme = useAppSelector((state) => state.theme);
 
   const theme = React.useMemo(
     () =>
@@ -35,7 +35,7 @@ export const useCustomTheme = () => {
         spacing: 8,
         typography: {
           fontFamily: "Roboto",
-          fontSize: 1,
+          fontSize: 16,
           fontWeightLight: 300,
           fontWeightRegular: 400,
           fontWeightMedium: 500,

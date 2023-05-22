@@ -35,27 +35,14 @@ export const ThemeDialogStory: Story = () => {
       setOpen(false);
     },
     theme,
-    setTheme,
     setBackgroundColor: (color: string) => {
       setTheme({ ...theme, background: color });
     },
     setPrimaryThemeMain: (color: string) => {
       setTheme({ ...theme, primary: { ...theme.primary, main: color } });
     },
-    setPrimaryThemeDark: (color: string) => {
-      setTheme({ ...theme, primary: { ...theme.primary, dark: color } });
-    },
-    setPrimaryThemeLight: (color: string) => {
-      setTheme({ ...theme, primary: { ...theme.primary, light: color } });
-    },
-    setPrimaryThemeContrastText: (color: string) => {
-      setTheme({
-        ...theme,
-        primary: { ...theme.primary, contrastText: color },
-      });
-    },
-    setThemeMode: (mode: "light" | "dark") => {
-      setTheme({ ...theme, mode });
+    setTextThemePrimary: (color: string) => {
+      setTheme({ ...theme, text: { ...theme.text, primary: color } });
     },
   };
 

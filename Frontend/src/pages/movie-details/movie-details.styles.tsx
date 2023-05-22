@@ -67,7 +67,7 @@ export const MovieDetailsTitle = styled(Typography)`
   border-radius: 0.5rem;
   text-align: center;
   box-shadow: 0 0 0.25rem 0.05rem ${({ theme }) => theme.palette.primary.main};
-  color: ${({ theme }) => theme.palette.primary.dark};
+  color: ${({ theme }) => theme.palette.text.primary};
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
@@ -108,7 +108,7 @@ export const MovieDetailsInfoItem = styled(Typography)<{ label?: string }>`
   border-radius: 0.5rem;
   border-bottom: 0.1rem solid ${({ theme }) => theme.palette.primary.main};
   padding: ${({ theme }) => theme.spacing(1)};
-  color: ${({ theme }) => theme.palette.primary.dark};
+  color: ${({ theme }) => theme.palette.text.primary};
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }

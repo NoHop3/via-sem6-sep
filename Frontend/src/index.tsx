@@ -6,6 +6,7 @@ import App from "./App";
 import { StyledEngineProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import { configureAppStore } from "./shared/store/configure-store";
+import "./index.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
