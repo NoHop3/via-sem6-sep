@@ -19,20 +19,23 @@ export const StyledThemeDialogHeader = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .MuiTypography-root {
-    font-size: 1.5rem;
-  }
+  padding: ${({ theme }) => theme.spacing(2)};
+  font-size: ${({ theme }) => theme.typography.fontSize};
+  font-weight: ${({ theme }) => theme.typography.fontWeightBold};
+  border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
 
 export const StyledThemeDialogBody = styled(Box)`
+  height: 100%;
+  overflow-x: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 `;
 
 export const StyledThemeDialogFooter = styled(Box)`
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  gap: 1rem;
+  padding: {({ theme }) => theme.spacing(2)};
+  border-top: 1px solid ${({ theme }) => theme.palette.divider};
 `;
