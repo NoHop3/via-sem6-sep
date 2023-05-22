@@ -14,7 +14,7 @@ import { useGetDeviceType } from "../../shared/utils/hooks/useGetDeviceType";
 import { DeviceTypes } from "../../shared/utils/enums/deviceTypes";
 
 export const _ThemeDialog = (props: ThemeDialogProps) => {
-  const { primary } = props.theme;
+  const { primary, background, text } = props.theme;
   const handleThemeSave = () => {
     props.onClose();
   };
@@ -37,14 +37,14 @@ export const _ThemeDialog = (props: ThemeDialogProps) => {
             onColorChange={props.setPrimaryThemeMain}
           />
           <ColorPicker
-            title="Light color"
-            color={primary.light}
-            onColorChange={props.setPrimaryThemeMain}
+            title="Background color"
+            color={background}
+            onColorChange={props.setBackgroundColor}
           />
           <ColorPicker
-            title="Dark color"
-            color={primary.dark}
-            onColorChange={props.setPrimaryThemeMain}
+            title="Text color"
+            color={text.primary}
+            onColorChange={props.setTextThemePrimary}
           />
         </StyledThemeDialogBodyRow>
       </StyledThemeDialogBody>

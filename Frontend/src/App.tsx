@@ -18,11 +18,19 @@ function App() {
   );
   const theme = useCustomTheme();
   const dispatch = useAppDispatch();
+  // Set background color for the root element
+  const root = document.getElementById("root") as HTMLElement;
+  root.style.backgroundColor = theme.palette.background.default;
   return (
     <ThemeProvider theme={theme}>
       <ScThemeProvider theme={theme}>
         <BrowserRouter>
-          <div className="App">
+          <div
+            className="App"
+            style={{
+              backgroundColor: theme.palette.background.default,
+            }}
+          >
             <Header children={<></>} />
             <Routes>
               <Route path="/" element={<Home />} />
@@ -39,7 +47,6 @@ function App() {
             />
             {useGetDeviceType() !== DeviceTypes.DESKTOP && <BottomNavigation />}
           </div>
-          ;
         </BrowserRouter>
       </ScThemeProvider>
     </ThemeProvider>

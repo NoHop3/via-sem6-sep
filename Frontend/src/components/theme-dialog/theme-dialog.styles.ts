@@ -6,6 +6,7 @@ width: 100%;
   .MuiDialog-paper {
     width: 100%;
     max-width: ${({ theme }) => theme.breakpoints.values.lg}px;
+    background-color: ${({ theme }) => theme.palette.background.default};
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.values.lg}px) {
     .MuiDialog-paper {
@@ -23,7 +24,7 @@ export const StyledThemeDialogHeader = styled(Box)`
   justify-content: center;
   align-items: center;
   padding: ${({ theme }) => theme.spacing(2)};
-  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-size: ${({ theme }) => theme.typography.fontSize}px;
   font-weight: ${({ theme }) => theme.typography.fontWeightBold};
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
 `;
@@ -37,7 +38,7 @@ export const StyledThemeDialogBody = styled(Box)`
   align-items: center;
   justify-content: flex-start;
   padding: ${({ theme }) => theme.spacing(3)};
-  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-size: ${({ theme }) => theme.typography.fontSize}px;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
 `;
 

@@ -13,6 +13,6 @@ export const StyledLink = styled(Link)<{ isInverted?: boolean }>`
   text-decoration: none;
   color: ${({ theme, isInverted }) =>
     isInverted
-      ? theme.palette.primary.dark
-      : theme.palette.primary.contrastText}; };
+      ? theme.palette.primary.contrastText
+      : theme.palette.text.primary}; };
 `;

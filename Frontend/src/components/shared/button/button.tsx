@@ -2,6 +2,7 @@ import { type ButtonProps } from "./button.props";
 import { StyledButton } from "./button.styles";
 
 export const _Button = (props: ButtonProps) => {
+  console.log("props", props);
   return (
     <StyledButton
       variant={props.variant}

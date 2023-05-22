@@ -17,7 +17,7 @@ export const MovieGrid = styled(Grid)`
   border-radius: 1rem;
   background-color: #fff;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
-  @media (max-width: 768px) {
+  @media (max-width: 614px) {
     grid-template-columns: repeat(1, 1fr);
     grid-template-areas:
       "title"
@@ -29,6 +29,7 @@ export const MovieGrid = styled(Grid)`
 
 export const MovieTitle = styled(Typography)`
   grid-area: title;
+  color: ${({ theme }) => theme.palette.text.primary};
   margin: 0.5rem 0;
   font-size: 1.5rem;
   font-weight: 600;
@@ -45,6 +46,7 @@ export const MovieImage = styled.img`
 
 export const MovieInfo = styled(Typography)`
   grid-area: info;
+  color: ${({ theme }) => theme.palette.text.primary};
   font-size: 1rem;
   font-weight: 400;
   text-align: center;

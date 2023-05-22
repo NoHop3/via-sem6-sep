@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { ButtonProps } from "./button.props";
 import { Button } from "@mui/material";
 
-export const StyledButton = styled(Button)<{ buttonProps?: ButtonProps }>`
+export const StyledButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.main};
   border: none;
   color: ${({ theme }) => theme.palette.primary.contrastText}};
@@ -14,12 +13,8 @@ export const StyledButton = styled(Button)<{ buttonProps?: ButtonProps }>`
   cursor: pointer;
   border-radius: 4px;
   &:hover {
-    background-color: ${({ theme }) => theme.palette.primary.dark};
-  }
-  &:disabled {
-    background-color: ${({ theme }) => theme.palette.primary.light};
-    color: ${({ theme }) => theme.palette.text.disabled})}
-    opacity: 0.5;
-    cursor: not-allowed;
+    background-color: ${({ theme }) => theme.palette.primary.main};
+    scale: 1.1;  
+    transition: 0.3s ease-in-out;
   }
 `;
