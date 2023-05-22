@@ -8,15 +8,22 @@ import {
   StyledThemeDialogFooter,
 } from "./theme-dialog.styles";
 
+import { useGetDeviceType } from "../../shared/utils/hooks/useGetDeviceType";
+import { DeviceTypes } from "../../shared/utils/enums/deviceTypes";
+
 export const _ThemeDialog = (props: ThemeDialogProps) => {
+  const handleThemeSave = () => {
+    props.onClose();
+  };
+
   return (
     <StyledThemeDialog
       open={props.open}
       onClose={props.onClose}
-      fullScreen={props.fullScreen}
+      fullScreen={useGetDeviceType() !== DeviceTypes.DESKTOP}
     >
       <StyledThemeDialogHeader>
-        <StyledTypography variant="h6">Theme</StyledTypography>
+        <StyledTypography variant="h3">Change theme</StyledTypography>
       </StyledThemeDialogHeader>
       <StyledThemeDialogBody>
         <StyledTypography variant="body1">Theme body</StyledTypography>
@@ -36,7 +43,7 @@ export const _ThemeDialog = (props: ThemeDialogProps) => {
           color={"primary"}
           disabled={false}
           text={"Save"}
-          onClick={props.onSave}
+          onClick={handleThemeSave}
         />
       </StyledThemeDialogFooter>
     </StyledThemeDialog>

@@ -1,10 +1,8 @@
 import { Theme } from "../../shared/models/theme";
 
-export interface ThemeDialogProps extends Theme {
+export interface ThemeDialogProps {
   open: boolean;
-  fullScreen: boolean;
   onClose: () => void;
-  onSave: () => void;
   onThemeChange?: (theme: Theme) => void;
   onThemeModeChange?: (mode: "light" | "dark") => void;
   onThemeColorMainChange?: (color: string) => void;

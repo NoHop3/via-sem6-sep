@@ -24,8 +24,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import ThemeIcon from "@mui/icons-material/Brightness6";
 import { HeaderProps } from "./header.props";
-import { DeviceTypes } from "../../shared/utils/enums/deviceTypes";
-import { useGetDeviceType } from "../../shared/utils/hooks/useGetDeviceType";
 import { ThemeDialog } from "../theme-dialog/theme-dialog";
 import { ThemeDialogProps } from "../theme-dialog/theme-dialog.props";
 
@@ -98,24 +96,10 @@ export const _Header = (props: HeaderProps) => {
   const navigate = useNavigate();
 
   const themeDialogProps: ThemeDialogProps = {
-    mode: theme.palette.mode,
-    main: theme.palette.primary.main,
-    contrastText: theme.palette.primary.contrastText,
-    dark: theme.palette.primary.dark,
-    light: theme.palette.primary.light,
-    background: theme.palette.background.default,
     open: openThemeDialog,
-    fullScreen: useGetDeviceType() !== DeviceTypes.DESKTOP,
     onClose: () => {
       setOpenThemeDialog(false);
     },
-    onSave: () => {
-      handleSaveTheme();
-    },
-  };
-
-  const handleSaveTheme = () => {
-    setOpenThemeDialog(false);
   };
 
   const handleDrawerToggle = () => {
@@ -166,7 +150,7 @@ export const _Header = (props: HeaderProps) => {
             </Box>
             <Box sx={{ display: { xs: "none", lg: "block" } }}>
               {navItems.map((item) => (
-                <Button key={item.name} sx={{ color: "#fff" }}>
+                <Button key={item.name}>
                   <StyledLink to={item.path}>{item.name}</StyledLink>
                 </Button>
               ))}

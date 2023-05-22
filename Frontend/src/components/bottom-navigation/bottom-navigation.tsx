@@ -22,23 +22,29 @@ export const _BottomNavigation = () => {
       onChange={handleChange}
     >
       <BottomNavigationAction
-        style={{ color: theme.palette.primary.light }}
+        style={{ color: theme.palette.primary.contrastText }}
         label="Favorites"
         value="favorites"
-        icon={<FavoriteIcon style={{ color: theme.palette.primary.light }} />}
+        icon={
+          <FavoriteIcon style={{ color: theme.palette.primary.contrastText }} />
+        }
       />
       <BottomNavigationAction
-        style={{ color: theme.palette.primary.light }}
+        style={{ color: theme.palette.primary.contrastText }}
         color={"#fafafa"}
         label="Home"
         value="home"
-        icon={<HomeIcon style={{ color: theme.palette.primary.light }} />}
+        icon={
+          <HomeIcon style={{ color: theme.palette.primary.contrastText }} />
+        }
       />
       <BottomNavigationAction
-        style={{ color: theme.palette.primary.light }}
+        style={{ color: theme.palette.primary.contrastText }}
         label="Theme"
         value="theme"
-        icon={<BedtimeIcon style={{ color: theme.palette.primary.light }} />}
+        icon={
+          <BedtimeIcon style={{ color: theme.palette.primary.contrastText }} />
+        }
       />
       {/* <BottomNavigationAction
         label="Recents"

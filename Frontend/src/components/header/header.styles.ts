@@ -12,5 +12,7 @@ export const StyledLink = styled(Link)<{ isInverted?: boolean }>`
   list-style: none;
   text-decoration: none;
   color: ${({ theme, isInverted }) =>
-    isInverted ? theme.palette.primary.dark : theme.palette.primary.light}; };
+    isInverted
+      ? theme.palette.primary.dark
+      : theme.palette.primary.contrastText}; };
 `;

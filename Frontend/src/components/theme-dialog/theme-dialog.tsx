@@ -7,11 +7,11 @@ import { _ThemeDialog } from "./theme-dialog.container";
 import {
   setTheme,
   setThemeMode,
-  setThemeColorMain,
-  setThemeColorDark,
-  setThemeColorLight,
+  setPrimaryThemeMain,
+  setPrimaryThemeDark,
+  setPrimaryThemeLight,
   setThemeColorBackground,
-  setThemeContrastText,
+  setPrimaryThemeContrastText,
 } from "../../shared/store/theme-store";
 
 const mapStateToProps = (state: ApplicationState) => ({
@@ -23,11 +23,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
     {
       setTheme,
       setThemeMode,
-      setThemeColorMain,
-      setThemeColorDark,
-      setThemeColorLight,
+      setPrimaryThemeMain,
+      setPrimaryThemeDark,
+      setPrimaryThemeLight,
       setThemeColorBackground,
-      setThemeContrastText,
+      setPrimaryThemeContrastText,
     },
     dispatch,
   );
