@@ -15,4 +15,6 @@ export const endpoints = {
   setFavorite: (personId: number) => `${baseUrl}/People/${personId}/Favourite`,
   setFavoriteMovie: (movieId: number) =>
     `${baseUrl}/Movie/${movieId}/Favourite`,
+  search: (searchPhrase: string) =>
+    `${baseUrl}/Search?searchPhrase=${searchPhrase}`,
 };

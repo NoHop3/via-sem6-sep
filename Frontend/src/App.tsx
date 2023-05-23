@@ -31,7 +31,7 @@ function App() {
               backgroundColor: theme.palette.background.default,
             }}
           >
-            <Header children={<></>} />
+            <Header />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/movies" element={<Movies />} />

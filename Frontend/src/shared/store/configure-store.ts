@@ -5,6 +5,7 @@ import movieReducer from "./movie-store";
 import notificationReducer from "./notification-store";
 import themeReducer from "./theme-store";
 import personReducer from "./people-store";
+import searchReducer from "./search-store";
 
 export const history = createBrowserHistory();
 
@@ -15,6 +16,7 @@ const createRootReducer = (history: History) =>
     people: personReducer,
     notifications: notificationReducer,
     theme: themeReducer,
+    search: searchReducer,
   });
 
 export let store: ReturnType<typeof configureAppStore>;

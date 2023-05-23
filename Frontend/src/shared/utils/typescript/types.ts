@@ -8,3 +8,10 @@ export interface Notification {
   type: "success" | "error";
   message: string;
 }
+
+export interface SearchResultItem {
+  id: number;
+  name: string;
+  year?: number;
+  poster?: string;
+}
