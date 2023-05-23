@@ -51,9 +51,10 @@ export const _People = (props: PeopleProps) => {
           />
 
           <StyledPeopleGrid container>
-            {people.map((person) => (
+            {people.map((person, i) => (
               <PersonCard
-                key={person.id}
+                key={i}
+                id={person.id}
                 title={person.name}
                 description={generateDescription(person.movies)}
                 date={String(person.birth)}
