@@ -15,7 +15,6 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/People/0/20
         [HttpGet("{skip}/{take}")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPeople(int skip, int take)
         {

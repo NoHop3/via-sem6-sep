@@ -3,11 +3,11 @@ import axios from "axios";
 import {
   setIsLoading,
   setPeople,
-  setPersonMovies,
   setTotal,
 } from "../shared/store/people-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
+import { PersonMovie } from "../shared/models/person";
 
 // #region getPeople
 export const getPeople =
@@ -15,18 +15,19 @@ export const getPeople =
     dispatch(setIsLoading(true));
     try {
       const res = await axios.get(
-        `${endpoints.getPeople((skip - 1) * 12, take)}`,
+        `${endpoints.getPeople((skip - 1) * 18, take)}`,
       );
+      dispatch(setTotal(res.data.count));
 
       // before setPeople dispatch action for each person take their movies with getPersonMovies(id)
-      await Promise.all(
-        res.data.people.map((person: any) =>
-          dispatch(getPersonMovies(person.id)),
-        ),
+      const peopleWithMovies = await Promise.all(
+        res.data.people.map(async (person: any) => {
+          const movies = await getPersonMovies(person.id);
+          return { ...person, movies };
+        }),
       );
 
-      dispatch(setPeople(res.data.people));
-      dispatch(setTotal(res.data.total));
+      dispatch(setPeople(peopleWithMovies));
       dispatch(
         setNotification({
           open: true,
@@ -48,13 +49,12 @@ export const getPeople =
     }
   };
 
-const getPersonMovies = (id: number) => async (dispatch: any) => {
+const getPersonMovies = async (id: number): Promise<PersonMovie[]> => {
   try {
     const res = await axios.get(`${endpoints.getPersonMovies(id)}`);
-    dispatch(setPersonMovies(res.data));
+    return res.data;
   } catch (err) {
-    console.error(err);
-    dispatch(setPersonMovies([]));
+    return [];
   }
 };
 // #endregion

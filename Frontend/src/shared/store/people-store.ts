@@ -23,6 +23,7 @@ const peopleSlice = createSlice({
       state.people = action.payload;
     },
     setPersonMovies(state, action: PayloadAction<PersonMovie[]>) {
+      if (!action.payload.length) return;
       const person = state.people.find(
         (person) => person.id === action.payload[0].personId,
       );

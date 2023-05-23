@@ -88,10 +88,12 @@ export const ItemDescription = styled.div`
   width: calc(100% - 40px);
   margin: 0 0 8px;
   text-overflow: ellipsis;
+  white-space: pre-line;
+  height: -webkit-fill-available;
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  font-size: 14px;
+  font-size: 12px;
 
   ${mediaUpTo("tablet")} {
     display: none;
