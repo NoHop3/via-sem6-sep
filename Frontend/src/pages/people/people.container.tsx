@@ -21,12 +21,12 @@ export const _People = (props: PeopleProps) => {
   };
 
   const generateDescription = (movies: PersonMovie[]) => {
-    let description = "They are famous for the following movies:";
+    let description = "";
+    if (movies === undefined) return description + " N/A";
     movies.forEach((movie) => {
-      description += `${movie.title ?? "N/A"}, released in ${
-        movie.year ?? "N/A"
-      }, their role was ${movie.role ?? "N/A"}. 
-    `;
+      description += `${movie.title ?? "N/A"}, ${movie.year ?? "N/A"}, ${
+        movie.role ?? "N/A"
+      }\n`;
     });
     return description;
   };
@@ -35,7 +35,7 @@ export const _People = (props: PeopleProps) => {
     navigate(`/people?page=${page}`);
     queryString.parse(location.search);
     setPage(Number(queryStrings.page) || page);
-    getPeople(Number(queryStrings.page) || page, 12);
+    getPeople(Number(queryStrings.page) || page, 18);
   }, [location.search, setPage, queryStrings.page, getPeople, navigate, page]);
 
   return (
@@ -43,7 +43,7 @@ export const _People = (props: PeopleProps) => {
       {!isLoading ? (
         <>
           <StyledPagination
-            count={Math.ceil(total / 12)}
+            count={Math.ceil(total / 18)}
             page={page}
             defaultPage={1}
             onChange={handlePageChange}
@@ -57,8 +57,8 @@ export const _People = (props: PeopleProps) => {
                 id={person.id}
                 title={person.name}
                 description={generateDescription(person.movies)}
-                date={String(person.birth)}
-                isFavorite={props.isFavorite}
+                date={String(person.birth ?? "Unknown")}
+                isFavorite={true}
                 onAddToFavoritesClick={props.setFavorite}
                 showFavorite={true}
                 imgSource="https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png"
@@ -68,7 +68,7 @@ export const _People = (props: PeopleProps) => {
           </StyledPeopleGrid>
 
           <StyledPagination
-            count={Math.ceil(total / 12)}
+            count={Math.ceil(total / 18)}
             page={page}
             defaultPage={1}
             onChange={handlePageChange}
