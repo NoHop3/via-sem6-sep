@@ -1,6 +1,6 @@
 import React from "react";
 import { createTheme } from "@mui/material/styles";
-import { useAppSelector } from "../typescript/reduxTypes";
+import { useAppSelector } from "../typescript/redux-types";
 
 export const useCustomTheme = () => {
   const customTheme = useAppSelector((state) => state.theme);
@@ -18,6 +18,7 @@ export const useCustomTheme = () => {
           },
           background: {
             default: customTheme.background,
+            paper: "#ffffff",
           },
           text: customTheme.text,
           divider: customTheme.divider ?? "#00000026",
