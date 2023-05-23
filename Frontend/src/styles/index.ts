@@ -5,4 +5,11 @@ import {
 
 import { StyledTypography } from "./typography/typography.styles";
 
-export { StyledCircularProgress, StyledLoadingGridItem, StyledTypography };
+import { StyledPagination } from "./pagination/pagination.styles";
+
+export {
+  StyledCircularProgress,
+  StyledLoadingGridItem,
+  StyledTypography,
+  StyledPagination,
+};

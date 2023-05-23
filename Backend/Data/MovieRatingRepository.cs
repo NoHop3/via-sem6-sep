@@ -18,8 +18,7 @@ namespace Backend.Data
 
         public async Task<MovieRating> GetMovieRating(long id)
         {
-            var rating = await _context.Ratings.Where(x=>x.MovieId == id).FirstOrDefaultAsync();
-            return rating;
+            return await _context.Ratings.Where(x=>x.MovieId == id).FirstOrDefaultAsync() ?? throw new Exception("Movie rating not found");
         }
 
         public async Task<IList<MovieRating>> GetRatings(long[] ids)
@@ -28,16 +27,16 @@ namespace Backend.Data
             return ratings;
         }
 
-        public async Task UpdateRatings(int newRatingToAdd, long movieId)
-        {
-            /*var rating = await _context.Ratings.Where(x=>x.MovieId == movieId).FirstOrDefaultAsync();
-            var newRating = (rating.Rating * rating.Votes + newRatingToAdd) / (rating.Votes+1);
-            rating.Rating = newRating;
-            rating.Votes ++;
-            await _context.SaveChangesAsync();
-            return rating;*/
-            //_context.Entry(movieRating).State = EntityState.Modified;
-        }
+        // public async Task UpdateRatings(int newRatingToAdd, long movieId)
+        // {
+        //     var rating = await _context.Ratings.Where(x=>x.MovieId == movieId).FirstOrDefaultAsync();
+        //     var newRating = (rating.Rating * rating.Votes + newRatingToAdd) / (rating.Votes+1);
+        //     rating.Rating = newRating;
+        //     rating.Votes ++;
+        //     await _context.SaveChangesAsync();
+        //     return rating; 
+        //     _context.Entry(movieRating).State = EntityState.Modified;
+        // }
 
         public async Task<MovieRating> AddRating(MovieRating movieRating)
         {

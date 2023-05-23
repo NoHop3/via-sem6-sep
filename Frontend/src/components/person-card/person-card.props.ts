@@ -7,5 +7,5 @@ export interface PersonCardProps {
   showFavorite: boolean;
   disabledFavoriteButton?: boolean;
 
-  onAddToFavoritesClick?: (e: React.MouseEvent) => void;
+  onAddToFavoritesClick: (id: number) => void;
 }

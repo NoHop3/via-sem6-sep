@@ -4,9 +4,15 @@ const omdbApiKey = process.env.REACT_APP_OMDB_API_KEY!;
 const omdbUrl = "https://www.omdbapi.com/";
 export const endpoints = {
   getMovies: (skip: number, take: number) => `${baseUrl}/Movie/${skip}/${take}`,
+  getPeople: (skip: number, take: number) =>
+    `${baseUrl}/People/${skip}/${take}`,
+  getPersonMovies: (id: number) => `${baseUrl}/Person/${id}/Movies`,
   getMovieWith: (id: number) => `${baseUrl}/Movie/${id}`,
   getStarsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Stars`,
   getDirectorsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Directors`,
   getRatingForMovie: (id: number) => `${baseUrl}/MovieRating/${id}`,
   getOmdbMovieWith: (id: number) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
+  setFavorite: (personId: number) => `${baseUrl}/People/${personId}/Favourite`,
+  setFavoriteMovie: (movieId: number) =>
+    `${baseUrl}/Movie/${movieId}/Favourite`,
 };

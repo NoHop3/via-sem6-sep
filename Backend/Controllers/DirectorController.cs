@@ -22,16 +22,17 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/Directors
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Director>>> GetDirectors()
+        // GET: api/Directors/10/10
+        [HttpGet("{skip}/{limit}")]
+        public async Task<ActionResult<IEnumerable<Director>>> GetDirectors(int skip, int limit)
         {
-            var directors = await _repository.GetAllDirectors();
+            var directors = await _repository.GetAllDirectorsLimit(skip, limit);
             if (directors.Count == 0)
             {
                 return NotFound();
             }
-            return Ok(directors);
+            var total = await _repository.GetDirectorsCount();
+            return Ok(new { directors, total });
         }
 
         // GET: api/Director/5

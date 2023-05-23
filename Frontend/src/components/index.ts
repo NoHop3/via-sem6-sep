@@ -1,4 +1,5 @@
 import { _MovieCard as MovieCard } from "./movie-card/movie-card";
+import { PersonCard } from "./person-card/person-card.container";
 import { _BottomNavigation as BottomNavigation } from "./bottom-navigation/bottom-navigation";
 import { _Header as Header } from "./header/header.container";
 import { _Snackbar as Snackbar } from "./shared/snackbar/snackbar";
@@ -14,4 +15,5 @@ export {
   Button,
   ColorPicker,
   ThemeDialog,
+  PersonCard,
 };
