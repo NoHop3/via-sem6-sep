@@ -9,7 +9,7 @@ import { DeviceTypes } from "./shared/utils/enums/deviceTypes";
 import {
   useAppDispatch,
   useAppSelector,
-} from "./shared/utils/typescript/reduxTypes";
+} from "./shared/utils/typescript/redux-types";
 import { setNotificationVisibility } from "./shared/store/notification-store";
 
 function App() {

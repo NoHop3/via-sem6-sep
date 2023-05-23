@@ -16,13 +16,14 @@ export const lightTheme = createTheme({
     },
     background: {
       default: "#fffefc",
+      paper: "#121212",
     },
+    divider: "#00000026",
     text: {
       primary: "#121212",
       secondary: "#880000",
       disabled: "#000000",
     },
-    divider: "#00000026",
   },
   components: {},
   breakpoints: {
@@ -63,7 +64,9 @@ export const darkTheme = createTheme({
     },
     background: {
       default: "#121212",
+      paper: "#1e1e1e",
     },
+    divider: "#ffffff26",
     text: {
       primary: "#ffffff",
       secondary: "#880000",
