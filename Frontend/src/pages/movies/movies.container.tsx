@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { MovieCard } from "../../components";
-import { StyledCircularProgress } from "../../styles";
+import { StyledCircularProgress, StyledPagination } from "../../styles";
 import {
   StyledMoviePageWrapper,
   StyledMovieGrid,
   StyledMovieCardWrapper,
-  StyledPagination,
 } from "./movies.styles";
 import { type MovieProps } from "./movies.props";
 
