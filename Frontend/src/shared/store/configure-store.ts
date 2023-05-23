@@ -4,6 +4,7 @@ import { createBrowserHistory, type History } from "history";
 import movieReducer from "./movie-store";
 import notificationReducer from "./notification-store";
 import themeReducer from "./theme-store";
+import personReducer from "./people-store";
 
 export const history = createBrowserHistory();
 
@@ -11,6 +12,7 @@ const createRootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
     movies: movieReducer,
+    people: personReducer,
     notifications: notificationReducer,
     theme: themeReducer,
   });

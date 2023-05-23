@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Backend.Data.Abstraction;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
 {
-    internal class PersonRepository: IPersonRepository
+    internal class PersonRepository : IPersonRepository
     {
         private MyDbContext _context;
         public PersonRepository(MyDbContext context)
@@ -16,37 +12,85 @@ namespace Backend.Data
             _context = context;
         }
 
-        public async Task<IList<Person>> GetAllStars()
+        public async Task<IList<Person>> GetAllStarsLimit(int skip, int limit)
         {
-            var personIds =  await _context.Stars.Select(x=>x.PersonId).ToListAsync();
-            return await _context.People.Where(x=>personIds.Contains(x.Id)).ToListAsync();
+            var personIds = await _context.Stars.Skip(skip).Take(limit).Select(x => x.PersonId).ToListAsync();
+            return await _context.People.Where(x => personIds.Contains(x.Id)).ToListAsync();
         }
 
-        public async Task<IList<Person>> GetAllDirectors()
+        public async Task<IList<Person>> GetAllDirectorsLimit(int skip, int limit)
         {
-            var personIds =  await _context.Directors.Select(x=>x.PersonId).ToListAsync();
-            return await _context.People.Where(x=>personIds.Contains(x.Id)).ToListAsync();
+            var personIds = await _context.Directors.Skip(skip).Take(limit).Select(x => x.PersonId).ToListAsync();
+            return await _context.People.Where(x => personIds.Contains(x.Id)).ToListAsync();
         }
 
         public async Task<Person> GetStarOrDirectorById(long id)
         {
-            return await _context.People.Where(x=>x.Id == id).FirstOrDefaultAsync();
+            return await _context.People.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Person not found");
         }
 
         public async Task<Dictionary<long, List<Movie>>> GetStarAllMovies(long id)
         {
-            var stars = await _context.Stars.Include(x=>x.Movie).Where(x=>x.PersonId == id).ToListAsync();
+            var stars = await _context.Stars.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
 
-            var result = stars.GroupBy(x=>x.PersonId).ToDictionary(star=>star.Key, star=>star.Select(x=>x.Movie).ToList());
+            var result = stars.GroupBy(x => x.PersonId).ToDictionary(star => star.Key, star => star.Select(x => x.Movie).ToList());
             return result;
         }
         public async Task<Dictionary<long, List<Movie>>> GetDirectorAllMovies(long id)
         {
-            var stars = await _context.Directors.Include(x=>x.Movie).Where(x=>x.PersonId == id).ToListAsync();
+            var stars = await _context.Directors.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
 
-            var result = stars.GroupBy(x=>x.PersonId).ToDictionary(star=>star.Key, star=>star.Select(x=>x.Movie).ToList());
+            var result = stars.GroupBy(x => x.PersonId).ToDictionary(star => star.Key, star => star.Select(x => x.Movie).ToList());
+            return result;
+        }
+
+        public async Task<IList<Person>> GetAllStars()
+        {
+            var personIds = await _context.Stars.Select(x => x.PersonId).ToListAsync();
+            return await _context.People.Where(x => personIds.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<IList<Person>> GetAllDirectors()
+        {
+            var personIds = await _context.Directors.Select(x => x.PersonId).ToListAsync();
+            return await _context.People.Where(x => personIds.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<IList<Person>> GetPeopleLimit(int skip, int limit)
+        {
+            return await _context.People.Skip(skip).Take(limit).ToListAsync();
+        }
+
+        public async Task<int> GetStarsCount()
+        {
+            return await _context.Stars.CountAsync();
+        }
+
+        public async Task<int> GetDirectorsCount()
+        {
+            return await _context.Directors.CountAsync();
+        }
+
+        public async Task<int> GetPeopleCount()
+        {
+            return await _context.People.CountAsync();
+        }
+
+        public async Task<IList<PersonMovie>> GetPersonMovies(long id)
+        {
+            var stars = await _context.Stars.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
+            var directors = await _context.Directors.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
+
+            var result = new List<PersonMovie>();
+            foreach (var star in stars)
+            {
+                result.Add(new PersonMovie { PersonId = id, Title = star.Movie.Title, ReleaseYear = star.Movie.Year, Role = "Star" });
+            }
+            foreach (var director in directors)
+            {
+                result.Add(new PersonMovie { PersonId = id, Title = director.Movie.Title, ReleaseYear = director.Movie.Year, Role = "Director" });
+            }
             return result;
         }
     }
-
 }

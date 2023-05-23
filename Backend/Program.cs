@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var provider = builder.Services.BuildServiceProvider();
-var configuration =builder.Configuration
+var configuration = builder.Configuration
                           .AddJsonFile("appsettings.json")
                           .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json")
                           .AddEnvironmentVariables();//provider.GetRequiredService<IConfiguration>();
