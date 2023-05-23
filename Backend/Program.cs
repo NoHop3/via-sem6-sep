@@ -23,9 +23,12 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieRatingRepository, MovieRatingRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddCors(options =>
 {
