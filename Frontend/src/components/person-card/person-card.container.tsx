@@ -33,7 +33,7 @@ export const PersonCard = React.memo((props: PersonCardProps) => {
             type="button"
             disabled={!!props.disabledFavoriteButton}
             onClick={(e: React.MouseEvent) => {
-              props.onAddToFavoritesClick?.(e);
+              props.onAddToFavoritesClick?.(props.id);
               e.stopPropagation();
             }}
           >
