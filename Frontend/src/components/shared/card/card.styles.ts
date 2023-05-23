@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import styled from "styled-components";
 
-import { hexWithAlpha, mediaUpTo } from "../../shared/utils/helpers";
+import { hexWithAlpha, mediaUpTo } from "../../../shared/utils/helpers";
 
 export const ItemImageWrapper = styled.div`
   position: relative;
@@ -164,7 +164,7 @@ export const AddToFavoritesButton = styled.button<{ disabled?: boolean }>`
   }
 `;
 
-export const PersonCardWrapper = styled.div`
+export const CardWrapper = styled.div`
   display: flex;
   padding: 24px 0;
   border-top: 1px solid ${({ theme }) => theme.palette.divider};

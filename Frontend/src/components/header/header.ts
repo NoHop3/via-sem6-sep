@@ -7,7 +7,12 @@ import { _Header } from "./header.container";
 import { setSearchPhrase } from "../../shared/store/search-store";
 import { services } from "../../services";
 
-const mapStateToProps = (state: ApplicationState) => ({});
+const mapStateToProps = (state: ApplicationState) => ({
+  isSearching: state.search.isSearching,
+  searchPhrase: state.search.searchPhrase,
+  totalResults: state.search.totalResults,
+  searchResults: state.search.searchResults,
+});
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(

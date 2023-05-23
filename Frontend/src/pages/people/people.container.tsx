@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
-import { PersonCard } from "../../components";
+import { Card as PersonCard } from "../../components";
 import { StyledCircularProgress, StyledPagination } from "../../styles";
 import { StyledPeoplePageWrapper, StyledPeopleGrid } from "./people.styles";
 import { type PeopleProps } from "./people.props";

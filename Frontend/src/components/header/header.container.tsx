@@ -26,6 +26,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ThemeIcon from "@mui/icons-material/Brightness6";
 import { HeaderProps } from "./header.props";
 import { ThemeDialog } from "../theme-dialog/theme-dialog";
+import { _Dialog as SearchDialog } from "../shared/dialog/dialog.container";
+import { Card as SearchResultItem } from "../shared/card/card.container";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -91,6 +93,7 @@ const navItems: NavItem[] = [
 
 export const _Header = (props: HeaderProps) => {
   const [openThemeDialog, setOpenThemeDialog] = React.useState(false);
+  const [openSearchDialog, setOpenSearchDialog] = React.useState(false);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useTheme();
@@ -165,7 +168,7 @@ export const _Header = (props: HeaderProps) => {
                       | HTMLInputElement
                       | HTMLTextAreaElement;
                     props.onSearch?.(target.value);
-                    navigate("/search");
+                    setOpenSearchDialog(true);
                   }
                 }}
                 onChange={(e) => {
@@ -206,6 +209,34 @@ export const _Header = (props: HeaderProps) => {
           setOpenThemeDialog(false);
         }}
       />
+
+      {props.searchResults && (
+        <SearchDialog
+          open={openSearchDialog}
+          onClose={() => {
+            setOpenSearchDialog(false);
+          }}
+          title={props.searchPhrase ?? ""}
+          children={props.searchResults.map((result) => (
+            <SearchResultItem
+              title={result.name}
+              id={result.id}
+              description=""
+            />
+          ))}
+          options={["Save", "Close"]}
+          onOptionClick={(option) => {
+            switch (option) {
+              case "Save":
+                alert("Save");
+                break;
+              case "Close":
+                setOpenSearchDialog(false);
+                break;
+            }
+          }}
+        />
+      )}
 
       <Box component="nav">
         <Drawer

@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 
-import { LazyImage, NoImage } from "../../shared/utils/helpers";
-import { PersonCardProps } from "./person-card.props";
+import { LazyImage, NoImage } from "../../../shared/utils/helpers";
+import { CardProps } from "./card.props";
 import {
   AddToFavoritesButton,
   ContentHolder,
@@ -13,13 +13,13 @@ import {
   ItemImageWrapper,
   ItemTitle,
   ItemTitleHolder,
-  PersonCardWrapper,
+  CardWrapper,
   ItemDate,
-} from "./person-card.styles";
+} from "./card.styles";
 
-export const PersonCard = React.memo((props: PersonCardProps) => {
+export const Card = React.memo((props: CardProps) => {
   return (
-    <PersonCardWrapper>
+    <CardWrapper>
       <ItemImageWrapper>
         <ImageContainer data-search-result-image>
           {props.imgSource ? (
@@ -48,6 +48,6 @@ export const PersonCard = React.memo((props: PersonCardProps) => {
         </ItemTitleHolder>
         <ItemDescription>{props.description}</ItemDescription>
       </ContentHolder>
-    </PersonCardWrapper>
+    </CardWrapper>
   );
 });

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from "axios";
 import {
+  setIsSearching,
   setTotalResults,
   setSearchResults,
 } from "../shared/store/search-store";
@@ -10,6 +11,7 @@ import { endpoints } from "./endpoints";
 
 // #region search
 export const search = (searchPhrase: string) => (dispatch: any) => {
+  dispatch(setIsSearching(true));
   axios
     .get(`${endpoints.search(searchPhrase)}`)
     .then((res: any) => {
@@ -32,6 +34,9 @@ export const search = (searchPhrase: string) => (dispatch: any) => {
         }),
       );
       throw err;
+    })
+    .finally(() => {
+      dispatch(setIsSearching(false));
     });
 };
 // #endregion
