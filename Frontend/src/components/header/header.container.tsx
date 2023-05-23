@@ -1,3 +1,4 @@
+// eslint-disable @typescript-eslint/no-unnecessary-type-assertion
 import * as React from "react";
 import { styled, alpha, useTheme } from "@mui/material/styles";
 import { Logo, StyledLink } from "./header.styles";
@@ -45,7 +46,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
-  pointerEvents: "none",
+  pointerEvents: "all",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -76,7 +77,7 @@ function HideOnScroll(props: HeaderProps) {
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
-      {children}
+      {children ?? <></>}
     </Slide>
   );
 }
@@ -158,6 +159,18 @@ export const _Header = (props: HeaderProps) => {
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const target = e.target as
+                      | HTMLInputElement
+                      | HTMLTextAreaElement;
+                    props.onSearch?.(target.value);
+                    navigate("/search");
+                  }
+                }}
+                onChange={(e) => {
+                  props.onSearchPhraseChange?.(e.target.value);
+                }}
               />
             </Search>
             <Divider />
