@@ -9,7 +9,7 @@ export const StyledDialog = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   max-height: calc(100vh - 100px);
   background: ${({ theme }) => theme.palette.background.default};
   border-radius: 4px;

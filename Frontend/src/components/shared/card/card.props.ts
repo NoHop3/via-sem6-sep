@@ -1,12 +1,12 @@
-export interface PersonCardProps {
+export interface CardProps {
   id: number;
   title: string;
   imgSource?: string;
   description: string;
   date?: string;
-  isFavorite: boolean;
-  showFavorite: boolean;
+  isFavorite?: boolean;
+  showFavorite?: boolean;
   disabledFavoriteButton?: boolean;
 
-  onAddToFavoritesClick: (id: number) => void;
+  onAddToFavoritesClick?: (id: number) => void;
 }

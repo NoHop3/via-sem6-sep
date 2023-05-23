@@ -2,12 +2,14 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { SearchResultItem } from "../utils/typescript/types";
 
 export interface SearchStore {
+  isSearching: boolean;
   searchPhrase: string;
   totalResults: number;
   searchResults: SearchResultItem[];
 }
 
 const initialState: SearchStore = {
+  isSearching: false,
   searchPhrase: "",
   totalResults: 0,
   searchResults: [],
@@ -17,6 +19,9 @@ const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
+    setIsSearching(state, action: PayloadAction<boolean>) {
+      state.isSearching = action.payload;
+    },
     setSearchStore(state, action: PayloadAction<SearchStore>) {
       state = action.payload;
     },
@@ -37,6 +42,7 @@ const searchSlice = createSlice({
 
 export default searchSlice.reducer;
 export const {
+  setIsSearching,
   setSearchStore,
   setSearchPhrase,
   setSearchResults,
