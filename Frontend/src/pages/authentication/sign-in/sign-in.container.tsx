@@ -16,6 +16,7 @@ import {
   Link,
 } from "@mui/material";
 import { SignInProps } from "../authentication.props";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -36,28 +37,58 @@ function Copyright(props: any) {
 }
 
 export const _SignIn = (props: SignInProps) => {
+  const [formState, setFormState] = React.useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormState((formState) => ({
+      ...formState,
+      [name]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    return (
+      formState.username !== "" &&
+      formState.username.length >= 3 &&
+      formState.username.length <= 21 &&
+      formState.password !== "" &&
+      formState.password.length >= 5 &&
+      formState.password.length <= 21
+    );
+  };
+
+  const navigate = useNavigate();
   const theme = useTheme();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
+    if (validateForm()) {
+      props.signIn(formState.username, formState.password);
+    }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        bgcolor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+      }}
+    >
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: theme.spacing(1),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: theme.palette.text.primary }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -65,6 +96,7 @@ export const _SignIn = (props: SignInProps) => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+            onChange={handleChange}
             margin="normal"
             required
             fullWidth
@@ -73,8 +105,23 @@ export const _SignIn = (props: SignInProps) => {
             name="username"
             autoComplete="username"
             autoFocus
+            error={
+              formState.username !== ""
+                ? formState.username.length < 3 ||
+                  formState.username.length > 20
+                : false
+            }
+            helperText={
+              formState.username !== ""
+                ? formState.username.length < 3 ||
+                  formState.username.length > 20
+                  ? "Must be between 3 and 20 characters"
+                  : ""
+                : ""
+            }
           />
           <TextField
+            onChange={handleChange}
             margin="normal"
             required
             fullWidth
@@ -83,6 +130,22 @@ export const _SignIn = (props: SignInProps) => {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={
+              formState.password !== ""
+                ? !(
+                    formState.password.length > 5 &&
+                    formState.password.length < 21
+                  )
+                : false
+            }
+            helperText={
+              formState.password !== ""
+                ? formState.password.length < 6 ||
+                  formState.password.length > 20
+                  ? "Must be between 6 and 20 characters"
+                  : ""
+                : ""
+            }
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -103,7 +166,13 @@ export const _SignIn = (props: SignInProps) => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                sx={{ cursor: "pointer" }}
+                variant="body2"
+                onClick={() => {
+                  navigate("/sign-up");
+                }}
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

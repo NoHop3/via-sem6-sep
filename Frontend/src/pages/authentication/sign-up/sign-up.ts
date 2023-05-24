@@ -11,7 +11,7 @@ const mapStateToProps = (state: ApplicationState) => ({});
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(
     {
-      signIn: services.signUp,
+      signUp: services.signUp,
     },
     dispatch,
   );

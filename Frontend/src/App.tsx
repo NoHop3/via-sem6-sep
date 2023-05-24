@@ -2,7 +2,15 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { ThemeProvider as ScThemeProvider } from "styled-components";
 import { useCustomTheme } from "./shared/utils/hooks/useCustomTheme";
-import { Home, Error, Movies, MovieDetails, People } from "./pages";
+import {
+  Home,
+  Error,
+  Movies,
+  MovieDetails,
+  People,
+  SignIn,
+  SignUp,
+} from "./pages";
 import { Header, BottomNavigation, Snackbar } from "./components";
 import { useGetDeviceType } from "./shared/utils/hooks/useGetDeviceType";
 import { DeviceTypes } from "./shared/utils/enums/deviceTypes";
@@ -37,6 +45,8 @@ function App() {
               <Route path="/movies" element={<Movies />} />
               <Route path="/movies/:id" element={<MovieDetails />} />
               <Route path="/people" element={<People />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/sign-in" element={<SignIn />} />
               <Route path="*" element={<Error />} />
             </Routes>
             <Snackbar

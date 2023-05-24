@@ -16,6 +16,8 @@ import {
   Box,
 } from "@mui/material";
 import { SignUpProps } from "../authentication.props";
+import { isEmailValid } from "./sign-up.utils";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -54,28 +56,27 @@ export const _SignUp = (props: SignUpProps) => {
   };
 
   const validateForm = () => {
-    return formState.email !== "" &&
-      formState.email.includes("@") &&
-      formState.email.includes(".") &&
-      formState.email.length > 6 &&
-      formState.email.length < 30 &&
+    formState.birthYear === "" ?? (formState.birthYear = undefined);
+    return isEmailValid(formState.email) !== "" &&
+      formState.email !== "" &&
       formState.username !== "" &&
-      formState.username.length > 3 &&
-      formState.username.length < 21 &&
+      formState.username.length >= 3 &&
+      formState.username.length <= 21 &&
       formState.firstName !== "" &&
-      formState.firstName.length > 3 &&
-      formState.firstName.length < 21 &&
+      formState.firstName.length >= 3 &&
+      formState.firstName.length <= 21 &&
       formState.lastName !== "" &&
-      formState.lastName.length > 3 &&
-      formState.lastName.length < 21 &&
+      formState.lastName.length >= 3 &&
+      formState.lastName.length <= 21 &&
       formState.password !== "" &&
-      formState.password.length > 5 &&
-      formState.password.length < 21 &&
+      formState.password.length >= 5 &&
+      formState.password.length <= 21 &&
       formState.birthYear !== undefined
-      ? !!(formState.birthYear > 1900 && formState.birthYear < 2021)
-      : false;
+      ? !!(formState.birthYear >= 1900 && formState.birthYear <= 2021)
+      : true;
   };
 
+  const navigate = useNavigate();
   const theme = useTheme();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -122,10 +123,8 @@ export const _SignUp = (props: SignUpProps) => {
                 autoFocus
                 error={
                   formState.firstName !== ""
-                    ? !(
-                        formState.firstName.length < 3 ||
-                        formState.firstName.length > 20
-                      )
+                    ? formState.firstName.length < 3 ||
+                      formState.firstName.length > 20
                     : false
                 }
                 helperText={
@@ -149,10 +148,8 @@ export const _SignUp = (props: SignUpProps) => {
                 autoComplete="family-name"
                 error={
                   formState.lastName !== ""
-                    ? !(
-                        formState.lastName.length < 3 ||
-                        formState.lastName.length > 20
-                      )
+                    ? formState.lastName.length < 3 ||
+                      formState.lastName.length > 20
                     : false
                 }
                 helperText={
@@ -175,26 +172,9 @@ export const _SignUp = (props: SignUpProps) => {
                 name="email"
                 autoComplete="email"
                 error={
-                  formState.email !== ""
-                    ? !(
-                        !formState.email.includes("@") ||
-                        !formState.email.includes(".") ||
-                        formState.email.length < 7 ||
-                        formState.email.length > 30
-                      )
-                    : false
+                  formState.email !== "" && isEmailValid(formState.email) !== ""
                 }
-                helperText={
-                  formState.email !== ""
-                    ? !formState.email.includes("@") ||
-                      !formState.email.includes(".")
-                      ? "Invalid email address, must contain '@' and '.'"
-                      : formState.email.length < 7 ||
-                        formState.email.length > 30
-                      ? "Must be between 7 and 30 characters"
-                      : ""
-                    : ""
-                }
+                helperText={isEmailValid(formState.email)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -208,10 +188,8 @@ export const _SignUp = (props: SignUpProps) => {
                 autoComplete="username"
                 error={
                   formState.username !== ""
-                    ? !(
-                        formState.username.length < 3 ||
-                        formState.username.length > 20
-                      )
+                    ? formState.username.length < 3 ||
+                      formState.username.length > 20
                     : false
                 }
                 helperText={
@@ -262,6 +240,7 @@ export const _SignUp = (props: SignUpProps) => {
                 id="birthYear"
                 autoComplete="birthYear"
                 error={
+                  formState.birthYear !== "" &&
                   formState.birthYear !== undefined
                     ? !!(
                         formState.birthYear < 1900 || formState.birthYear > 2021
@@ -269,6 +248,7 @@ export const _SignUp = (props: SignUpProps) => {
                     : false
                 }
                 helperText={
+                  formState.birthYear !== "" &&
                   formState.birthYear !== undefined
                     ? formState.birthYear < 1900 || formState.birthYear > 2021
                       ? "Must be between 1900 and 2021"
@@ -294,7 +274,13 @@ export const _SignUp = (props: SignUpProps) => {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                sx={{ cursor: "pointer" }}
+                variant="body2"
+                onClick={() => {
+                  navigate("/sign-in");
+                }}
+              >
                 Already have an account? Sign in
               </Link>
             </Grid>
