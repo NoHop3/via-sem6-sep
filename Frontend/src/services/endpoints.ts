@@ -14,9 +14,10 @@ export const endpoints = {
   getDirectorsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Directors`,
   getRatingForMovie: (id: number) => `${baseUrl}/MovieRating/${id}`,
   getOmdbMovieWith: (id: string) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
-  setFavorite: (personId: number) => `${baseUrl}/People/${personId}/Favourite`,
-  setFavoriteMovie: (movieId: number) =>
-    `${baseUrl}/Movie/${movieId}/Favourite`,
+  setFavoriteMovie: (userId: number, movieId: number) =>
+    `${baseUrl}/FavouriteMovies`,
+  getFavoriteMovies: (userId: number, skip: number, take: number) =>
+    `${baseUrl}/FavouriteMovies/${userId}/${skip}/${take}`,
   search: (searchPhrase: string) =>
     `${baseUrl}/Search?searchPhrase=${searchPhrase}`,
   signIn: (username: string, password: string) => `${baseUrl}/Login`,

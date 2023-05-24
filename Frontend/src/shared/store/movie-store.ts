@@ -4,6 +4,7 @@ import { Movie } from "../models/movie";
 export interface MovieStore {
   movies: Movie[];
   filteredMovies: Movie[];
+  favoritedMovies: Movie[];
   movie: Movie;
   isLoading: boolean;
   page: number;
@@ -15,6 +16,7 @@ export interface MovieStore {
 const initialState: MovieStore = {
   movies: [],
   filteredMovies: [],
+  favoritedMovies: [],
   movie: {
     id: 0,
     title: "",
@@ -32,6 +34,9 @@ const movieSlice = createSlice({
   reducers: {
     setMovies(state, action: PayloadAction<Movie[]>) {
       state.movies = action.payload;
+    },
+    setFavoritedMovies(state, action: PayloadAction<Movie[]>) {
+      state.favoritedMovies = action.payload;
     },
     setMovie(state, action: PayloadAction<Movie>) {
       console.log(action.payload);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from "axios";
 import {
@@ -202,3 +203,96 @@ const getMoviePosterFor = async (id: number): Promise<string> => {
   }
 };
 // #endregion
+
+// #region favoriteMovie
+export const favoriteMovie =
+  (userId: number, movieId: number) => async (dispatch: any) => {
+    dispatch(setIsLoading(true));
+    try {
+      await axios.post(`${endpoints.setFavoriteMovie(userId, movieId)}`);
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Movie with id ${movieId} was favorited successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Movie with id ${movieId} was not favorited!`,
+        }),
+      );
+      throw err;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+// #endregion
+
+// #region unfavoriteMovie
+export const unfavoriteMovie =
+  (userId: number, movieId: number) => async (dispatch: any) => {
+    dispatch(setIsLoading(true));
+    try {
+      await axios.delete(`${endpoints.setFavoriteMovie(userId, movieId)}`);
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Movie with id ${movieId} was unfavorited successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Movie with id ${movieId} was not unfavorited!`,
+        }),
+      );
+      throw err;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+// #endregion
+
+// #region getFavoriteMovies
+export const getFavoriteMovies =
+  (userId: number, skip: number, take: number) => async (dispatch: any) => {
+    dispatch(setIsLoading(true));
+    try {
+      const res = await axios.get(
+        `${endpoints.getFavoriteMovies(userId, (skip - 1) * 12, take)}`,
+      );
+      const moviesWithPosters = await Promise.all(
+        res.data.movies.map(async (movie: any) => {
+          const posterUrl = await getMoviePosterFor(movie.id);
+          return { ...movie, posterUrl };
+        }),
+      );
+      dispatch(setMovies(moviesWithPosters));
+      dispatch(setTotal(res.data.total));
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Favorite movies were fetched successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Favorite movies were not fetched!`,
+        }),
+      );
+      throw err;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };

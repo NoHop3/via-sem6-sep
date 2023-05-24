@@ -1,4 +1,4 @@
-import { _MovieCard as MovieCard } from "./movie-card/movie-card";
+import { _MovieCard as MovieCard } from "./movie-card/movie-card.container";
 import { Card } from "./shared/card/card.container";
 import { _BottomNavigation as BottomNavigation } from "./bottom-navigation/bottom-navigation";
 import { Header } from "./header/header";
