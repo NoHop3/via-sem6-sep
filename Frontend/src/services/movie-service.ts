@@ -119,7 +119,10 @@ const getMovieRatingFor = async (id: number): Promise<MovieRating> => {
 
 const getOmdbMovieDetailsFor = async (id: number): Promise<MovieDetails> => {
   try {
-    const res = await axios.get(`${endpoints.getOmdbMovieWith(id)}`);
+    // If id is less than 7 charaacters append 0s to the left
+    const stringId = id.toString();
+    const paddedId = stringId.padStart(7, "0");
+    const res = await axios.get(`${endpoints.getOmdbMovieWith(paddedId)}`);
     return {
       rated: res.data.Rated,
       released: res.data.Released,
@@ -182,10 +185,13 @@ export const getMovies =
   };
 
 const getMoviePosterFor = async (id: number): Promise<string> => {
+  // If id is less than 7 charaacters append 0s to the left
+  const stringId = id.toString();
+  const paddedId = stringId.padStart(7, "0");
   const defaultPosterUrl =
     "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png";
   try {
-    const res = await axios.get(`${endpoints.getOmdbMovieWith(id)}`);
+    const res = await axios.get(`${endpoints.getOmdbMovieWith(paddedId)}`);
     if (res.data.Poster) {
       return res.data.Poster === "N/A" ? defaultPosterUrl : res.data.Poster;
     }
