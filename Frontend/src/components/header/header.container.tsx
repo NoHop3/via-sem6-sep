@@ -89,6 +89,7 @@ const navItems: NavItem[] = [
   { name: "Home", path: "/" },
   { name: "Movies", path: "/movies" },
   { name: "People", path: "/people" },
+  { name: "Sign In", path: "/sign-in" },
 ];
 
 export const _Header = (props: HeaderProps) => {
