@@ -4,6 +4,7 @@ import { type NotificationStore } from "./notification-store";
 import { ThemeStore } from "./theme-store";
 import { PeopleStore } from "./people-store";
 import { SearchStore } from "./search-store";
+import { UserStore } from "./user-store";
 
 export interface ApplicationState {
   router: RouterState;
@@ -12,4 +13,5 @@ export interface ApplicationState {
   notifications: NotificationStore;
   theme: ThemeStore;
   search: SearchStore;
+  user: UserStore;
 }

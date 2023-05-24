@@ -1,3 +1,5 @@
+import { RegisteredUser } from "../shared/models/user";
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 const baseUrl = process.env.REACT_APP_API_URL!;
 const omdbApiKey = process.env.REACT_APP_OMDB_API_KEY!;
@@ -17,4 +19,6 @@ export const endpoints = {
     `${baseUrl}/Movie/${movieId}/Favourite`,
   search: (searchPhrase: string) =>
     `${baseUrl}/Search?searchPhrase=${searchPhrase}`,
+  signIn: (username: string, password: string) => `${baseUrl}/Login`,
+  signUp: (user: RegisteredUser) => `${baseUrl}/Register`,
 };
