@@ -29,8 +29,8 @@ public class MyDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
             entity.Property(e => e.MovieId).HasColumnName("movie_id");
-
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.ReviewText).HasColumnName("reviewText");
 
             entity.HasOne(d => d.Movie)
                 .WithMany()
