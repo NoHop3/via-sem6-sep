@@ -216,7 +216,9 @@ export const _Header = (props: HeaderProps) => {
           onClose={() => {
             setOpenSearchDialog(false);
           }}
-          title={props.searchPhrase ?? ""}
+          title={`Showing ${props.totalResults ?? 0} results for ${
+            props.searchPhrase ?? ""
+          }`}
           children={props.searchResults.map((result) => (
             <SearchResultItem
               title={result.name}
