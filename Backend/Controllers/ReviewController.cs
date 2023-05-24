@@ -52,7 +52,7 @@ namespace Backend.Controllers
             }
             var reviews = await _repository.GetMovieReviews(reviewDTO.MovieId);
             var reviewDTOs = Mapper.MapReviewToDTOList(reviews);
-            return CreatedAtAction("AddFavouriteMovie", reviewDTOs);
+            return CreatedAtAction("Review", reviewDTOs);
         }
 
         // DELETE: api/MovieRating

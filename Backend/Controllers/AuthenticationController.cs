@@ -20,6 +20,10 @@ public class AuthenticationController: ControllerBase
     public async Task<ActionResult<UserDTO>> Login([FromBody] UserDTO userDTO)
     {
         var user = await _repository.GetUserByUsername(userDTO.Username);
+        if(user == null)
+        {
+            return BadRequest("Incorrect username"); 
+        }
         bool correctPassword = AuthorizationProvider.VerifyPasword(userDTO.Password, user);
 
         if(!correctPassword)

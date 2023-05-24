@@ -45,12 +45,12 @@ public class MyDbContext : DbContext
 
         modelBuilder.Entity<Favourite>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id);
 
-            entity.ToTable("favourites");
+            entity.ToTable("favourites");   
 
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.MovieId).HasColumnName("movie_id");
-
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Movie)

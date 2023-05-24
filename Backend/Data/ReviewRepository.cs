@@ -26,7 +26,7 @@ internal class ReviewRepository : IReviewRepository
 
     public async Task<IList<Review>> GetMovieReviews(long movieId)
     {
-        var reviews =  await _context.Reviews.Where(x=>x.MovieId == movieId).ToListAsync();
+        var reviews =  await _context.Reviews.Include(x=>x.User).Where(x=>x.MovieId == movieId).ToListAsync();
         return reviews;
     }
 }

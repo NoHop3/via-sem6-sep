@@ -12,19 +12,19 @@ public static class AuthorizationProvider
         {
             rnd.GetBytes(saltBytes);
         }
-        return Encoding.UTF8.GetString(saltBytes);
+        return Encoding.Unicode.GetString(saltBytes);
     }
 
     public static string HashPasword(string password, string salt)
     {
         byte[] hashedBytes;
-        var passwordSalt = new List<byte>(Encoding.UTF8.GetBytes(password));
-        passwordSalt.AddRange(Encoding.UTF8.GetBytes(salt));
+        var passwordSalt = new List<byte>(Encoding.Unicode.GetBytes(password));
+        passwordSalt.AddRange(Encoding.Unicode.GetBytes(salt));
         using (var hasher = SHA256.Create())
         {
             hashedBytes = hasher.ComputeHash(passwordSalt.ToArray());
         }
-        return Encoding.UTF8.GetString(hashedBytes);
+        return Encoding.Unicode.GetString(hashedBytes);
     }
 
     public static bool VerifyPasword(string passwordInput, User user)

@@ -33,6 +33,7 @@ public static class Mapper
             FirstName = user.FirstName,
             LastName = user.LastName,
             BirthYear = user.BirthYear,
+            APIKey = user.APIKey
         };
 
         return userDTO;
@@ -42,6 +43,7 @@ public static class Mapper
     {
         var favourite = new Favourite()
         {
+            Id = favouriteDTO.Id,
             UserId = userId,
             MovieId = favouriteDTO.MovieId
         };
@@ -53,7 +55,8 @@ public static class Mapper
     {
         var favouriteDTO = new FavouriteDTO()
         {
-            UserEmailOrUsername = favourite.User.Email,
+            Id = favourite.Id,
+            UserEmailOrUsername = favourite.User.Username,
             MovieId = favourite.MovieId
         };
 
@@ -78,7 +81,7 @@ public static class Mapper
         var reviewDTO = new ReviewDTO()
         {
             Id = review.Id,
-            Username = review.User.Email,
+            Username = review.User.Username,
             MovieId = review.MovieId,
             ReviewText = review.ReviewText
         };
@@ -94,7 +97,7 @@ public static class Mapper
             var reviewDTO = new ReviewDTO()
             {
                 Id = review.Id,
-                Username = review.User.Email,
+                Username = review.User.Username,
                 MovieId = review.MovieId,
                 ReviewText = review.ReviewText
             };

@@ -34,7 +34,7 @@ namespace Backend.Controllers
             return Ok(movies);
         }
 
-        // POST: api/FavouriteMovies/5
+        // POST: api/FavouriteMovies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Dictionary<int, List<Movie>>>> AddFavouriteMovie([FromBody] FavouriteDTO favouriteDTO)
@@ -47,7 +47,7 @@ namespace Backend.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
             var userMovies = await _repository.GetUserFavouritesByEmailOrUsername(favouriteDTO.UserEmailOrUsername);
             return CreatedAtAction("AddFavouriteMovie", userMovies);
@@ -66,7 +66,7 @@ namespace Backend.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
             var userMovies = await _repository.GetUserFavouritesByEmailOrUsername(favouriteDTO.UserEmailOrUsername);
             return Ok(userMovies);
