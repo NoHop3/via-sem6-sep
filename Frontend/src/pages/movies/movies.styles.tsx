@@ -1,6 +1,17 @@
 import { Grid, Box } from "@mui/material";
 import styled from "styled-components";
 
+export const StyledFilterWrapper = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: ${({ theme }) => theme.spacing(2)};
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
 export const StyledMoviePageWrapper = styled(Box)`
   display: flex;
   flex-direction: column;

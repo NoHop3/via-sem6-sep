@@ -5,10 +5,17 @@ import { _Movies } from "./movies.container";
 import { services } from "../../services";
 import { type ApplicationState } from "../../shared/store/app-state";
 import { type AppDispatch } from "../../shared/store/app-thunk";
-import { setPage } from "../../shared/store/movie-store";
+import {
+  setPage,
+  clearFilters,
+  setFilterByName,
+  setFilterByYear,
+} from "../../shared/store/movie-store";
+import { setNotification } from "../../shared/store/notification-store";
 
 const mapStateToProps = (state: ApplicationState) => ({
   movies: state.movies.movies,
+  filteredMovies: state.movies.filteredMovies,
   isLoading: state.movies.isLoading,
   movie: state.movies.movie,
   page: state.movies.page,
@@ -19,6 +26,10 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(
     {
       setPage,
+      setFilterByName,
+      setFilterByYear,
+      clearFilters,
+      setNotification,
       getMovieDetailsFor: services.getMovieDetailsFor,
       getMovies: services.getMovies,
     },

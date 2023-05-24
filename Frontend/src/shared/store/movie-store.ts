@@ -3,14 +3,18 @@ import { Movie } from "../models/movie";
 
 export interface MovieStore {
   movies: Movie[];
+  filteredMovies: Movie[];
   movie: Movie;
   isLoading: boolean;
   page: number;
   total: number;
+  filterByName?: boolean;
+  filterByYear?: boolean;
 }
 
 const initialState: MovieStore = {
   movies: [],
+  filteredMovies: [],
   movie: {
     id: 0,
     title: "",
@@ -42,9 +46,45 @@ const movieSlice = createSlice({
     setTotal(state, action: PayloadAction<number>) {
       state.total = action.payload;
     },
+    setFilterByName(state) {
+      state.filterByName = !state.filterByName ?? true;
+      state.filteredMovies = [...state.movies];
+      state.filterByName
+        ? (state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.title.localeCompare(b.title),
+          ))
+        : (state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            b.title.localeCompare(a.title),
+          ));
+    },
+
+    setFilterByYear(state) {
+      state.filterByYear = !state.filterByYear ?? true;
+      state.filteredMovies = [...state.movies];
+      state.filterByYear
+        ? (state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.year > b.year ? 1 : -1,
+          ))
+        : (state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            b.year > a.year ? 1 : -1,
+          ));
+    },
+    clearFilters(state) {
+      state.filteredMovies = [];
+      state.filterByName = undefined;
+      state.filterByYear = undefined;
+    },
   },
 });
 
 export default movieSlice.reducer;
-export const { setMovie, setIsLoading, setMovies, setPage, setTotal } =
-  movieSlice.actions;
+export const {
+  setMovie,
+  setIsLoading,
+  setMovies,
+  setPage,
+  setTotal,
+  clearFilters,
+  setFilterByName,
+  setFilterByYear,
+} = movieSlice.actions;
