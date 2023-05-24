@@ -19,7 +19,7 @@ internal class FavouriteMovieRepository : IFavouriteMovieRepository
 
     }
 
-    public async Task DeleteFavourite(Favourite favourite)
+    public async Task RemoveFavourite(Favourite favourite)
     {
         _context.Favourites.Remove(favourite);
         await _context.SaveChangesAsync();

@@ -53,7 +53,8 @@ namespace Backend.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "MovieId")
+                        .IsUnique();
 
                     b.ToTable("favourites", (string)null);
                 });

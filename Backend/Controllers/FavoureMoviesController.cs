@@ -56,13 +56,13 @@ namespace Backend.Controllers
         // DELETE: api/MovieRating
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpDelete]
-        public async Task<ActionResult<Dictionary<int, List<Movie>>>> DeleteFavouriteMovie([FromBody] FavouriteDTO favouriteDTO)
+        public async Task<ActionResult<Dictionary<int, List<Movie>>>> RemoveFavouriteMovie([FromBody] FavouriteDTO favouriteDTO)
         {
             var userId = await _userRepository.GetUserIdByEmailOrUsername(favouriteDTO.UserEmailOrUsername);
             var favourite = Mapper.MapFavouriteMoviteFromDTO(favouriteDTO, userId);
             try
             {
-                await _repository.DeleteFavourite(favourite);
+                await _repository.RemoveFavourite(favourite);
             }
             catch (Exception e)
             {

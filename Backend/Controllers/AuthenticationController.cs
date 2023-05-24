@@ -36,7 +36,7 @@ public class AuthenticationController: ControllerBase
 
     [HttpPost]
     [Route("Register")]
-    public async Task<ActionResult<string>> Register([FromBody] UserDTO userDTO)
+    public async Task<ActionResult<UserDTO>> Register([FromBody] UserDTO userDTO)
     {
         var user = Mapper.MapUserFromDTO(userDTO);
         try
@@ -47,6 +47,8 @@ public class AuthenticationController: ControllerBase
         {
             return Conflict(e.Message);
         }
-        return Ok(user.APIKey);
+        var addedUser = await _repository.GetUserByEmail(user.Email);
+        var addedUserDTO = Mapper.MapUserToDTO(addedUser);
+        return Ok(addedUserDTO);
     }
 }
