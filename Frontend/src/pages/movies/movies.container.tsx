@@ -13,6 +13,7 @@ import { type MovieProps } from "./movies.props";
 import { IconButton, useTheme } from "@mui/material";
 import AbcIcon from "@mui/icons-material/Abc";
 import PinIcon from "@mui/icons-material/Pin";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 
 export const _Movies = (props: MovieProps) => {
@@ -20,8 +21,11 @@ export const _Movies = (props: MovieProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const {
+    userId,
     isLoading,
     movies,
+    setFavorite,
+    setUserRating,
     filteredMovies,
     page,
     total,
@@ -111,6 +115,28 @@ export const _Movies = (props: MovieProps) => {
               onChange={handlePageChange}
               size="large"
             />
+            <IconButton
+              size="large"
+              aria-label="sort by favorite button"
+              edge="end"
+              onClick={() => {
+                setFilterByYear();
+                setNotification({
+                  open: true,
+                  message: "Showing favorite movies. Click again to disable",
+                  type: "success",
+                });
+              }}
+              color={"inherit"}
+              sx={{ mr: 2, p: 2 }}
+            >
+              <FavoriteIcon
+                style={{
+                  fontSize: theme.spacing(3),
+                  color: theme.palette.text.primary,
+                }}
+              />
+            </IconButton>
 
             <IconButton
               size="large"
@@ -140,7 +166,16 @@ export const _Movies = (props: MovieProps) => {
             {filteredMovies.length > 0
               ? filteredMovies.map((movie) => (
                   <StyledMovieCardWrapper key={movie.id}>
-                    <MovieCard {...movie} onMovieClick={handleMovieCardClick} />
+                    <MovieCard
+                      {...movie}
+                      onMovieClick={handleMovieCardClick}
+                      userId={userId}
+                      onRatingChange={setUserRating}
+                      onAddToFavoritesClick={setFavorite}
+                      showFavorite={!!userId}
+                      userRating={movie.userRating}
+                      isFavorite={movie.isFavorite}
+                    />
                   </StyledMovieCardWrapper>
                 ))
               : movies.map((movie) => (

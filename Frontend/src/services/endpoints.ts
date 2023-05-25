@@ -16,6 +16,8 @@ export const endpoints = {
   getOmdbMovieWith: (id: string) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
   setFavoriteMovie: (userId: number, movieId: number) =>
     `${baseUrl}/FavouriteMovies`,
+  setUserRating: (userId: number, movieId: number, rating: number) =>
+    `${baseUrl}/MovieRating`,
   getFavoriteMovies: (userId: number, skip: number, take: number) =>
     `${baseUrl}/FavouriteMovies/${userId}/${skip}/${take}`,
   search: (searchPhrase: string) =>

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Rating } from "@mui/material";
 import styled from "styled-components";
 
 export const MovieGrid = styled(Grid)`
@@ -9,7 +9,7 @@ export const MovieGrid = styled(Grid)`
     "title title"
     "image info"
     "image info"
-    "image info"
+    "image review"
     "image button";
   grid-gap: 1rem;
   margin: 1rem 0;
@@ -23,6 +23,7 @@ export const MovieGrid = styled(Grid)`
       "title"
       "image"
       "info"
+      "review"
       "button";
   }
 `;
@@ -42,6 +43,14 @@ export const MovieImage = styled.img`
   height: 250px;
   object-fit: cover;
   border-radius: 1rem;
+`;
+
+export const MovieRating = styled(Rating)`
+  grid-area: review;
+  color: ${({ theme }) => theme.palette.text.primary};
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
 `;
 
 export const MovieInfo = styled(Typography)`

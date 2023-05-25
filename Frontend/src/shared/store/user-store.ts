@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../models/user";
 
 export interface UserStore {
-  id: string;
+  id: number;
   username: string;
   email: string;
   password: string;
@@ -14,7 +14,7 @@ export interface UserStore {
 }
 
 const initialState: UserStore = {
-  id: "",
+  id: 0,
   username: "",
   email: "",
   password: "",

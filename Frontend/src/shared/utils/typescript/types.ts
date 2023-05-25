@@ -12,6 +12,7 @@ export interface Notification {
 export interface SearchResultItem {
   id: number;
   name: string;
+  type: "Movie" | "Celebrity";
   year?: number;
   poster?: string;
 }

@@ -4,19 +4,18 @@ import { Movie } from "../models/movie";
 export interface MovieStore {
   movies: Movie[];
   filteredMovies: Movie[];
-  favoritedMovies: Movie[];
   movie: Movie;
   isLoading: boolean;
   page: number;
   total: number;
   filterByName?: boolean;
   filterByYear?: boolean;
+  filterByFavorite: boolean;
 }
 
 const initialState: MovieStore = {
   movies: [],
   filteredMovies: [],
-  favoritedMovies: [],
   movie: {
     id: 0,
     title: "",
@@ -26,6 +25,7 @@ const initialState: MovieStore = {
   isLoading: false,
   page: 1,
   total: 0,
+  filterByFavorite: false,
 };
 
 const movieSlice = createSlice({
@@ -34,9 +34,6 @@ const movieSlice = createSlice({
   reducers: {
     setMovies(state, action: PayloadAction<Movie[]>) {
       state.movies = action.payload;
-    },
-    setFavoritedMovies(state, action: PayloadAction<Movie[]>) {
-      state.favoritedMovies = action.payload;
     },
     setMovie(state, action: PayloadAction<Movie>) {
       console.log(action.payload);
@@ -74,10 +71,23 @@ const movieSlice = createSlice({
             b.year > a.year ? 1 : -1,
           ));
     },
+
+    setFilterByFavorite(state) {
+      state.filterByFavorite = !state.filterByFavorite;
+      const preservedFilteredMovies = [...state.filteredMovies] ?? [
+        ...state.movies,
+      ];
+      if (state.filterByFavorite) {
+        state.filteredMovies = state.movies.filter((movie) => movie.isFavorite);
+      } else {
+        state.filteredMovies = preservedFilteredMovies;
+      }
+    },
     clearFilters(state) {
       state.filteredMovies = [];
       state.filterByName = undefined;
       state.filterByYear = undefined;
+      state.filterByFavorite = false;
     },
   },
 });

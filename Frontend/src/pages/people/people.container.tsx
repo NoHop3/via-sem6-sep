@@ -58,11 +58,7 @@ export const _People = (props: PeopleProps) => {
                 title={person.name}
                 description={generateDescription(person.movies)}
                 date={String(person.birth ?? "Unknown")}
-                isFavorite={true}
-                onAddToFavoritesClick={props.setFavorite}
-                showFavorite={true}
                 imgSource="https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png"
-                disabledFavoriteButton={false}
               />
             ))}
           </StyledPeopleGrid>

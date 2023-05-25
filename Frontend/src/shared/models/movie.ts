@@ -6,6 +6,8 @@ export interface Movie {
   title: string;
   year: number;
   details: MovieDetails;
+  userRating?: number;
+  isFavorite?: boolean;
   posterUrl?: string;
   stars?: Person[];
   director?: Person[];

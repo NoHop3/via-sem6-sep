@@ -204,8 +204,8 @@ const getMoviePosterFor = async (id: number): Promise<string> => {
 };
 // #endregion
 
-// #region favoriteMovie
-export const favoriteMovie =
+// #region setFavorite
+export const setFavorite =
   (userId: number, movieId: number) => async (dispatch: any) => {
     dispatch(setIsLoading(true));
     try {
@@ -214,7 +214,7 @@ export const favoriteMovie =
         setNotification({
           open: true,
           type: "success",
-          message: `Movie with id ${movieId} was favorited successfully!`,
+          message: `Movie with id ${movieId} was favorited/unfavorited successfully!`,
         }),
       );
     } catch (err) {
@@ -222,35 +222,7 @@ export const favoriteMovie =
         setNotification({
           open: true,
           type: "error",
-          message: `Movie with id ${movieId} was not favorited!`,
-        }),
-      );
-      throw err;
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  };
-// #endregion
-
-// #region unfavoriteMovie
-export const unfavoriteMovie =
-  (userId: number, movieId: number) => async (dispatch: any) => {
-    dispatch(setIsLoading(true));
-    try {
-      await axios.delete(`${endpoints.setFavoriteMovie(userId, movieId)}`);
-      dispatch(
-        setNotification({
-          open: true,
-          type: "success",
-          message: `Movie with id ${movieId} was unfavorited successfully!`,
-        }),
-      );
-    } catch (err) {
-      dispatch(
-        setNotification({
-          open: true,
-          type: "error",
-          message: `Movie with id ${movieId} was not unfavorited!`,
+          message: `Could not favorite/unfavorite movie!`,
         }),
       );
       throw err;
@@ -289,6 +261,35 @@ export const getFavoriteMovies =
           open: true,
           type: "error",
           message: `Favorite movies were not fetched!`,
+        }),
+      );
+      throw err;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+// #endregion
+
+// #region setUserRating
+export const setUserRating =
+  (userId: number, movieId: number, rating: number) =>
+  async (dispatch: any) => {
+    dispatch(setIsLoading(true));
+    try {
+      await axios.post(`${endpoints.setUserRating(userId, movieId, rating)}`);
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Movie with id ${movieId} was rated successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Could not rate movie!`,
         }),
       );
       throw err;

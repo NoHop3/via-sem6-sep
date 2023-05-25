@@ -14,6 +14,7 @@ import {
 import { setNotification } from "../../shared/store/notification-store";
 
 const mapStateToProps = (state: ApplicationState) => ({
+  userId: state.user.id,
   movies: state.movies.movies,
   filteredMovies: state.movies.filteredMovies,
   isLoading: state.movies.isLoading,
@@ -30,6 +31,8 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
       setFilterByYear,
       clearFilters,
       setNotification,
+      setRating: services.setUserRating,
+      setFavorite: services.setFavorite,
       getMovieDetailsFor: services.getMovieDetailsFor,
       getMovies: services.getMovies,
     },

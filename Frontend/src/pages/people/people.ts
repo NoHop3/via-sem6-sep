@@ -18,7 +18,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(
     {
       getPeople: services.getPeople,
-      setFavorite: services.setFavorite,
       setPage,
     },
     dispatch,

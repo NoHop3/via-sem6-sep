@@ -2,6 +2,7 @@ import type { StoryObj } from "@storybook/react";
 
 import { _MovieCard as MovieCard } from "./movie-card.container";
 import { MovieCardProps } from "./movie-card.props";
+import { useState } from "react";
 
 export default {
   title: "MovieCard",
@@ -10,6 +11,7 @@ export default {
 type Story = StoryObj<typeof MovieCard>;
 
 export const MovieCardStory: Story = () => {
+  const [isFavorite, setIsFavorite] = useState(false);
   const movieCardProps: MovieCardProps = {
     id: 1,
     title: "Movie Title",
@@ -33,15 +35,26 @@ export const MovieCardStory: Story = () => {
       rating: 5,
     },
     showFavorite: true,
-    isFavorite: true,
+    isFavorite,
     disabledFavoriteButton: false,
     onAddToFavoritesClick: () => {
-      alert("Add to favorites clicked");
+      setIsFavorite(!isFavorite);
+    },
+    onRatingChange: () => {
+      alert("Rating changed");
     },
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "1rem",
+      }}
+    >
+      <MovieCard {...movieCardProps} />
+      <MovieCard {...movieCardProps} />
       <MovieCard {...movieCardProps} />
     </div>
   );
