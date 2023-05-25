@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
       setFilterByYear,
       clearFilters,
       setNotification,
-      setRating: services.setUserRating,
+      setUserRating: services.setUserRating,
       setFavorite: services.setFavorite,
       getMovieDetailsFor: services.getMovieDetailsFor,
       getMovies: services.getMovies,
