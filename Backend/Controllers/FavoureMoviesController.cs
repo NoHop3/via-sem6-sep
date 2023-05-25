@@ -21,12 +21,12 @@ namespace Backend.Controllers
             _userRepository = userRepository;
         }
 
-        // GET: api/FavouriteMovies
-        [HttpGet]
-        public async Task<ActionResult<Dictionary<int, List<Movie>>>> GetUserFavouriteMovies([FromHeader] string emailOrUsername)
+        // GET: api/FavouriteMovies/5/0/10
+        [HttpGet("{id}/{skip}/{limit}")]
+        public async Task<ActionResult<Dictionary<int, List<Movie>>>> GetUserFavouriteMovies([FromRoute] int id, int skip, int limit)
         {
 
-            var movies = await _repository.GetUserFavouritesByEmailOrUsername(emailOrUsername);
+            var movies = await _repository.GetUserFavouritesByIdWithLimit(id, skip, limit);
             if (movies.Count == 0)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace Backend.Controllers
             return CreatedAtAction("AddFavouriteMovie", userMovies);
         }
 
-        // DELETE: api/MovieRating
+        // DELETE: api/FavouriteMovies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpDelete]
         public async Task<ActionResult<Dictionary<int, List<Movie>>>> RemoveFavouriteMovie([FromBody] FavouriteDTO favouriteDTO)

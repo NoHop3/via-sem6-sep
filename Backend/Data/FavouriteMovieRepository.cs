@@ -35,4 +35,13 @@ internal class FavouriteMovieRepository : IFavouriteMovieRepository
         return result;
 
     }
+
+    public async Task<Dictionary<int, List<Movie>>> GetUserFavouritesByIdWithLimit(int id, int skip, int limit)
+    {
+        var favourites = await _context.Favourites.Include(x=>x.Movie).Where(x=>x.UserId == id).Skip(skip).Take(limit).ToListAsync(); 
+
+        var result = favourites.GroupBy(x=>x.UserId).ToDictionary(user=>user.Key, user=>user.Select(x=>x.Movie).ToList());
+        return result;
+
+    }
 }

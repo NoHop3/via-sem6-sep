@@ -21,7 +21,7 @@ namespace Backend.Controllers
             _userRepository = userRepository;
         }
 
-        // GET: api/FavouriteMovies
+        // GET: api/Review
         [HttpGet("{id}")]
         public async Task<ActionResult<IList<ReviewDTO>>> GetMovieReviews([FromRoute] long id)
         {
@@ -35,7 +35,7 @@ namespace Backend.Controllers
             return Ok(reviewDTOs);
         }
 
-        // POST: api/FavouriteMovies/5
+        // POST: api/Review
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<IList<ReviewDTO>>> AddMovieReview([FromBody] ReviewDTO reviewDTO)
@@ -55,7 +55,7 @@ namespace Backend.Controllers
             return CreatedAtAction("Review", reviewDTOs);
         }
 
-        // DELETE: api/MovieRating
+        // DELETE: api/Review
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpDelete]
         public async Task<ActionResult<IList<ReviewDTO>>> DeleteFavouriteMovie([FromBody] ReviewDTO reviewDTO)
