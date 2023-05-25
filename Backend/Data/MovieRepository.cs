@@ -26,6 +26,7 @@ namespace Backend.Data
             return  await _context.Movies.CountAsync();
         }
 
+
         public async Task<IList<Movie>> GetMoviesLimit(int skip, int limit)
         {
             return  await _context.Movies.Skip(skip).Take(limit).ToListAsync();

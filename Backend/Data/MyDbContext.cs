@@ -11,12 +11,80 @@ public class MyDbContext : DbContext
     public DbSet<MovieRating> Ratings { get; set; }
     public DbSet<Star> Stars { get; set; }
     public DbSet<Director> Directors { get; set; }
+    public  DbSet<User> Users {get;set;}
+    public DbSet<Favourite> Favourites {get; set;}
+    public DbSet<Review> Reviews {get;set;}
 
 #pragma warning disable CS8618
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable("reviews");
+
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+
+            entity.Property(e => e.MovieId).HasColumnName("movie_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.ReviewText).HasColumnName("reviewText");
+
+            entity.HasOne(d => d.Movie)
+                .WithMany()
+                .HasForeignKey(d => d.MovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Favourite>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable("favourites");   
+
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.MovieId).HasColumnName("movie_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.HasIndex(e => new {e.UserId, e.MovieId}).IsUnique();
+
+            entity.HasOne(d => d.Movie)
+                .WithMany()
+                .HasForeignKey(d => d.MovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable("users");
+
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.HasIndex(e => e.Username).IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.Email).HasColumnName("email");
+            entity.Property(e => e.Username).HasColumnName("username");
+            entity.Property(e => e.FirstName).HasColumnName("firstName");
+            entity.Property(e => e.LastName).HasColumnName("lastName");
+            entity.Property(e => e.Salt).HasColumnName("salt");
+            entity.Property(e => e.HashedPasword).HasColumnName("hashedPasword");
+            entity.Property(e => e.BirthYear).HasColumnName("birthYear");
+            entity.Property(e=> e.APIKey).HasColumnName("apiKey");
+        });
+
         modelBuilder.Entity<Director>(entity =>
         {
             entity.HasNoKey();
