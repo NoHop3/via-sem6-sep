@@ -30,7 +30,7 @@ public class MyDbContext : DbContext
 
             entity.Property(e => e.MovieId).HasColumnName("movie_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.ReviewText).HasColumnName("reviewText");
+            entity.Property(e => e.ReviewStars).HasColumnName("reviewStars");
 
             entity.HasOne(d => d.Movie)
                 .WithMany()

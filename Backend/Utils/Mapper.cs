@@ -56,7 +56,7 @@ public static class Mapper
         var favouriteDTO = new FavouriteDTO()
         {
             Id = favourite.Id,
-            UserEmailOrUsername = favourite.User.Username,
+            UserId = favourite.User.Id,
             MovieId = favourite.MovieId
         };
 
@@ -70,7 +70,7 @@ public static class Mapper
             Id = reviewDTO.Id,
             UserId = userId,
             MovieId = reviewDTO.MovieId,
-            ReviewText = reviewDTO.ReviewText
+            ReviewStars = reviewDTO.ReviewStars,
         };
 
         return review;
@@ -81,9 +81,9 @@ public static class Mapper
         var reviewDTO = new ReviewDTO()
         {
             Id = review.Id,
-            Username = review.User.Username,
+            UserId = review.User.Id,
             MovieId = review.MovieId,
-            ReviewText = review.ReviewText
+            ReviewStars = review.ReviewStars
         };
 
         return reviewDTO;
@@ -97,9 +97,9 @@ public static class Mapper
             var reviewDTO = new ReviewDTO()
             {
                 Id = review.Id,
-                Username = review.User.Username,
+                UserId = review.User.Id,
                 MovieId = review.MovieId,
-                ReviewText = review.ReviewText
+                ReviewStars = review.ReviewStars
             };
             reviewDTOs.Add(reviewDTO);
         }

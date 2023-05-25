@@ -3,6 +3,7 @@ using Backend.Models;
 namespace Backend.Data.Abstraction;
 public interface IUserRepository
 {
+    Task<User> GetUserById(int id);
     Task<User> GetUserByEmail(string email);
     Task<User> GetUserByUsername(string username);
     Task<int> GetUserIdByEmailOrUsername(string emailOrUsername);

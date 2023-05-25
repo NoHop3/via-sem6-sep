@@ -29,7 +29,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieRatingRepository, MovieRatingRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<IFavouriteMovieRepository, FavouriteMovieRepository>();
+builder.Services.AddScoped<IFavouriteRepository, FavouriteRepository>();
 
 builder.Services.AddCors(options =>
 {

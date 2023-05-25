@@ -34,7 +34,7 @@ namespace Backend.Data
 
         public async Task<Movie> GetMovieById(long id)
         {
-            return  await _context.Movies.FirstOrDefaultAsync(x=>x.Id == id) ?? throw new Exception("Movie not found");
+            return  await _context.Movies.FirstOrDefaultAsync(x=>x.Id == id) ?? null;
         }
 
         public async Task<IList<Person>> GetMovieStars(long id)

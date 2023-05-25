@@ -14,13 +14,13 @@ internal class UserRepository : IUserRepository
     public async Task AddUser(User user)
     {
         //Check if the email or username exists already
-        var emails = _context.Users.Select(x=>x.Email);
-        if(emails.Contains(user.Email)) throw new Exception("This email is already in use.");
-        var usernames = _context.Users.Select(x=>x.Username);
-        if(usernames.Contains(user.Username)) throw new Exception("This username is already in use.");
+        var emails = _context.Users.Select(x => x.Email);
+        if (emails.Contains(user.Email)) throw new Exception("This email is already in use.");
+        var usernames = _context.Users.Select(x => x.Username);
+        if (usernames.Contains(user.Username)) throw new Exception("This username is already in use.");
 
         //Gerenate unique value for the user and hash their password
-        user.Salt = AuthorizationProvider.GenerateSalt(); 
+        user.Salt = AuthorizationProvider.GenerateSalt();
         user.HashedPasword = AuthorizationProvider.HashPasword(user.HashedPasword, user.Salt);
         user.APIKey = AuthorizationProvider.GenerateAPIKey(user.Username);
 
@@ -37,18 +37,23 @@ internal class UserRepository : IUserRepository
 
     public async Task<User> GetUserByEmail(string email)
     {
-        return await _context.Users.SingleOrDefaultAsync(x=>x.Email == email);
+        return await _context.Users.SingleOrDefaultAsync(x => x.Email == email) ?? null;
+    }
+
+    public async Task<User> GetUserById(int id)
+    {
+        return await _context.Users.SingleOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
     public async Task<User> GetUserByUsername(string username)
     {
-        return await _context.Users.SingleOrDefaultAsync(x=>x.Username == username);
+        return await _context.Users.SingleOrDefaultAsync(x => x.Username == username) ?? null;
     }
 
     public async Task<int> GetUserIdByEmailOrUsername(string emailOrUsername)
     {
-        var user = emailOrUsername.Contains("@") ? await _context.Users.FirstAsync(x=>x.Email == emailOrUsername) 
-                                                 : await _context.Users.FirstAsync(x=>x.Username == emailOrUsername);
+        var user = emailOrUsername.Contains("@") ? await _context.Users.FirstAsync(x => x.Email == emailOrUsername)
+                                                 : await _context.Users.FirstAsync(x => x.Username == emailOrUsername);
 
         return user.Id;
     }

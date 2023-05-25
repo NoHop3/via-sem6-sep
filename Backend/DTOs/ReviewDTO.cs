@@ -2,8 +2,8 @@ namespace Backend.DTOs;
 
 public class ReviewDTO
 {
-    public int Id {get;set;}
-    public string Username { get; set; } = null!;
+    public int Id { get; set; }
+    public int UserId { get; set; }
     public long MovieId { get; set; }
-    public string ReviewText {get;set;} = null!;
+    public int ReviewStars { get; set; }
 }
