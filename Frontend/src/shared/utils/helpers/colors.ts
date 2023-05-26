@@ -76,8 +76,8 @@ export const hexToHSL = (hex: string): number[] => {
   b /= 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h;
-  let s;
+  let h: number;
+  let s: number;
   let l = (max + min) / 2;
   if (max === min) {
     h = s = 0; // achromatic
@@ -94,6 +94,8 @@ export const hexToHSL = (hex: string): number[] => {
       case b:
         h = (r - g) / d + 4;
         break;
+      default:
+        h = 0;
     }
     if (h) {
       h /= 6;
@@ -103,7 +105,7 @@ export const hexToHSL = (hex: string): number[] => {
   }
 
   s = s * 100;
-  s = Math.round(s);
+  s = Math.round(s) as number;
   l = l * 100;
   l = Math.round(l);
   h = Math.round(360 * h);
