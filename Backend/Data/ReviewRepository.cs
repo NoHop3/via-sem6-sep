@@ -13,14 +13,9 @@ internal class ReviewRepository : IReviewRepository
         _context = context;
     }
 
-        public async Task<Review> GetReview(int userId, long movieId)
+    public async Task<Review?> GetReview(int userId, long movieId)
     {
-        var review = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId);
-        if (review == null)
-        {
-            return null;
-        }
-        return review;
+        return await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId) ?? null;
     }
     public async Task SetReview(Review review)
     {
@@ -29,8 +24,9 @@ internal class ReviewRepository : IReviewRepository
         if (rev != null)
         {
             rev.ReviewText = review.ReviewText;
-             _context.Entry(rev).State = EntityState.Modified;
-        } else
+            _context.Entry(rev).State = EntityState.Modified;
+        }
+        else
         {
             await _context.Reviews.AddAsync(review);
         }
@@ -40,7 +36,12 @@ internal class ReviewRepository : IReviewRepository
     public async Task DeleteReview(int id)
     {
         var review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == id);
-         _context.Reviews.Remove(review);
+        if (review == null)
+        {
+            return;
+        }
+        _context.Reviews.Remove(review);
+        _context.Entry(review).State = EntityState.Deleted;
         await _context.SaveChangesAsync();
     }
 

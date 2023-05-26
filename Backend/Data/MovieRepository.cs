@@ -33,7 +33,7 @@ namespace Backend.Data
             return  await _context.Movies.Skip(skip).Take(limit).ToListAsync();
         }
 
-        public async Task<Movie> GetMovieById(long id)
+        public async Task<Movie?> GetMovieById(long id)
         {
             return  await _context.Movies.FirstOrDefaultAsync(x=>x.Id == id) ?? null;
         }

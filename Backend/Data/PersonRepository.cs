@@ -147,6 +147,7 @@ namespace Backend.Data
                 var ratings = _context.Ratings.Where(x=>starMovie.Value.Contains(x.MovieId)).Select(x=>x.Rating).ToList();
                 double? avg = ratings.Count != 0 ? ratings.Sum() / starMovie.Value.Count : null;
                 var star = await _context.People.FirstOrDefaultAsync(x=>x.Id == starMovie.Key);
+                if (star == null) continue;
 
                 ResultItemDTO ri = new()
                 {
