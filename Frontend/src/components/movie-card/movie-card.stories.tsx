@@ -11,7 +11,7 @@ export default {
 type Story = StoryObj<typeof MovieCard>;
 
 export const MovieCardStory: Story = () => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState([false, false, false]);
   const movieCardProps: MovieCardProps = {
     id: 1,
     title: "Movie Title",
@@ -34,17 +34,14 @@ export const MovieCardStory: Story = () => {
       votes: 100,
       rating: 5,
     },
+    userId: 1,
     showFavorite: true,
-    isFavorite,
     disabledFavoriteButton: false,
-    onAddToFavoritesClick: () => {
-      setIsFavorite(!isFavorite);
-    },
     onRatingChange: () => {
       alert("Rating changed");
     },
   };
-
+  console.log(isFavorite);
   return (
     <div
       style={{
@@ -53,9 +50,29 @@ export const MovieCardStory: Story = () => {
         gap: "1rem",
       }}
     >
-      <MovieCard {...movieCardProps} />
-      <MovieCard {...movieCardProps} />
-      <MovieCard {...movieCardProps} />
+      <MovieCard
+        {...movieCardProps}
+        isFavorite={isFavorite[0]}
+        onAddToFavoritesClick={() => {
+          setIsFavorite([!isFavorite[0], ...isFavorite.slice(1)]);
+        }}
+      />
+      <MovieCard
+        {...movieCardProps}
+        isFavorite={isFavorite[1]}
+        onAddToFavoritesClick={() => {
+          setIsFavorite(
+            isFavorite.slice(0, 1).concat(!isFavorite[1], isFavorite.slice(2)),
+          );
+        }}
+      />
+      <MovieCard
+        {...movieCardProps}
+        isFavorite={isFavorite[2]}
+        onAddToFavoritesClick={() => {
+          setIsFavorite([...isFavorite.slice(0, 2), !isFavorite[2]]);
+        }}
+      />
     </div>
   );
 };

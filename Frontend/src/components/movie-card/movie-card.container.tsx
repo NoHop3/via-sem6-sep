@@ -70,7 +70,7 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
               props.onAddToFavoritesClick?.(props.userId, props.id);
             e.stopPropagation();
           }}
-          style={{ top: undefined, right: undefined }}
+          style={{ top: "unset", right: "unset" }}
         >
           <FontAwesomeIcon icon={props.isFavorite ? faHeartSolid : faHeart} />
         </AddToFavoritesButton>
