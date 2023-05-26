@@ -14,14 +14,14 @@ export interface MovieStore {
 }
 
 const initialState: MovieStore = {
-  movies: [],
-  filteredMovies: [],
+  movies: [] as Movie[],
+  filteredMovies: [] as Movie[],
   movie: {
     id: 0,
     title: "",
     year: 0,
     details: {},
-  },
+  } satisfies Movie,
   isLoading: false,
   page: 1,
   total: 0,
@@ -34,9 +34,26 @@ const movieSlice = createSlice({
   reducers: {
     setMovies(state, action: PayloadAction<Movie[]>) {
       state.movies = action.payload;
+      state.filteredMovies = [...state.movies];
+      if (state.filterByYear ?? state.filterByName ?? state.filterByFavorite) {
+        if (state.filterByYear) {
+          state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.year > b.year ? 1 : -1,
+          );
+        }
+        if (state.filterByName) {
+          state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.title.localeCompare(b.title),
+          );
+        }
+        if (state.filterByFavorite) {
+          state.filteredMovies = state.filteredMovies.filter(
+            (movie) => movie.isFavorite,
+          );
+        }
+      }
     },
     setMovie(state, action: PayloadAction<Movie>) {
-      console.log(action.payload);
       state.movie = action.payload;
     },
     setIsLoading(state, action: PayloadAction<boolean>) {
@@ -102,4 +119,5 @@ export const {
   clearFilters,
   setFilterByName,
   setFilterByYear,
+  setFilterByFavorite,
 } = movieSlice.actions;

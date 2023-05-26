@@ -24,7 +24,7 @@ namespace Backend.Controllers
             return Ok(await _repository.GetFavourite(userId, movieId));
         }
 
-        // GET: api/FavouriteMovies/5/0/10
+        // GET: api/Favourite/5/0/10
         [HttpGet("{id}/{skip}/{limit}")]
         public async Task<ActionResult<Dictionary<int, List<Movie>>>> GetUserFavouriteMovies(int id, int skip, int limit)
         {
@@ -37,8 +37,7 @@ namespace Backend.Controllers
             return Ok(movies);
         }
 
-        // POST: api/setFavorite
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Favourite/userId/movieId
         [HttpPost("{userId}/{movieId}")]
         public async Task<ActionResult> SetFavorite(int userId, long movieId)
         {

@@ -1,6 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
-using Backend.Data.Abstraction;
 using Backend.DTOs;
 using Backend.Models;
 
@@ -17,7 +14,8 @@ public static class Mapper
             FirstName = userDTO.FirstName,
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
-            Salt = AuthorizationProvider.GenerateSalt()
+            Salt = AuthorizationProvider.GenerateSalt(),
+            APIKey = AuthorizationProvider.GenerateAPIKey(userDTO.Username)
         };
         user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         return user;

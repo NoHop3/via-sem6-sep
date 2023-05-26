@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { MovieCard } from "../../components";
@@ -34,6 +34,7 @@ export const _Movies = (props: MovieProps) => {
     setPage,
     setFilterByName,
     setFilterByYear,
+    setFilterByFavorite,
     clearFilters,
     setNotification,
   } = props;
@@ -53,10 +54,34 @@ export const _Movies = (props: MovieProps) => {
     getMovies(Number(queryStrings.page) || page, 12);
   }, [location.search, setPage, queryStrings.page, getMovies, navigate, page]);
 
-  const handleMovieCardClick = (id: number) => {
-    navigate(`/movies/${id}`);
-    getMovieDetailsFor(id);
-  };
+  const movieCards = useMemo(() => {
+    const moviesToRender = filteredMovies.length > 0 ? filteredMovies : movies;
+    const handleMovieCardClick = (id: number) => {
+      navigate(`/movies/${id}`);
+      getMovieDetailsFor(id);
+    };
+    return moviesToRender.map((movie) => (
+      <StyledMovieCardWrapper key={movie.id}>
+        <MovieCard
+          userId={userId}
+          onMovieClick={handleMovieCardClick}
+          onAddToFavoritesClick={setFavorite}
+          onRatingChange={setUserRating}
+          userRating={movie.userRating}
+          isFavorite={movie.isFavorite}
+          {...movie}
+        />
+      </StyledMovieCardWrapper>
+    ));
+  }, [
+    filteredMovies,
+    movies,
+    userId,
+    setFavorite,
+    setUserRating,
+    getMovieDetailsFor,
+    navigate,
+  ]);
 
   return (
     <StyledMoviePageWrapper>
@@ -115,28 +140,30 @@ export const _Movies = (props: MovieProps) => {
               onChange={handlePageChange}
               size="large"
             />
-            <IconButton
-              size="large"
-              aria-label="sort by favorite button"
-              edge="end"
-              onClick={() => {
-                setFilterByYear();
-                setNotification({
-                  open: true,
-                  message: "Showing favorite movies. Click again to disable",
-                  type: "success",
-                });
-              }}
-              color={"inherit"}
-              sx={{ mr: 2, p: 2 }}
-            >
-              <FavoriteIcon
-                style={{
-                  fontSize: theme.spacing(3),
-                  color: theme.palette.text.primary,
+            {!!userId && (
+              <IconButton
+                size="large"
+                aria-label="sort by favorite button"
+                edge="end"
+                onClick={() => {
+                  setFilterByFavorite();
+                  setNotification({
+                    open: true,
+                    message: "Showing favorite movies. Click again to disable",
+                    type: "success",
+                  });
                 }}
-              />
-            </IconButton>
+                color={"inherit"}
+                sx={{ mr: 2, p: 2 }}
+              >
+                <FavoriteIcon
+                  style={{
+                    fontSize: theme.spacing(3),
+                    color: theme.palette.text.primary,
+                  }}
+                />
+              </IconButton>
+            )}
 
             <IconButton
               size="large"
@@ -162,28 +189,7 @@ export const _Movies = (props: MovieProps) => {
             </IconButton>
           </StyledFilterWrapper>
 
-          <StyledMovieGrid container>
-            {filteredMovies.length > 0
-              ? filteredMovies.map((movie) => (
-                  <StyledMovieCardWrapper key={movie.id}>
-                    <MovieCard
-                      {...movie}
-                      onMovieClick={handleMovieCardClick}
-                      userId={userId}
-                      onRatingChange={setUserRating}
-                      onAddToFavoritesClick={setFavorite}
-                      showFavorite={!!userId}
-                      userRating={movie.userRating}
-                      isFavorite={movie.isFavorite}
-                    />
-                  </StyledMovieCardWrapper>
-                ))
-              : movies.map((movie) => (
-                  <StyledMovieCardWrapper key={movie.id}>
-                    <MovieCard {...movie} onMovieClick={handleMovieCardClick} />
-                  </StyledMovieCardWrapper>
-                ))}
-          </StyledMovieGrid>
+          <StyledMovieGrid container>{movieCards}</StyledMovieGrid>
 
           <StyledPagination
             count={Math.ceil(total / 12)}

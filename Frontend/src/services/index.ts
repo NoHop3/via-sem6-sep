@@ -2,7 +2,6 @@ import {
   getMovieDetailsFor,
   getMovieWith,
   getMovies,
-  getFavoriteMovies,
   setFavorite,
   setUserRating,
 } from "./movie-service";
@@ -19,7 +18,6 @@ export const services = {
   getMovieDetailsFor,
   setFavorite,
   setUserRating,
-  getFavoriteMovies,
   getPeople,
   search,
   signIn,

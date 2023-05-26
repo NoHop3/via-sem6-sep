@@ -10,6 +10,7 @@ import {
   clearFilters,
   setFilterByName,
   setFilterByYear,
+  setFilterByFavorite,
 } from "../../shared/store/movie-store";
 import { setNotification } from "../../shared/store/notification-store";
 
@@ -29,6 +30,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
       setPage,
       setFilterByName,
       setFilterByYear,
+      setFilterByFavorite,
       clearFilters,
       setNotification,
       setUserRating: services.setUserRating,

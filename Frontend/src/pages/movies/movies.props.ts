@@ -16,6 +16,7 @@ export interface MovieProps {
   setPage: (page: number) => void;
   setFilterByName: () => void;
   setFilterByYear: () => void;
+  setFilterByFavorite: () => void;
   clearFilters: () => void;
   setNotification: (n: Notification) => void;
 }

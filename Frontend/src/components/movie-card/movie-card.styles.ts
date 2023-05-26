@@ -2,7 +2,6 @@ import { Grid, Typography, Rating } from "@mui/material";
 import styled from "styled-components";
 
 export const MovieGrid = styled(Grid)`
-  width: calc(100% - 2rem);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:

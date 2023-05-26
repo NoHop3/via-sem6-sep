@@ -20,7 +20,6 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
   const handleImageLoad = () => {
     setLoaded(true);
   };
-
   return (
     <MovieGrid>
       {loaded ? (
@@ -48,6 +47,8 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
       )}
       {loaded ? (
         <MovieRating
+          sx={{ opacity: props.userId ? 1 : 0 }}
+          size="small"
           name="user-rating"
           defaultValue={props.userRating ?? 0}
           max={10}

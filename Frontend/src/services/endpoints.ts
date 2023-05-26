@@ -1,5 +1,3 @@
-import { RegisteredUser } from "../shared/models/user";
-
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 const baseUrl = process.env.REACT_APP_API_URL!;
 const omdbApiKey = process.env.REACT_APP_OMDB_API_KEY!;
@@ -15,13 +13,17 @@ export const endpoints = {
   getRatingForMovie: (id: number) => `${baseUrl}/MovieRating/${id}`,
   getOmdbMovieWith: (id: string) => `${omdbUrl}?i=tt${id}&apikey=${omdbApiKey}`,
   setFavoriteMovie: (userId: number, movieId: number) =>
-    `${baseUrl}/FavouriteMovies`,
+    `${baseUrl}/Favourite/${userId}/${movieId}`,
+  getFavoriteMovie: (userId: number, movieId: number) =>
+    `${baseUrl}/Favourite/${userId}/${movieId}`,
   setUserRating: (userId: number, movieId: number, rating: number) =>
-    `${baseUrl}/MovieRating`,
+    `${baseUrl}/Review/${userId}/${movieId}/${rating}`,
+  getUserRating: (userId: number, movieId: number) =>
+    `${baseUrl}/Review/${userId}/${movieId}`,
   getFavoriteMovies: (userId: number, skip: number, take: number) =>
-    `${baseUrl}/FavouriteMovies/${userId}/${skip}/${take}`,
+    `${baseUrl}/Favourite/${userId}/${skip}/${take}`,
   search: (searchPhrase: string) =>
     `${baseUrl}/Search?searchPhrase=${searchPhrase}`,
-  signIn: (username: string, password: string) => `${baseUrl}/Login`,
-  signUp: (user: RegisteredUser) => `${baseUrl}/Register`,
+  signIn: () => `${baseUrl}/Authentication/Login`,
+  signUp: () => `${baseUrl}/Authentication/Register`,
 };
