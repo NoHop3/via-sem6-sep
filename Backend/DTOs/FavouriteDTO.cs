@@ -3,6 +3,6 @@ namespace Backend.DTOs;
 public class FavouriteDTO
 {
     public int Id {get;set;}
-    public string UserEmailOrUsername { get; set; } = null!;
+    public int UserId { get; set; }
     public long MovieId { get; set; }
 }

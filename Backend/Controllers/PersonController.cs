@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Data.Abstraction;
+using Backend.DTOs;
 
 namespace Backend.Controllers
 {
@@ -14,9 +15,9 @@ namespace Backend.Controllers
         {
             _repository = repository;
         }
-
-        [HttpGet("{skip}/{take}")]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople(int skip, int take)
+        // GET: api/Person?skip=0&limit=10
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Person>>> GetPeople([FromQuery]int skip, int take)
         {
             var people = await _repository.GetPeopleLimit(skip, take);
             if (people.Count == 0)
@@ -29,7 +30,7 @@ namespace Backend.Controllers
 
         // GET: api/Person/5/Movies
         [HttpGet("{id}/Movies")]
-        public async Task<ActionResult<Dictionary<long, List<Movie>>>> GetPersonAllMovies(long id)
+        public async Task<ActionResult<IList<ResultItemDTO>>> GetPersonAllMovies(long id)
         {
             var movies = await _repository.GetPersonMovies(id);
             if (movies.Count == 0)

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
 using Backend.Models;
 using Backend.Data.Abstraction;
+using Backend.DTOs;
 
 namespace Backend.Controllers
 {
@@ -44,7 +43,7 @@ namespace Backend.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
 
             return NoContent();
@@ -61,7 +60,7 @@ namespace Backend.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
 
             return CreatedAtAction("GetMovieRating", new { id = movieRating.MovieId }, movieRating);

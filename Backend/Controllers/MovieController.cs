@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
 using Backend.Models;
 using Backend.Data.Abstraction;
 
@@ -22,9 +15,9 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/Movies/0/10
-        [HttpGet("{skip}/{limit}")]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int skip, int limit)
+        // GET: api/Movies?skip=0&limit=10
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery]int skip, int limit)
         {
             var movies = await _repository.GetMoviesLimit(skip, limit);
             if (movies.Count == 0)
@@ -74,7 +67,7 @@ namespace Backend.Controllers
 
             return Ok(directors);
         }
-
+        //GET: api/Movie/5/Reviews
    
     }
 }

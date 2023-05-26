@@ -4,6 +4,7 @@ namespace Backend.Data.Abstraction;
 public interface IReviewRepository
 {
     Task<IList<Review>> GetMovieReviews(long movieId);
-    Task AddReview(Review review);
-    Task DeleteReview(Review review);
+    Task<Review> GetReview(int userId, long movieId);
+    Task SetReview(Review review);
+    Task DeleteReview(int id);
 }
