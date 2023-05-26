@@ -16,7 +16,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Movies?skip=0&limit=10
-        [HttpGet("?skip={skip}&limit={limit}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery]int skip, int limit)
         {
             var movies = await _repository.GetMoviesLimit(skip, limit);

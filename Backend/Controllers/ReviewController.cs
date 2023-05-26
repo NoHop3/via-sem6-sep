@@ -29,7 +29,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/Review/id?skip=0&limit=10
-        [HttpGet("{id}?skip={skip}&limit={limit}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<IList<ReviewDTO>>> GetMovieReviews([FromRoute] long id, [FromQuery] int skip, [FromQuery] int limit)
         {
 

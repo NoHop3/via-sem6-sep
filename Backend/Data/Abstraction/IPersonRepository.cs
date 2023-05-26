@@ -20,6 +20,10 @@ namespace Backend.Data.Abstraction
         Task<Dictionary<long, List<Movie>>> GetDirectorAllMovies(long id);
 
         Task<IList<ResultItemDTO>> GetPersonMovies(long id);
-        Task<double> GetActorAvgMoviesRating(long id);
+        Task<double?> GetActorAvgMoviesRating(long id);
+        Task<double?> GetPersonAvgMoviesRating(long id);
+        Task<IList<ResultItemDTO>> GetPeopleBySearchPhase(string searchPhrase, int skip, int limit);
+        Task<int> GetPeopleBySearchPhaseCount(string searchPhrase);
+        Task<IList<ResultItemDTO>> GetActorsWithHighestAvgMoviesRating(int limit);
     }
 }

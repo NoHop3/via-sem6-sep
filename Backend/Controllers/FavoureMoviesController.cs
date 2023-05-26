@@ -19,7 +19,7 @@ namespace Backend.Controllers
             _userRepository = userRepository;
         }
 
-         // GET: api/Favourite/5
+         // GET: api/Favourite/userId/movieId
         [HttpGet("{userId}/{movieId}")]
         public async Task<ActionResult<Boolean>> GetFavourite(int userId, long movieId)
         {
