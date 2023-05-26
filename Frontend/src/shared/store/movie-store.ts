@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { Movie } from "../models/movie";
+import { Movie, UserReview } from "../models/movie";
 
 export interface MovieStore {
   movies: Movie[];
@@ -8,6 +8,8 @@ export interface MovieStore {
   isLoading: boolean;
   page: number;
   total: number;
+  userReview?: UserReview;
+  reviews?: UserReview[];
   filterByName?: boolean;
   filterByYear?: boolean;
   filterByFavorite: boolean;
@@ -76,7 +78,9 @@ const movieSlice = createSlice({
             b.title.localeCompare(a.title),
           ));
     },
-
+    setUserReview(state, action: PayloadAction<UserReview>) {
+      state.userReview = action.payload;
+    },
     setFilterByYear(state) {
       state.filterByYear = !state.filterByYear ?? true;
       state.filteredMovies = [...state.movies];
@@ -120,4 +124,5 @@ export const {
   setFilterByName,
   setFilterByYear,
   setFilterByFavorite,
+  setUserReview,
 } = movieSlice.actions;

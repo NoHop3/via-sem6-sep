@@ -22,6 +22,7 @@ const mapStateToProps = (state: ApplicationState) => ({
   movie: state.movies.movie,
   page: state.movies.page,
   total: state.movies.total,
+  userReview: state.movies.userReview,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
@@ -33,7 +34,9 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
       setFilterByFavorite,
       clearFilters,
       setNotification,
-      setUserRating: services.setUserRating,
+      getMovieReviews: services.getMovieReviews,
+      setUserReview: services.setUserReview,
+      getUserReview: services.getUserReview,
       setFavorite: services.setFavorite,
       getMovieDetailsFor: services.getMovieDetailsFor,
       getMovies: services.getMovies,

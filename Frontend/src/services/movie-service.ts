@@ -6,12 +6,13 @@ import {
   setMovie,
   setMovies,
   setTotal,
+  setUserReview as setUserReviewAction,
 } from "../shared/store/movie-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
 import { Person } from "../shared/models/person";
 import { MovieRating } from "../shared/models/rating";
-import { MovieDetails } from "../shared/models/movie";
+import { MovieDetails, UserReview } from "../shared/models/movie";
 
 // #region getMovieWithId
 export const getMovieWith = (id: number) => (dispatch: any) => {
@@ -48,13 +49,13 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
 export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
   dispatch(setIsLoading(true));
   try {
-    const [movie, stars, director, rating, posterUrl, details] =
+    const [movie, stars, director, posterUrl, reviews, details] =
       await Promise.all([
         axios.get(`${endpoints.getMovieWith(id)}`),
         getMovieStarsFor(id),
         getMovieDirectorFor(id),
-        getMovieRatingFor(id),
         getMoviePosterFor(id),
+        getMovieReviews(id),
         getOmdbMovieDetailsFor(id),
       ]);
     dispatch(
@@ -62,9 +63,9 @@ export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
         ...movie.data,
         posterUrl,
         details,
+        reviews,
         stars,
         director,
-        rating,
       }),
     );
     dispatch(
@@ -159,9 +160,9 @@ export const getMovies =
       const moviesWithMoreData = await Promise.all(
         res.data.movies.map(async (movie: any) => {
           const posterUrl = await getMoviePosterFor(movie.id);
+          const rating = await getMovieRatingFor(movie.id);
           const favorite = userId ? await getFavorite(userId, movie.id) : false;
-          const userRating = userId ? await getUserRating(userId, movie.id) : 0;
-          return { ...movie, posterUrl, favorite, userRating };
+          return { ...movie, posterUrl, favorite, rating };
         }),
       );
       dispatch(setMovies(moviesWithMoreData));
@@ -247,26 +248,46 @@ export const setFavorite =
   };
 // #endregion
 
-// #region getUserRating
-export const getUserRating = async (
-  userId: number,
-  movieId: number,
-): Promise<any> => {
-  try {
-    const res = await axios.get(`${endpoints.getUserRating(userId, movieId)}`);
-    return res.data.reviewStars;
-  } catch (err) {
-    console.error(err);
-  }
-};
+// #region getUserReview
+export const getUserReview =
+  (userId: number, movieId: number) => async (dispatch: any) => {
+    await axios
+      .get(`${endpoints.getUserReview(userId, movieId)}`)
+      .then((res) => {
+        dispatch(setUserReviewAction(res.data));
+        dispatch(
+          setNotification({
+            open: true,
+            type: "success",
+            message: `User review was fetched successfully!`,
+          }),
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+        dispatch(
+          setNotification({
+            open: true,
+            type: "error",
+            message: `Could not get user review!`,
+          }),
+        );
+      });
+  };
 // #endregion
 
-// #region setUserRating
-export const setUserRating =
-  (userId: number, movieId: number, rating: number) =>
+// #region setUserReview
+export const setUserReview =
+  (userId: number, movieId: number, review: UserReview) =>
   async (dispatch: any) => {
     try {
-      await axios.post(`${endpoints.setUserRating(userId, movieId, rating)}`);
+      await axios.post(endpoints.setUserReview(), {
+        data: {
+          userId,
+          movieId,
+          reviewText: review.reviewText,
+        },
+      });
       dispatch(
         setNotification({
           open: true,
@@ -285,4 +306,15 @@ export const setUserRating =
       console.error(err);
     }
   };
+// #endregion
+
+// #region getMovieReviews
+export const getMovieReviews = async (movieId: number): Promise<any> => {
+  try {
+    const res = await axios.get(`${endpoints.getMovieReviews(movieId)}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
 // #endregion

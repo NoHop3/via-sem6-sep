@@ -50,3 +50,35 @@ export const DialogStory: Story = () => {
 };
 
 DialogStory.storyName = "Dialog";
+
+export const ReviewDialogStory: Story = () => {
+  const [open, setOpen] = useState(false);
+
+  const dialogProps: DialogProps = {
+    open,
+    onClose: () => {
+      setOpen(false);
+    },
+    title: "Leave a review for this movie",
+    children: [<div key="1">Dialog body</div>],
+    options: ["Save", "Close"],
+    onOptionClick: (option: string) => {
+      alert(option);
+    },
+  };
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Open
+      </button>
+      <Dialog {...dialogProps} />
+    </div>
+  );
+};
+
+ReviewDialogStory.storyName = "Review Dialog";

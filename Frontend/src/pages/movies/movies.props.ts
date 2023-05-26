@@ -1,4 +1,5 @@
 import { type Movie } from "../../shared/models";
+import { UserReview } from "../../shared/models/movie";
 import { Notification } from "../../shared/utils/typescript/types";
 
 export interface MovieProps {
@@ -9,10 +10,12 @@ export interface MovieProps {
   isLoading: boolean;
   page: number;
   total: number;
+  userReview?: UserReview;
   getMovies: (skip: number, take: number) => void;
   getMovieDetailsFor: (id: number) => void;
   setFavorite: (userId: number, movieId: number) => void;
-  setUserRating: (userId: number, movieId: number, rating: number) => void;
+  setUserReview: (userId: number, movieId: number, review: UserReview) => void;
+  getUserReview: (userId: number, movieId: number) => void;
   setPage: (page: number) => void;
   setFilterByName: () => void;
   setFilterByYear: () => void;

@@ -6,6 +6,7 @@ import {
   MovieImage,
   MovieRating,
   MovieInfo,
+  MovieButtonsWrapper,
 } from "./movie-card.styles";
 import { MovieCardProps } from "./movie-card.props";
 import { StyledLoadingGridItem } from "../../styles";
@@ -47,21 +48,17 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
       )}
       {loaded ? (
         <MovieRating
-          sx={{ opacity: props.userId ? 1 : 0 }}
           size="small"
           name="user-rating"
-          defaultValue={props.userRating ?? 0}
+          precision={0.1}
+          defaultValue={props.rating?.rating ?? 0}
           max={10}
-          onChange={(event, newValue) => {
-            props.userId &&
-              newValue &&
-              props.onRatingChange?.(props.userId, props.id, newValue);
-          }}
+          readOnly
         />
       ) : (
         <StyledLoadingGridItem gridArea="rating" />
       )}
-      {props.showFavorite && props.userId && (
+      {props.showFavorite && !!props.userId && (
         <AddToFavoritesButton
           type="button"
           disabled={!!props.disabledFavoriteButton}
@@ -76,17 +73,28 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
         </AddToFavoritesButton>
       )}
       {loaded ? (
-        <Button
-          size={"small"}
-          variant={"contained"}
-          color={"primary"}
-          disabled={false}
-          text={"See more"}
-          onClick={() => {
-            props.onMovieClick(props.id);
-          }}
-          style={{ gridArea: "button" }}
-        />
+        <MovieButtonsWrapper>
+          <Button
+            size={"small"}
+            variant={"contained"}
+            color={"primary"}
+            disabled={false}
+            text={"Details"}
+            onClick={() => {
+              props.onMovieClick(props.id);
+            }}
+          />
+          <Button
+            size={"small"}
+            variant={"contained"}
+            color={"primary"}
+            disabled={!props.userId}
+            text={"Review"}
+            onClick={() => {
+              !!props.userId && props.getUserReview?.(props.userId, props.id);
+            }}
+          />
+        </MovieButtonsWrapper>
       ) : (
         <StyledLoadingGridItem gridArea="button" />
       )}

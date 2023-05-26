@@ -32,13 +32,19 @@ export const MovieCardStory: Story = () => {
     rating: {
       id: 1,
       votes: 100,
-      rating: 5,
+      rating: 6.4,
     },
-    userId: 1,
+    userId: 3,
     showFavorite: true,
     disabledFavoriteButton: false,
-    onRatingChange: () => {
-      alert("Rating changed");
+    getUserReview: () => {
+      console.log("Fetching user review");
+    },
+    userReview: {
+      id: 1,
+      userId: 3,
+      movieId: 1,
+      reviewText: "Review for a movie",
     },
   };
   console.log(isFavorite);

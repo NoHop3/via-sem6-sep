@@ -5,7 +5,7 @@ export interface MovieCardProps extends Movie {
   showFavorite?: boolean;
   disabledFavoriteButton?: boolean;
 
-  onRatingChange?: (userId: number, movieId: number, rating: number) => void;
+  getUserReview?: (userId: number, movieId: number) => void;
   onAddToFavoritesClick?: (userId: number, movieId: number) => void;
   onMovieClick: (id: number) => void;
 }

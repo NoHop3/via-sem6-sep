@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { MovieCard } from "../../components";
@@ -15,23 +15,27 @@ import AbcIcon from "@mui/icons-material/Abc";
 import PinIcon from "@mui/icons-material/Pin";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import { _Dialog as ReviewDialog } from "../../components/shared/dialog/dialog.container";
 
 export const _Movies = (props: MovieProps) => {
+  const [openReviewDialog, setOpenReviewDialog] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const {
+    movies,
+    userReview,
     userId,
     isLoading,
-    movies,
-    setFavorite,
-    setUserRating,
     filteredMovies,
     page,
     total,
     getMovies,
     getMovieDetailsFor,
     setPage,
+    setUserReview,
+    setFavorite,
+    getUserReview,
     setFilterByName,
     setFilterByYear,
     setFilterByFavorite,
@@ -66,21 +70,55 @@ export const _Movies = (props: MovieProps) => {
           userId={userId}
           onMovieClick={handleMovieCardClick}
           onAddToFavoritesClick={setFavorite}
-          onRatingChange={setUserRating}
-          userRating={movie.userRating}
           isFavorite={movie.isFavorite}
+          getUserReview={getUserReview}
           {...movie}
         />
+        {!!userReview && !!userId && (
+          <ReviewDialog
+            open={openReviewDialog}
+            onClose={() => {
+              setOpenReviewDialog(false);
+            }}
+            title={"Leave a review for this movie"}
+            children={
+              <textarea
+                value={userReview.reviewText}
+                onChange={(e) => {
+                  console.log(e.target.value, userReview.reviewText);
+                }}
+                style={{
+                  width: "100%",
+                  height: "100px",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                }}
+              />
+            }
+            options={["Save", "Close"]}
+            onOptionClick={(option) => {
+              if (option === "Save") {
+                setUserReview(userId, movie.id, userReview);
+                setOpenReviewDialog(false);
+              } else {
+                setOpenReviewDialog(false);
+              }
+            }}
+          />
+        )}
       </StyledMovieCardWrapper>
     ));
   }, [
+    getUserReview,
     filteredMovies,
     movies,
     userId,
     setFavorite,
-    setUserRating,
     getMovieDetailsFor,
     navigate,
+    userReview,
+    setUserReview,
+    openReviewDialog,
   ]);
 
   return (
