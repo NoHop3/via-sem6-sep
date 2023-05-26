@@ -4,6 +4,7 @@ public class ReviewDTO
 {
     public int Id { get; set; }
     public int UserId { get; set; }
+    public string Username { get; set; } = null!;
     public long MovieId { get; set; }
-    public int ReviewStars { get; set; }
+    public int ReviewText { get; set; }
 }

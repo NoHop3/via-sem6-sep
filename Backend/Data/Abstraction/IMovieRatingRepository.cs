@@ -1,3 +1,4 @@
+using Backend.DTOs;
 using Backend.Models;
 
 namespace Backend.Data.Abstraction
@@ -6,6 +7,6 @@ namespace Backend.Data.Abstraction
     {
         Task<MovieRating> GetMovieRating(long id);
         Task<IList<MovieRating>> GetRatings(long[] ids);
-        Task<MovieRating> AddRating(MovieRating movieRating);
+        Task<MovieRating> AddRating(MovieRating movieRating);        
     }
 }

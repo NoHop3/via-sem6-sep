@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
 using Backend.Models;
 using Backend.Data.Abstraction;
 
@@ -22,9 +15,9 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/Directors/10/10
-        [HttpGet("{skip}/{limit}")]
-        public async Task<ActionResult<IEnumerable<Director>>> GetDirectors(int skip, int limit)
+        // GET: api/Directors?skip=0&limit=10
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Director>>> GetDirectors([FromQuery]int skip, int limit)
         {
             var directors = await _repository.GetAllDirectorsLimit(skip, limit);
             if (directors.Count == 0)

@@ -11,6 +11,11 @@ internal class UserRepository : IUserRepository
     {
         _context = context;
     }
+
+    public async Task<User?> GetUserById(int id)
+    {
+        return await _context.Users.SingleOrDefaultAsync(x => x.Id == id) ?? null;
+    }
     public async Task AddUser(User user)
     {
         //Check if the email or username exists already
@@ -35,17 +40,12 @@ internal class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<User> GetUserByEmail(string email)
+    public async Task<User?> GetUserByEmail(string email)
     {
-        return await _context.Users.SingleOrDefaultAsync(x => x.Email == email) ?? null;
+        return await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
     }
 
-    public async Task<User> GetUserById(int id)
-    {
-        return await _context.Users.SingleOrDefaultAsync(x => x.Id == id) ?? null;
-    }
-
-    public async Task<User> GetUserByUsername(string username)
+    public async Task<User?> GetUserByUsername(string username)
     {
         return await _context.Users.SingleOrDefaultAsync(x => x.Username == username) ?? null;
     }

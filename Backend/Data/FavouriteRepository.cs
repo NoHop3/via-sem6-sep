@@ -42,21 +42,4 @@ internal class FavouriteRepository : IFavouriteRepository
         _context.Favourites.Remove(favourite);
         await _context.SaveChangesAsync();
     }
-
-    public async Task<Dictionary<int, List<Movie>>> GetUserFavouritesByEmailOrUsername(string emailOrUsername)
-    {
-        var user = emailOrUsername.Contains("@") ? await _context.Users.FirstAsync(x => x.Email == emailOrUsername)
-                                                 : await _context.Users.FirstAsync(x => x.Username == emailOrUsername);
-        var favourites = await _context.Favourites.Include(x => x.Movie).Where(x => x.UserId == user.Id).ToListAsync();
-
-        var result = favourites.GroupBy(x => x.UserId).ToDictionary(user => user.Key, user => user.Select(x => x.Movie).ToList());
-        return result;
-
-    }
-
-    public async Task<List<Movie>> GetUserFavouritesByIdWithLimit(int id, int skip, int limit)
-    {
-        var favourites = await _context.Favourites.Include(x => x.Movie).Where(x => x.UserId == id).Skip(skip).Take(limit).ToListAsync();
-        return favourites.Select(x => x.Movie).ToList();
-    }
 }

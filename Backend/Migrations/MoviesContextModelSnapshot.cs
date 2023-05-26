@@ -137,11 +137,17 @@ namespace Backend.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("user_id");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("username");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "MovieId")
+                        .IsUnique();
 
                     b.ToTable("reviews", (string)null);
                 });

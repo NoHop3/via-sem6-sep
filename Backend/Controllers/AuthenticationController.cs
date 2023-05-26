@@ -1,6 +1,5 @@
 using Backend.Data.Abstraction;
 using Backend.DTOs;
-using Backend.Models;
 using Backend.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +37,10 @@ public class AuthenticationController: ControllerBase
     [Route("Register")]
     public async Task<ActionResult<UserDTO>> Register([FromBody] UserDTO userDTO)
     {
+        userDTO.APIKey = AuthorizationProvider.GenerateAPIKey(userDTO.Username);
         var user = Mapper.MapUserFromDTO(userDTO);
+        user.Salt = AuthorizationProvider.GenerateSalt();
+        user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         try
         {
             await _repository.AddUser(user);
@@ -48,6 +50,10 @@ public class AuthenticationController: ControllerBase
             return Conflict(e.Message);
         }
         var addedUser = await _repository.GetUserByEmail(user.Email);
+        if (addedUser == null)
+        {
+            return BadRequest("Something went wrong");
+        }
         var addedUserDTO = Mapper.MapUserToDTO(addedUser);
         return Ok(addedUserDTO);
     }

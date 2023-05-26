@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Backend.Models;
 using Backend.Data.Abstraction;
+using Backend.DTOs;
+using Backend.Utils;
 
 namespace Backend.Controllers
 {
@@ -9,19 +10,29 @@ namespace Backend.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly IReviewRepository _repository;
-        private readonly IUserRepository _userRepository;
 
-        public ReviewController(IReviewRepository repository, IUserRepository userRepository)
+        public ReviewController(IReviewRepository repository)
         {
             _repository = repository;
-            _userRepository = userRepository;
         }
 
-        // GET: api/Review/userId/movieId
         [HttpGet("{userId}/{movieId}")]
-        public async Task<ActionResult<Review>> GetReview(int userId, long movieId)
+        public async Task<ActionResult<ReviewDTO>> GetReview(int userId, long movieId)
         {
             var review = await _repository.GetReview(userId, movieId);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            var reviewDTO = Mapper.MapReviewToDTO(review);
+            return Ok(reviewDTO);
+        }
+
+        // GET: api/Review/id?skip=0&limit=10
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IList<ReviewDTO>>> GetMovieReviews([FromRoute] long id, [FromQuery] int skip, [FromQuery] int limit)
+        {
+            var review = await _repository.GetMovieReviews(id);
             if (review == null)
             {
                 return NotFound();
@@ -31,21 +42,35 @@ namespace Backend.Controllers
 
         // POST: api/setReview/userId/movieId/rating
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{userId}/{movieId}/{rating}")]
-        public async Task<ActionResult> SetReview(int userId, long movieId, int rating)
+        [HttpPost]
+        public async Task<ActionResult<IList<ReviewDTO>>> SetMovieReview([FromBody] ReviewDTO reviewDTO)
         {
+            var review = Mapper.MapReviewFromDTO(reviewDTO);
             try
             {
-                await _repository.SetReview(new Review
-                {
-                    UserId = userId,
-                    MovieId = movieId,
-                    ReviewStars = rating
-                });
+                await _repository.SetReview(review);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
+            }
+            var reviews = await _repository.GetMovieReviews(reviewDTO.MovieId);
+            var reviewDTOs = Mapper.MapReviewToDTOList(reviews);
+            return CreatedAtAction("Review", reviewDTOs);
+        }
+
+        // DELETE: api/Review
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMovieReview([FromRoute] int id)
+        {
+            try
+            {
+                await _repository.DeleteReview(id);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
             }
             return Ok();
         }

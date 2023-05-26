@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230525224702_ReviewAndFavouriteTableChanges")]
-    partial class ReviewAndFavouriteTableChanges
+    [Migration("20230526154634_AddReviewIndexAndUsername")]
+    partial class AddReviewIndexAndUsername
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,19 +132,26 @@ namespace Backend.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("movie_id");
 
-                    b.Property<int>("ReviewStars")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("reviewStars");
+                    b.Property<string>("ReviewText")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("reviewText");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("user_id");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("username");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "MovieId")
+                        .IsUnique();
 
                     b.ToTable("reviews", (string)null);
                 });
