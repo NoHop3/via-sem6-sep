@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data.Abstraction;
+using Backend.DTOs;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,49 @@ namespace Backend.Data
             }
             await _context.SaveChangesAsync();
             return movieRating;
+        }
+
+        public async Task<IList<ResultItemDTO>> GetMoviesWithHighestRating(int limit)
+        {
+            var movies = await _context.Ratings.Include(x=>x.Movie).OrderBy(x=>x.Rating).Take(limit).ToListAsync();
+            IList<ResultItemDTO> resultItems = new List<ResultItemDTO>();
+            foreach(var movie in movies)
+            {
+                ResultItemDTO ri = new()
+                {
+                    Id = movie.Movie.Id,
+                    Name = movie.Movie.Title,
+                    Year = movie.Movie.Year,
+                    Rating = movie.Rating,
+                    Type = "Movie"
+                };
+                resultItems.Add(ri);
+            }
+            return resultItems;
+        }
+
+        public async Task<IList<ResultItemDTO>> GetActorsWithHighestAvgMoviesRating(int limit)
+        {
+            var stars = await _context.Stars.Include(x => x.Movie).ToListAsync();
+            var moviesDictionary = stars.GroupBy(x => x.PersonId).ToDictionary(star => star.Key, star => star.Select(x => x.Movie.Id).ToList());
+            IList<ResultItemDTO> resultItems = new List<ResultItemDTO>();
+            foreach(var starMovie in moviesDictionary)
+            {
+                var ratings = _context.Ratings.Where(x=>starMovie.Value.Contains(x.MovieId)).Select(x=>x.Rating);
+                var avg = ratings.Sum() / starMovie.Value.Count;
+                var star = await _context.People.FirstOrDefaultAsync(x=>x.Id == starMovie.Key);
+                ResultItemDTO ri = new()
+                {
+                    Id = star.Id,
+                    Name = star.Name,
+                    Year = star.Birth,
+                    Rating = avg,
+                    Type = "Actor"
+                };
+                resultItems.Add(ri);
+            }
+            var result = resultItems.OrderBy(x=>x.Rating).Take(limit).ToList();
+            return result;
         }
     }
 }

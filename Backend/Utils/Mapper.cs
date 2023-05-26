@@ -17,9 +17,10 @@ public static class Mapper
             FirstName = userDTO.FirstName,
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
-            Salt = AuthorizationProvider.GenerateSalt()
+            HashedPasword = userDTO.Password,
+            //APIKey = userDTO.APIKey
         };
-        user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
+        //user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         return user;
     }
 
@@ -39,12 +40,12 @@ public static class Mapper
         return userDTO;
     }
 
-    public static Favourite MapFavouriteMoviteFromDTO(FavouriteDTO favouriteDTO, int userId)
+    public static Favourite MapFavouriteMoviteFromDTO(FavouriteDTO favouriteDTO)
     {
         var favourite = new Favourite()
         {
             Id = favouriteDTO.Id,
-            UserId = userId,
+            UserId = favouriteDTO.Id,
             MovieId = favouriteDTO.MovieId
         };
 
@@ -56,19 +57,20 @@ public static class Mapper
         var favouriteDTO = new FavouriteDTO()
         {
             Id = favourite.Id,
-            UserEmailOrUsername = favourite.User.Username,
+            UserId = favourite.UserId,
             MovieId = favourite.MovieId
         };
 
         return favouriteDTO;
     }
 
-    public static Review MapReviewFromDTO(ReviewDTO reviewDTO, int userId)
+    public static Review MapReviewFromDTO(ReviewDTO reviewDTO)
     {
         var review = new Review()
         {
             Id = reviewDTO.Id,
-            UserId = userId,
+            UserId = reviewDTO.UserId,
+            Username = reviewDTO.Username,
             MovieId = reviewDTO.MovieId,
             ReviewText = reviewDTO.ReviewText
         };
@@ -81,7 +83,8 @@ public static class Mapper
         var reviewDTO = new ReviewDTO()
         {
             Id = review.Id,
-            Username = review.User.Username,
+            UserId = review.UserId,
+            Username = review.Username,
             MovieId = review.MovieId,
             ReviewText = review.ReviewText
         };
@@ -97,7 +100,8 @@ public static class Mapper
             var reviewDTO = new ReviewDTO()
             {
                 Id = review.Id,
-                Username = review.User.Username,
+                UserId = review.UserId,
+                Username = review.Username,
                 MovieId = review.MovieId,
                 ReviewText = review.ReviewText
             };

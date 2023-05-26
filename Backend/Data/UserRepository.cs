@@ -11,6 +11,11 @@ internal class UserRepository : IUserRepository
     {
         _context = context;
     }
+
+    public async Task<User?> GetUserById(int id)
+    {
+        return await _context.Users.SingleOrDefaultAsync(x => x.Id == id) ?? null;
+    }
     public async Task AddUser(User user)
     {
         //Check if the email or username exists already

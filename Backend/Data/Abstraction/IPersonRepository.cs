@@ -1,3 +1,4 @@
+using Backend.DTOs;
 using Backend.Models;
 
 namespace Backend.Data.Abstraction
@@ -18,6 +19,7 @@ namespace Backend.Data.Abstraction
         Task<Dictionary<long, List<Movie>>> GetStarAllMovies(long id);
         Task<Dictionary<long, List<Movie>>> GetDirectorAllMovies(long id);
 
-        Task<IList<PersonMovie>> GetPersonMovies(long id);
+        Task<IList<ResultItemDTO>> GetPersonMovies(long id);
+        Task<double> GetActorAvgMoviesRating(long id);
     }
 }

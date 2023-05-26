@@ -1,4 +1,5 @@
 using Backend.Data.Abstraction;
+using Backend.DTOs;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,21 +77,29 @@ namespace Backend.Data
             return await _context.People.CountAsync();
         }
 
-        public async Task<IList<PersonMovie>> GetPersonMovies(long id)
+        public async Task<IList<ResultItemDTO>> GetPersonMovies(long id)
         {
             var stars = await _context.Stars.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
             var directors = await _context.Directors.Include(x => x.Movie).Where(x => x.PersonId == id).ToListAsync();
 
-            var result = new List<PersonMovie>();
+            var result = new List<ResultItemDTO>();
             foreach (var star in stars)
             {
-                result.Add(new PersonMovie { PersonId = id, Title = star.Movie.Title, ReleaseYear = star.Movie.Year, Role = "Star" });
+                result.Add(new ResultItemDTO { Id = id, Name = star.Movie.Title, Year = star.Movie.Year, Type = "Star" });
             }
             foreach (var director in directors)
             {
-                result.Add(new PersonMovie { PersonId = id, Title = director.Movie.Title, ReleaseYear = director.Movie.Year, Role = "Director" });
+                result.Add(new ResultItemDTO { Id = id, Name = director.Movie.Title, Year = director.Movie.Year, Type = "Director" });
             }
             return result;
+        }
+
+        public async Task<double> GetActorAvgMoviesRating(long id)
+        {
+            var movieIds = await _context.Stars.Include(x => x.Movie).Where(x=>x.PersonId == id).Select(x=>x.MovieId).ToListAsync();
+            var ratings = _context.Ratings.Where(x=>movieIds.Contains(x.MovieId)).Select(x=>x.Rating);
+            var avg = ratings.Sum() / movieIds.Count;
+            return avg;
         }
     }
 }

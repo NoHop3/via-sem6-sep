@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Backend.Data;
 using Backend.Models;
 using Backend.Data.Abstraction;
+using Backend.DTOs;
 
 namespace Backend.Controllers
 {
@@ -17,6 +16,22 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
+        // GET: api/MovieRating/
+        [HttpGet]
+        public async Task<ActionResult<IList<ResultItemDTO>>> GetMoviesAndActorsWithHighestRating()
+        {
+            //It was desided that we will get the first 5 for the homepage
+            var movies = await _repository.GetMoviesWithHighestRating(5);
+            var actors = await _repository.GetActorsWithHighestAvgMoviesRating(5);
+            if (movies.Count == 0 && actors.Count == 0)
+            {
+                return NotFound();
+            }
+            var result = new List<ResultItemDTO>();
+            result.AddRange(movies);
+            result.AddRange(actors);
+            return Ok(result);
+        }
         // GET: api/MovieRating/5
         [HttpGet("{movieId}")]
         public async Task<ActionResult<MovieRating>> GetMovieRating(long movieId)
@@ -44,7 +59,7 @@ namespace Backend.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
 
             return NoContent();
@@ -61,7 +76,7 @@ namespace Backend.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
 
             return CreatedAtAction("GetMovieRating", new { id = movieRating.MovieId }, movieRating);

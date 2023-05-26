@@ -12,14 +12,33 @@ internal class ReviewRepository : IReviewRepository
         _context = context;
     }
 
-    public async Task AddReview(Review review)
+        public async Task<Review> GetReview(int userId, long movieId)
     {
-        await _context.Reviews.AddAsync(review);
+        var review = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId);
+        if (review == null)
+        {
+            return null;
+        }
+        return review;
+    }
+    public async Task SetReview(Review review)
+    {
+
+        var rev = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == review.UserId && x.MovieId == review.MovieId);
+        if (rev != null)
+        {
+            rev.ReviewText = review.ReviewText;
+             _context.Entry(rev).State = EntityState.Modified;
+        } else
+        {
+            await _context.Reviews.AddAsync(review);
+        }
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteReview(Review review)
+    public async Task DeleteReview(int id)
     {
+        var review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == id);
          _context.Reviews.Remove(review);
         await _context.SaveChangesAsync();
     }

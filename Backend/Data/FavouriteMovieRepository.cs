@@ -4,10 +4,10 @@ using Backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data;
-internal class FavouriteMovieRepository : IFavouriteMovieRepository
+internal class FavouriteRepository : IFavouriteRepository
 {
     private readonly MyDbContext _context;
-    public FavouriteMovieRepository(MyDbContext context)
+    public FavouriteRepository(MyDbContext context)
     {
         _context = context;
     }
@@ -43,5 +43,23 @@ internal class FavouriteMovieRepository : IFavouriteMovieRepository
         var result = favourites.GroupBy(x=>x.UserId).ToDictionary(user=>user.Key, user=>user.Select(x=>x.Movie).ToList());
         return result;
 
+    }
+
+    public async Task<Boolean> GetFavourite(int userId, long movieId)
+    {
+        return await _context.Favourites.AnyAsync(x => x.UserId == userId && x.MovieId == movieId);
+    }
+
+    public async Task SetFavourite(Favourite favourite)
+    {
+        var fav = await _context.Favourites.FirstOrDefaultAsync(x => x.UserId == favourite.UserId && x.MovieId == favourite.MovieId);
+        if (fav == null)
+        {
+            await AddFavourite(favourite);
+        }
+        else
+        {
+            await RemoveFavourite(fav);
+        }
     }
 }
