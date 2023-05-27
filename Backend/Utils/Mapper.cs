@@ -18,7 +18,7 @@ public static class Mapper
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
             HashedPasword = userDTO.Password,
-            APIKey = userDTO.APIKey
+            APIKey = userDTO.APIKey!
         };
         return user;
     }
@@ -94,7 +94,7 @@ public static class Mapper
     public static IList<ReviewDTO> MapReviewToDTOList(IList<Review> reviews)
     {
         var reviewDTOs = new List<ReviewDTO>();
-        foreach(var review in reviews)
+        foreach (var review in reviews)
         {
             var reviewDTO = new ReviewDTO()
             {

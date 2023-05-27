@@ -6,6 +6,9 @@ export interface Movie {
   title: string;
   year: number;
   details: MovieDetails;
+  userReview?: UserReview;
+  reviews?: UserReview[];
+  isFavorite?: boolean;
   posterUrl?: string;
   stars?: Person[];
   director?: Person[];
@@ -20,4 +23,12 @@ export interface MovieDetails {
   genre?: string;
   language?: string;
   country?: string;
+}
+
+export interface UserReview {
+  id?: number;
+  userId: number;
+  username: string;
+  movieId: number;
+  reviewText: string;
 }

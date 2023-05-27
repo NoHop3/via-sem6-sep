@@ -1,3 +1,4 @@
+// eslint-disable object-shorthand
 import axios from "axios";
 import { setUser, setIsLoggedIn } from "../shared/store/user-store";
 import { setNotification } from "../shared/store/notification-store";
@@ -8,7 +9,13 @@ import { RegisteredUser, User } from "../shared/models/user";
 export const signIn =
   (username: string, password: string) => (dispatch: any) => {
     axios
-      .post(`${endpoints.signIn(username, password)}`)
+      .post(endpoints.signIn(), {
+        Username: username,
+        Password: password,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res: any) => {
         dispatch(setUser(res.data as User));
         dispatch(
@@ -38,7 +45,17 @@ export const signIn =
 // #region signUp
 export const signUp = (user: RegisteredUser) => (dispatch: any) => {
   axios
-    .post(`${endpoints.signUp(user)}`)
+    .post(endpoints.signUp(), {
+      username: user.username,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      birthYear: user.birthYear,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     .then((res: any) => {
       dispatch(setUser(res.data as User));
       dispatch(

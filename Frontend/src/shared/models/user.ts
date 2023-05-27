@@ -4,11 +4,10 @@ export interface RegisteredUser {
   firstName: string;
   lastName: string;
   email: string;
-  year?: number;
+  birthYear?: number;
 }
 
 export interface User extends RegisteredUser {
-  id: string;
-  loggedUser: RegisteredUser;
-  token: string;
+  id: number;
+  apiKey: string;
 }

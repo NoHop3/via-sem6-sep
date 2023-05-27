@@ -8,5 +8,4 @@ export interface PeopleProps {
 
   getPeople: (skip: number, take: number) => void;
   setPage: (page: number) => void;
-  setFavorite: (id: number) => void;
 }

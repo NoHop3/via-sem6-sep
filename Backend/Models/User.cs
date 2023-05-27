@@ -12,3 +12,9 @@ public class User
     public string Salt { get; set; } = null!;
     public string APIKey { get; set; } = null!;
 }
+
+public class LoginUser
+{
+    public string Username { get; set; } = null!;
+    public string Password { get; set; } = null!;
+}

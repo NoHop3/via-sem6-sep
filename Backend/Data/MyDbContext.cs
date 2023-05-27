@@ -11,9 +11,9 @@ public class MyDbContext : DbContext
     public DbSet<MovieRating> Ratings { get; set; }
     public DbSet<Star> Stars { get; set; }
     public DbSet<Director> Directors { get; set; }
-    public  DbSet<User> Users {get;set;}
-    public DbSet<Favourite> Favourites {get; set;}
-    public DbSet<Review> Reviews {get;set;}
+    public DbSet<User> Users { get; set; }
+    public DbSet<Favourite> Favourites { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
 #pragma warning disable CS8618
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
@@ -49,12 +49,12 @@ public class MyDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
 
-            entity.ToTable("favourites");   
+            entity.ToTable("favourites");
 
             entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.MovieId).HasColumnName("movie_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.HasIndex(e => new {e.UserId, e.MovieId}).IsUnique();
+            entity.HasIndex(e => new { e.UserId, e.MovieId }).IsUnique();
 
             entity.HasOne(d => d.Movie)
                 .WithMany()
@@ -84,7 +84,7 @@ public class MyDbContext : DbContext
             entity.Property(e => e.Salt).HasColumnName("salt");
             entity.Property(e => e.HashedPasword).HasColumnName("hashedPasword");
             entity.Property(e => e.BirthYear).HasColumnName("birthYear");
-            entity.Property(e=> e.APIKey).HasColumnName("apiKey");
+            entity.Property(e => e.APIKey).HasColumnName("apiKey");
         });
 
         modelBuilder.Entity<Director>(entity =>

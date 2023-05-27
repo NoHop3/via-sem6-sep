@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Data.Abstraction;
-using Backend.Utils;
 using Backend.DTOs;
+using Backend.Utils;
 
 namespace Backend.Controllers
 {
@@ -32,17 +32,15 @@ namespace Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IList<ReviewDTO>>> GetMovieReviews([FromRoute] long id, [FromQuery] int skip, [FromQuery] int limit)
         {
-
-            var reviews =  await _repository.GetMovieReviews(id);
-            if (reviews.Count == 0)
+            var review = await _repository.GetMovieReviews(id);
+            if (review == null)
             {
                 return NotFound();
             }
-            var reviewDTOs = Mapper.MapReviewToDTOList(reviews);
-            return Ok(reviewDTOs);
+            return Ok(review);
         }
 
-        // POST: api/Review
+        // POST: api/setReview/userId/movieId/rating
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<IList<ReviewDTO>>> SetMovieReview([FromBody] ReviewDTO reviewDTO)
@@ -50,15 +48,18 @@ namespace Backend.Controllers
             var review = Mapper.MapReviewFromDTO(reviewDTO);
             try
             {
+
                 await _repository.SetReview(review);
+
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-            var reviews = await _repository.GetMovieReviews(reviewDTO.MovieId);
-            var reviewDTOs = Mapper.MapReviewToDTOList(reviews);
-            return CreatedAtAction("Review", reviewDTOs);
+
+            var returnedReviewDTO = Mapper.MapReviewToDTO(review);
+            return Ok(returnedReviewDTO);
         }
 
         // DELETE: api/Review
@@ -70,7 +71,7 @@ namespace Backend.Controllers
             {
                 await _repository.DeleteReview(id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }

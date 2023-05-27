@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { Movie } from "../models/movie";
+import { Movie, UserReview } from "../models/movie";
 
 export interface MovieStore {
   movies: Movie[];
@@ -8,22 +8,36 @@ export interface MovieStore {
   isLoading: boolean;
   page: number;
   total: number;
+  userReview: UserReview;
+  reviews?: UserReview[];
   filterByName?: boolean;
   filterByYear?: boolean;
+  filterByFavorite: boolean;
+  isReviewDialogOpen: boolean;
+  currentlyReviewingMovieId?: number;
 }
 
 const initialState: MovieStore = {
-  movies: [],
-  filteredMovies: [],
+  movies: [] as Movie[],
+  filteredMovies: [] as Movie[],
   movie: {
     id: 0,
     title: "",
     year: 0,
     details: {},
-  },
+  } satisfies Movie,
   isLoading: false,
   page: 1,
   total: 0,
+  filterByFavorite: false,
+  isReviewDialogOpen: false,
+  userReview: {
+    id: 0,
+    movieId: 0,
+    username: "",
+    userId: 0,
+    reviewText: "",
+  },
 };
 
 const movieSlice = createSlice({
@@ -32,9 +46,26 @@ const movieSlice = createSlice({
   reducers: {
     setMovies(state, action: PayloadAction<Movie[]>) {
       state.movies = action.payload;
+      state.filteredMovies = [...state.movies];
+      if (state.filterByYear ?? state.filterByName ?? state.filterByFavorite) {
+        if (state.filterByYear) {
+          state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.year > b.year ? 1 : -1,
+          );
+        }
+        if (state.filterByName) {
+          state.filteredMovies = state.filteredMovies.sort((a, b) =>
+            a.title.localeCompare(b.title),
+          );
+        }
+        if (state.filterByFavorite) {
+          state.filteredMovies = state.filteredMovies.filter(
+            (movie) => movie.isFavorite,
+          );
+        }
+      }
     },
     setMovie(state, action: PayloadAction<Movie>) {
-      console.log(action.payload);
       state.movie = action.payload;
     },
     setIsLoading(state, action: PayloadAction<boolean>) {
@@ -57,7 +88,18 @@ const movieSlice = createSlice({
             b.title.localeCompare(a.title),
           ));
     },
-
+    setUserReview(state, action: PayloadAction<UserReview>) {
+      state.userReview = action.payload;
+    },
+    clearUserReview(state) {
+      state.userReview = {
+        id: 0,
+        movieId: 0,
+        username: "",
+        userId: 0,
+        reviewText: "",
+      };
+    },
     setFilterByYear(state) {
       state.filterByYear = !state.filterByYear ?? true;
       state.filteredMovies = [...state.movies];
@@ -69,10 +111,35 @@ const movieSlice = createSlice({
             b.year > a.year ? 1 : -1,
           ));
     },
+    setFilterByFavorite(state) {
+      state.filterByFavorite = !state.filterByFavorite;
+      if (state.filterByFavorite) {
+        state.filteredMovies = state.movies.filter((movie) => movie.isFavorite);
+      } else {
+        state.filteredMovies = [
+          ...state.filteredMovies.filter(
+            (movie) => movie.isFavorite && !movie.isFavorite,
+          ),
+        ];
+      }
+    },
     clearFilters(state) {
       state.filteredMovies = [];
       state.filterByName = undefined;
       state.filterByYear = undefined;
+      state.filterByFavorite = false;
+    },
+    setFavouriteForMovie(state, action: PayloadAction<number>) {
+      const movie = state.movies.find((m) => m.id === action.payload);
+      if (movie) {
+        movie.isFavorite = !movie.isFavorite;
+      }
+    },
+    setIsReviewDialogOpen(state, action: PayloadAction<boolean>) {
+      state.isReviewDialogOpen = action.payload;
+    },
+    setCurrentlyReviewingMovieId(state, action: PayloadAction<number>) {
+      state.currentlyReviewingMovieId = action.payload;
     },
   },
 });
@@ -87,4 +154,10 @@ export const {
   clearFilters,
   setFilterByName,
   setFilterByYear,
+  setFilterByFavorite,
+  setUserReview,
+  clearUserReview,
+  setFavouriteForMovie,
+  setIsReviewDialogOpen,
+  setCurrentlyReviewingMovieId,
 } = movieSlice.actions;

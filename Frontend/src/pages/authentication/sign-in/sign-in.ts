@@ -6,7 +6,9 @@ import { type AppDispatch } from "../../../shared/store/app-thunk";
 import { _SignIn } from "./sign-in.container";
 import { services } from "../../../services";
 
-const mapStateToProps = (state: ApplicationState) => ({});
+const mapStateToProps = (state: ApplicationState) => ({
+  isLoggedIn: state.user.isLoggedIn,
+});
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return bindActionCreators(

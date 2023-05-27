@@ -1,6 +1,14 @@
-import { getMovieDetailsFor, getMovieWith, getMovies } from "./movie-service";
+import {
+  getMovieDetailsFor,
+  getMovieWith,
+  getMovies,
+  setFavorite,
+  setUserReview,
+  getUserReview,
+  getMovieReviews,
+} from "./movie-service";
 
-import { getPeople, setFavorite } from "./people-service";
+import { getPeople } from "./people-service";
 
 import { search } from "./search-service";
 
@@ -10,8 +18,11 @@ export const services = {
   getMovieWith,
   getMovies,
   getMovieDetailsFor,
-  getPeople,
   setFavorite,
+  setUserReview,
+  getUserReview,
+  getMovieReviews,
+  getPeople,
   search,
   signIn,
   signUp,

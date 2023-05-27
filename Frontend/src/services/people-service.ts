@@ -58,29 +58,3 @@ const getPersonMovies = async (id: number): Promise<PersonMovie[]> => {
   }
 };
 // #endregion
-
-// #region setFavorite
-export const setFavorite = (id: number) => async (dispatch: any) => {
-  try {
-    const res = await axios.put(`${endpoints.setFavorite(id)}`);
-    if (res.data) {
-      dispatch(
-        setNotification({
-          open: true,
-          type: "success",
-          message: `Person was favorited successfully!`,
-        }),
-      );
-    }
-  } catch (err) {
-    dispatch(
-      setNotification({
-        open: true,
-        type: "error",
-        message: `Person was not favorited!`,
-      }),
-    );
-    throw err;
-  }
-};
-// #endregion

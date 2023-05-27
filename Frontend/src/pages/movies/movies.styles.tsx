@@ -41,8 +41,8 @@ export const StyledMovieCardWrapper = styled(Box)`
   position: relative;
   background-color: ${({ theme }) => theme.palette.primary.main};
   border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 3rem;
+  padding: ${({ theme }) => theme.spacing(1)};
+  margin: ${({ theme }) => theme.spacing(1)};
   box-shadow: 0 0 0.5rem 0.25rem ${({ theme }) => theme.palette.primary.dark};
   transition: all 0.25s ease-in-out;
   &:hover {

@@ -12,6 +12,8 @@ export interface Notification {
 export interface SearchResultItem {
   id: number;
   name: string;
+  rating?: number;
+  type: string;
   year?: number;
   poster?: string;
 }

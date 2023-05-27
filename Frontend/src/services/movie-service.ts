@@ -1,16 +1,21 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from "axios";
 import {
+  setFavouriteForMovie,
   setIsLoading,
   setMovie,
   setMovies,
   setTotal,
+  setUserReview as setUserReviewAction,
+  clearUserReview,
 } from "../shared/store/movie-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
 import { Person } from "../shared/models/person";
 import { MovieRating } from "../shared/models/rating";
-import { MovieDetails } from "../shared/models/movie";
+import { MovieDetails, UserReview } from "../shared/models/movie";
 
 // #region getMovieWithId
 export const getMovieWith = (id: number) => (dispatch: any) => {
@@ -47,13 +52,13 @@ export const getMovieWith = (id: number) => (dispatch: any) => {
 export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
   dispatch(setIsLoading(true));
   try {
-    const [movie, stars, director, rating, posterUrl, details] =
+    const [movie, stars, director, posterUrl, reviews, details] =
       await Promise.all([
         axios.get(`${endpoints.getMovieWith(id)}`),
         getMovieStarsFor(id),
         getMovieDirectorFor(id),
-        getMovieRatingFor(id),
         getMoviePosterFor(id),
+        getMovieReviews(id),
         getOmdbMovieDetailsFor(id),
       ]);
     dispatch(
@@ -61,9 +66,9 @@ export const getMovieDetailsFor = (id: number) => async (dispatch: any) => {
         ...movie.data,
         posterUrl,
         details,
+        reviews,
         stars,
         director,
-        rating,
       }),
     );
     dispatch(
@@ -149,19 +154,21 @@ const getOmdbMovieDetailsFor = async (id: number): Promise<MovieDetails> => {
 
 // #region getMovies
 export const getMovies =
-  (skip: number, take: number) => async (dispatch: any) => {
+  (skip: number, take: number, userId?: number) => async (dispatch: any) => {
     dispatch(setIsLoading(true));
     try {
       const res = await axios.get(
         `${endpoints.getMovies((skip - 1) * 12, take)}`,
       );
-      const moviesWithPosters = await Promise.all(
+      const moviesWithMoreData = await Promise.all(
         res.data.movies.map(async (movie: any) => {
           const posterUrl = await getMoviePosterFor(movie.id);
-          return { ...movie, posterUrl };
+          const rating = await getMovieRatingFor(movie.id);
+          const isFavorite = await getFavorite(userId ?? 0, movie.id);
+          return { ...movie, posterUrl, rating, isFavorite };
         }),
       );
-      dispatch(setMovies(moviesWithPosters));
+      dispatch(setMovies(moviesWithMoreData));
       dispatch(setTotal(res.data.total));
       dispatch(
         setNotification({
@@ -199,6 +206,120 @@ const getMoviePosterFor = async (id: number): Promise<string> => {
   } catch (err) {
     console.error(err);
     return defaultPosterUrl;
+  }
+};
+// #endregion
+
+// #region getFavoriteMovie
+export const getFavorite = async (
+  userId: number,
+  movieId: number,
+): Promise<any> => {
+  try {
+    if (userId === 0) return false;
+    const res = await axios.get(
+      `${endpoints.getFavoriteMovie(userId, movieId)}`,
+    );
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+// #endregion
+
+// #region setFavoriteMovie
+export const setFavorite =
+  (userId: number, movieId: number) => async (dispatch: any) => {
+    try {
+      await axios.post(`${endpoints.setFavoriteMovie(userId, movieId)}`);
+      dispatch(setFavouriteForMovie(movieId));
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Movie was favorited/unfavorited successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Could not favorite/unfavorite movie!`,
+        }),
+      );
+      console.error(err);
+    }
+  };
+// #endregion
+
+// #region getUserReview
+export const getUserReview =
+  (userId: number, movieId: number) => async (dispatch: any) => {
+    await axios
+      .get(`${endpoints.getUserReview(userId, movieId)}`)
+      .then((res) => {
+        dispatch(setUserReviewAction(res.data));
+        dispatch(
+          setNotification({
+            open: true,
+            type: "success",
+            message: `User review was fetched successfully!`,
+          }),
+        );
+      })
+      .catch((err) => {
+        dispatch(clearUserReview());
+        console.error(
+          "Could not fetch user review for this movie and this user... But that is okay! We can create one...",
+          err,
+        );
+      });
+  };
+// #endregion
+
+// #region setUserReview
+export const setUserReview =
+  (userId: number, movieId: number, review: UserReview) =>
+  async (dispatch: any) => {
+    try {
+      await axios.post(endpoints.setUserReview(), {
+        UserId: userId,
+        MovieId: movieId,
+        Username: review.username,
+        ReviewText: review.reviewText,
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch(
+        setNotification({
+          open: true,
+          type: "success",
+          message: `Movie was rated successfully!`,
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        setNotification({
+          open: true,
+          type: "error",
+          message: `Could not rate movie!`,
+        }),
+      );
+      console.error(err);
+    }
+  };
+// #endregion
+
+// #region getMovieReviews
+export const getMovieReviews = async (movieId: number): Promise<any> => {
+  try {
+    const res = await axios.get(`${endpoints.getMovieReviews(movieId)}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
   }
 };
 // #endregion

@@ -18,10 +18,10 @@ namespace Backend.Controllers
             _personRepository = personRepository;
         }
 
-        // GET: api/Home/Search?searchPhrase={searchPhrase}
+        // GET: api/Home/Search?searchPhrase={searchPhrase}&skip={skip}&limit={limit}
         [HttpGet]
         [Route("Search")]
-        public async Task<ActionResult<IList<ResultItemDTO>>> Search([FromQuery] string searchPhrase, int skip, int limit)
+        public async Task<ActionResult<IList<ResultItemDTO>>> Search([FromQuery] string searchPhrase, [FromQuery] int skip, [FromQuery] int limit)
         {
             var movies = await _movieRepository.GetMovieBySearchPhase(searchPhrase, skip, limit);
             var movieCount = await _movieRepository.GetMovieBySearchPhaseCount(searchPhrase);
@@ -34,6 +34,7 @@ namespace Backend.Controllers
             var result = new List<ResultItemDTO>();
             result.AddRange(movies);
             result.AddRange(people);
+            result = result.OrderBy(x => x.Name).ToList().Skip(skip).Take(limit).ToList();
             var total = movieCount + peopleCount;
             return Ok(new {result, total});
         }

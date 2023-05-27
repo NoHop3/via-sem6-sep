@@ -77,6 +77,7 @@ export const DialogBody = styled.div`
   text-align: center;
   padding: ${({ theme }) => theme.spacing(2)};
   height: 100%;
+  min-height: 200px;
   overflow-x: auto;
 `;
 

@@ -17,7 +17,7 @@ namespace Backend.Controllers
         }
         // GET: api/Person?skip=0&limit=10
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople([FromQuery]int skip, int take)
+        public async Task<ActionResult<IEnumerable<Person>>> GetPeople([FromQuery] int skip, [FromQuery] int take)
         {
             var people = await _repository.GetPeopleLimit(skip, take);
             if (people.Count == 0)

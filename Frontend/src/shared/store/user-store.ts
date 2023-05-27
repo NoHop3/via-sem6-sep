@@ -2,25 +2,25 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../models/user";
 
 export interface UserStore {
-  id: string;
+  id: number;
   username: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  token: string;
-  year?: number;
+  apiKey: string;
+  birthYear?: number;
   isLoggedIn: boolean;
 }
 
 const initialState: UserStore = {
-  id: "",
+  id: 0,
   username: "",
   email: "",
   password: "",
   firstName: "",
   lastName: "",
-  token: "",
+  apiKey: "",
   isLoggedIn: false,
 };
 
@@ -29,12 +29,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<User>) {
+      state.id = action.payload.id;
       state.username = action.payload.username;
       state.email = action.payload.email;
-      state.token = action.payload.token;
+      state.apiKey = action.payload.apiKey;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-      state.year = action.payload.year;
+      state.birthYear = action.payload.birthYear;
     },
     setFirstName(state, action: PayloadAction<string>) {
       state.firstName = action.payload;
@@ -51,8 +52,8 @@ const userSlice = createSlice({
     setUsername(state, action: PayloadAction<string>) {
       state.username = action.payload;
     },
-    setToken(state, action: PayloadAction<string>) {
-      state.token = action.payload;
+    setapiKey(state, action: PayloadAction<string>) {
+      state.apiKey = action.payload;
     },
     setIsLoggedIn(state, action: PayloadAction<boolean>) {
       state.isLoggedIn = action.payload;
@@ -71,7 +72,7 @@ export const {
   setEmail,
   setPassword,
   setUsername,
-  setToken,
+  setapiKey,
   setIsLoggedIn,
   reset,
 } = userSlice.actions;
