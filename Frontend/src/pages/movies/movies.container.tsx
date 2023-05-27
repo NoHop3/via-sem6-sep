@@ -1,8 +1,12 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { MovieCard } from "../../components";
-import { StyledCircularProgress, StyledPagination } from "../../styles";
+import {
+  StyledCircularProgress,
+  StyledPagination,
+  StyledTypography,
+} from "../../styles";
 import {
   StyledFilterWrapper,
   StyledMoviePageWrapper,
@@ -10,27 +14,37 @@ import {
   StyledMovieCardWrapper,
 } from "./movies.styles";
 import { type MovieProps } from "./movies.props";
-import { IconButton, useTheme } from "@mui/material";
+import { Divider, IconButton, useTheme } from "@mui/material";
 import AbcIcon from "@mui/icons-material/Abc";
 import PinIcon from "@mui/icons-material/Pin";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import Backdrop from "@mui/material/Backdrop";
+import { _Dialog as ReviewDialog } from "../../components/shared/dialog/dialog.container";
+import { UserReview } from "../../shared/models/movie";
 
 export const _Movies = (props: MovieProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const {
+    userReview,
     movies,
     userId,
+    username,
     isLoading,
     filteredMovies,
     page,
     total,
+    isReviewDialogOpen,
+    currentlyReviewingMovieId,
     setUserReview,
     getMovies,
     getMovieDetailsFor,
     setPage,
+    clearUserReview,
+    setIsReviewDialogOpen,
+    setCurrentlyReviewingMovieId,
     setFavorite,
     getUserReview,
     setFilterByName,
@@ -40,6 +54,17 @@ export const _Movies = (props: MovieProps) => {
     setNotification,
   } = props;
   const queryStrings = queryString.parse(useLocation().search);
+  const [tempReview, setTempReview] = useState<UserReview>(
+    userReview as UserReview,
+  );
+
+  const handleUserReviewChange = useCallback(() => {
+    setTempReview(userReview);
+  }, [userReview]);
+
+  useEffect(() => {
+    handleUserReviewChange();
+  }, [handleUserReviewChange]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -80,12 +105,16 @@ export const _Movies = (props: MovieProps) => {
           getUserReview={getUserReview}
           setUserReview={setUserReview}
           userId={userId}
+          setIsReviewDialogOpen={setIsReviewDialogOpen}
+          setCurrentlyReviewingMovieId={setCurrentlyReviewingMovieId}
         />
       </StyledMovieCardWrapper>
     ));
   }, [
     setUserReview,
     getUserReview,
+    setIsReviewDialogOpen,
+    setCurrentlyReviewingMovieId,
     filteredMovies,
     movies,
     userId,
@@ -212,6 +241,67 @@ export const _Movies = (props: MovieProps) => {
         </>
       ) : (
         <StyledCircularProgress disableShrink size={"6rem"} />
+      )}
+      {!!userId && (
+        <Backdrop
+          open={isReviewDialogOpen}
+          sx={{
+            zIndex: theme.zIndex.drawer + 1,
+          }}
+        >
+          <ReviewDialog
+            style={{ zIndex: 1000, color: theme.palette.text.primary }}
+            open={isReviewDialogOpen}
+            onClose={() => {
+              setIsReviewDialogOpen(false);
+            }}
+            title={"Leave a review for this movie"}
+            children={
+              <>
+                <StyledTypography>
+                  Here you can leave a review. You are logged in as {username}
+                </StyledTypography>
+                <Divider />
+                <textarea
+                  defaultValue={userReview.reviewText}
+                  value={tempReview.reviewText}
+                  onChange={(e) => {
+                    setTempReview({
+                      ...tempReview,
+                      movieId: currentlyReviewingMovieId as number,
+                      reviewText: e.target.value,
+                    });
+                  }}
+                  style={{
+                    marginTop: theme.spacing(1),
+                    width: "100%",
+                    height: "100px",
+                    padding: "10px",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </>
+            }
+            options={["Save", "Close"]}
+            onOptionClick={(option) => {
+              if (option === "Save") {
+                !!userId &&
+                  !!tempReview &&
+                  !!currentlyReviewingMovieId &&
+                  setUserReview(
+                    userId,
+                    currentlyReviewingMovieId as number,
+                    tempReview,
+                  );
+                setIsReviewDialogOpen(false);
+              } else {
+                setIsReviewDialogOpen(false);
+                clearUserReview();
+                setTempReview(userReview);
+              }
+            }}
+          />
+        </Backdrop>
       )}
     </StyledMoviePageWrapper>
   );

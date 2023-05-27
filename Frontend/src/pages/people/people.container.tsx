@@ -7,14 +7,14 @@ import { StyledPeoplePageWrapper, StyledPeopleGrid } from "./people.styles";
 import { type PeopleProps } from "./people.props";
 import { PersonMovie } from "../../shared/models/person";
 
-const Pagination = ({ count, page, onChange }) => (
-  <StyledPagination
-    count={count}
-    page={page}
-    defaultPage={1}
-    onChange={onChange}
-    size="large"
-  />
+interface PaginationProps {
+  count: number;
+  page: number;
+  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+}
+
+const Pagination = ({ count, page, onChange }: PaginationProps) => (
+  <StyledPagination count={count} page={page} onChange={onChange} />
 );
 
 export const _People = (props: PeopleProps) => {

@@ -23,9 +23,9 @@ export const search =
 
             await Promise.all(
               x.data.result.map(async (item: SearchResultItem) => {
-                item.Type === "Movie"
-                  ? (item.Poster = await getMoviePosterFor(item.Id))
-                  : (item.Poster =
+                item.type === "Movie"
+                  ? (item.poster = await getMoviePosterFor(item.id))
+                  : (item.poster =
                       "https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png");
 
                 return item;

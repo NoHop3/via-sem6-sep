@@ -9,6 +9,8 @@ export interface MovieCardProps extends Movie {
 
   setUserReview: (userId: number, movieId: number, review: UserReview) => void;
   getUserReview?: (userId: number, movieId: number) => void;
+  setIsReviewDialogOpen?: (isOpen: boolean) => void;
+  setCurrentlyReviewingMovieId?: (id: number) => void;
   onAddToFavoritesClick?: (userId: number, movieId: number) => void;
   onMovieClick: (id: number) => void;
 }

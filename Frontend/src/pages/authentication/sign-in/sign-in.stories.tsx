@@ -10,6 +10,7 @@ type Story = StoryObj<typeof SignIn>;
 
 export const SignInStory: Story = () => {
   const signInProps = {
+    isLoggedIn: false,
     signIn: () => {
       console.log("sign in");
     },

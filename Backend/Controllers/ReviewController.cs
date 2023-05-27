@@ -48,15 +48,18 @@ namespace Backend.Controllers
             var review = Mapper.MapReviewFromDTO(reviewDTO);
             try
             {
+
                 await _repository.SetReview(review);
+
+
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-            var reviews = await _repository.GetMovieReviews(reviewDTO.MovieId);
-            var reviewDTOs = Mapper.MapReviewToDTOList(reviews);
-            return CreatedAtAction("Review", reviewDTOs);
+
+            var returnedReviewDTO = Mapper.MapReviewToDTO(review);
+            return Ok(returnedReviewDTO);
         }
 
         // DELETE: api/Review
@@ -68,7 +71,7 @@ namespace Backend.Controllers
             {
                 await _repository.DeleteReview(id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }

@@ -129,8 +129,9 @@ namespace Backend.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("movie_id");
 
-                    b.Property<int>("ReviewText")
-                        .HasColumnType("INTEGER")
+                    b.Property<string>("ReviewText")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
                         .HasColumnName("reviewText");
 
                     b.Property<int>("UserId")

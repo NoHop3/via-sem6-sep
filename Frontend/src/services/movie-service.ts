@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from "axios";
@@ -8,6 +9,7 @@ import {
   setMovies,
   setTotal,
   setUserReview as setUserReviewAction,
+  clearUserReview,
 } from "../shared/store/movie-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
@@ -235,7 +237,7 @@ export const setFavorite =
         setNotification({
           open: true,
           type: "success",
-          message: `Movie with id ${movieId} was favorited/unfavorited successfully!`,
+          message: `Movie was favorited/unfavorited successfully!`,
         }),
       );
     } catch (err) {
@@ -267,7 +269,11 @@ export const getUserReview =
         );
       })
       .catch((err) => {
-        console.error(err);
+        dispatch(clearUserReview());
+        console.error(
+          "Could not fetch user review for this movie and this user... But that is okay! We can create one...",
+          err,
+        );
       });
   };
 // #endregion
@@ -291,7 +297,7 @@ export const setUserReview =
         setNotification({
           open: true,
           type: "success",
-          message: `Movie with id ${movieId} was rated successfully!`,
+          message: `Movie was rated successfully!`,
         }),
       );
     } catch (err) {

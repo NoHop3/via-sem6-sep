@@ -231,12 +231,12 @@ export const _Header = (props: HeaderProps) => {
             props.searchResults && props.searchResults?.length > 0 ? (
               props.searchResults?.map((result, i) => (
                 <SearchResultItem
-                  id={result.Id}
+                  id={result.id}
                   key={i}
-                  date={String(result.Year) ?? "N/A"}
-                  title={result.Name}
-                  description={result.Type}
-                  imgSource={result.Poster}
+                  date={String(result.year) ?? "N/A"}
+                  title={result.name}
+                  description={result.type}
+                  imgSource={result.poster}
                 />
               ))
             ) : (

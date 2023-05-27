@@ -17,9 +17,9 @@ internal class ReviewRepository : IReviewRepository
     {
         return await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == userId && x.MovieId == movieId) ?? null;
     }
+
     public async Task SetReview(Review review)
     {
-
         var rev = await _context.Reviews.FirstOrDefaultAsync(x => x.UserId == review.UserId && x.MovieId == review.MovieId);
         if (rev != null)
         {

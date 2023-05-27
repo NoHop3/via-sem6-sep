@@ -8,11 +8,13 @@ export interface MovieStore {
   isLoading: boolean;
   page: number;
   total: number;
-  userReview?: UserReview;
+  userReview: UserReview;
   reviews?: UserReview[];
   filterByName?: boolean;
   filterByYear?: boolean;
   filterByFavorite: boolean;
+  isReviewDialogOpen: boolean;
+  currentlyReviewingMovieId?: number;
 }
 
 const initialState: MovieStore = {
@@ -28,6 +30,14 @@ const initialState: MovieStore = {
   page: 1,
   total: 0,
   filterByFavorite: false,
+  isReviewDialogOpen: false,
+  userReview: {
+    id: 0,
+    movieId: 0,
+    username: "",
+    userId: 0,
+    reviewText: "",
+  },
 };
 
 const movieSlice = createSlice({
@@ -81,6 +91,15 @@ const movieSlice = createSlice({
     setUserReview(state, action: PayloadAction<UserReview>) {
       state.userReview = action.payload;
     },
+    clearUserReview(state) {
+      state.userReview = {
+        id: 0,
+        movieId: 0,
+        username: "",
+        userId: 0,
+        reviewText: "",
+      };
+    },
     setFilterByYear(state) {
       state.filterByYear = !state.filterByYear ?? true;
       state.filteredMovies = [...state.movies];
@@ -116,6 +135,12 @@ const movieSlice = createSlice({
         movie.isFavorite = !movie.isFavorite;
       }
     },
+    setIsReviewDialogOpen(state, action: PayloadAction<boolean>) {
+      state.isReviewDialogOpen = action.payload;
+    },
+    setCurrentlyReviewingMovieId(state, action: PayloadAction<number>) {
+      state.currentlyReviewingMovieId = action.payload;
+    },
   },
 });
 
@@ -131,5 +156,8 @@ export const {
   setFilterByYear,
   setFilterByFavorite,
   setUserReview,
+  clearUserReview,
   setFavouriteForMovie,
+  setIsReviewDialogOpen,
+  setCurrentlyReviewingMovieId,
 } = movieSlice.actions;

@@ -10,10 +10,10 @@ export interface Notification {
 }
 
 export interface SearchResultItem {
-  Id: number;
-  Name: string;
-  Rating?: number;
-  Type: string;
-  Year?: number;
-  Poster?: string;
+  id: number;
+  name: string;
+  rating?: number;
+  type: string;
+  year?: number;
+  poster?: string;
 }

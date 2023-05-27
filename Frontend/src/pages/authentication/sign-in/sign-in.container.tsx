@@ -60,8 +60,18 @@ export const _SignIn = (props: SignInProps) => {
       formState.password.length <= 21
     );
   };
-
   const navigate = useNavigate();
+
+  const redirectIfLoggedIn = React.useCallback(() => {
+    if (props.isLoggedIn) {
+      navigate("/movies");
+    }
+  }, [props.isLoggedIn, navigate]);
+
+  React.useEffect(() => {
+    redirectIfLoggedIn();
+  }, [redirectIfLoggedIn]);
+
   const theme = useTheme();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

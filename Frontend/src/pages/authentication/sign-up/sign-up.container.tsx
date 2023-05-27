@@ -77,6 +77,15 @@ export const _SignUp = (props: SignUpProps) => {
   };
 
   const navigate = useNavigate();
+  const redirectIfLoggedIn = React.useCallback(() => {
+    if (props.isLoggedIn) {
+      navigate("/movies");
+    }
+  }, [props.isLoggedIn, navigate]);
+
+  React.useEffect(() => {
+    redirectIfLoggedIn();
+  }, [redirectIfLoggedIn]);
   const theme = useTheme();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
