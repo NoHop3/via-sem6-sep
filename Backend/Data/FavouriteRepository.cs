@@ -40,6 +40,7 @@ internal class FavouriteRepository : IFavouriteRepository
     public async Task RemoveFavourite(Favourite favourite)
     {
         _context.Favourites.Remove(favourite);
+        _context.Entry(favourite).State = EntityState.Deleted;
         await _context.SaveChangesAsync();
     }
 }

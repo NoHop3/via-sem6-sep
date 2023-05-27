@@ -55,8 +55,16 @@ export const _Movies = (props: MovieProps) => {
     navigate(`/movies?page=${page}`);
     queryString.parse(location.search);
     setPage(Number(queryStrings.page) || page);
-    getMovies(Number(queryStrings.page) || page, 12);
-  }, [location.search, setPage, queryStrings.page, getMovies, navigate, page]);
+    getMovies(Number(queryStrings.page) || page, 12, userId);
+  }, [
+    location.search,
+    setPage,
+    queryStrings.page,
+    getMovies,
+    navigate,
+    page,
+    userId,
+  ]);
 
   const movieCards = useMemo(() => {
     const moviesToRender = filteredMovies.length > 0 ? filteredMovies : movies;
@@ -67,12 +75,13 @@ export const _Movies = (props: MovieProps) => {
     return moviesToRender.map((movie) => (
       <StyledMovieCardWrapper key={movie.id}>
         <MovieCard
-          userId={userId}
+          {...movie}
           onMovieClick={handleMovieCardClick}
           onAddToFavoritesClick={setFavorite}
           isFavorite={movie.isFavorite}
+          showFavorite={!!userId}
           getUserReview={getUserReview}
-          {...movie}
+          userId={userId}
         />
         {!!userReview && !!userId && (
           <ReviewDialog

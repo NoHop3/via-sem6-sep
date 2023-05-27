@@ -11,7 +11,7 @@ export interface MovieProps {
   page: number;
   total: number;
   userReview?: UserReview;
-  getMovies: (skip: number, take: number) => void;
+  getMovies: (skip: number, take: number, userId?: number) => void;
   getMovieDetailsFor: (id: number) => void;
   setFavorite: (userId: number, movieId: number) => void;
   setUserReview: (userId: number, movieId: number, review: UserReview) => void;

@@ -92,16 +92,16 @@ const movieSlice = createSlice({
             b.year > a.year ? 1 : -1,
           ));
     },
-
     setFilterByFavorite(state) {
       state.filterByFavorite = !state.filterByFavorite;
-      const preservedFilteredMovies = [...state.filteredMovies] ?? [
-        ...state.movies,
-      ];
       if (state.filterByFavorite) {
         state.filteredMovies = state.movies.filter((movie) => movie.isFavorite);
       } else {
-        state.filteredMovies = preservedFilteredMovies;
+        state.filteredMovies = [
+          ...state.filteredMovies.filter(
+            (movie) => movie.isFavorite && !movie.isFavorite,
+          ),
+        ];
       }
     },
     clearFilters(state) {
@@ -109,6 +109,12 @@ const movieSlice = createSlice({
       state.filterByName = undefined;
       state.filterByYear = undefined;
       state.filterByFavorite = false;
+    },
+    setFavouriteForMovie(state, action: PayloadAction<number>) {
+      const movie = state.movies.find((m) => m.id === action.payload);
+      if (movie) {
+        movie.isFavorite = !movie.isFavorite;
+      }
     },
   },
 });
@@ -125,4 +131,5 @@ export const {
   setFilterByYear,
   setFilterByFavorite,
   setUserReview,
+  setFavouriteForMovie,
 } = movieSlice.actions;

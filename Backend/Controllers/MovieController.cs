@@ -15,7 +15,7 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/Movies?skip=0&take=10
+        // GET: api/Movie?skip=0&take=10
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery] int skip, [FromQuery] int take)
         {

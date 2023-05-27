@@ -1,3 +1,4 @@
+// eslint-disable object-shorthand
 import axios from "axios";
 import { setUser, setIsLoggedIn } from "../shared/store/user-store";
 import { setNotification } from "../shared/store/notification-store";

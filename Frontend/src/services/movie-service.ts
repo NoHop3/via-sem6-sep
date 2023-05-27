@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from "axios";
 import {
+  setFavouriteForMovie,
   setIsLoading,
   setMovie,
   setMovies,
@@ -161,8 +162,8 @@ export const getMovies =
         res.data.movies.map(async (movie: any) => {
           const posterUrl = await getMoviePosterFor(movie.id);
           const rating = await getMovieRatingFor(movie.id);
-          const favorite = userId ? await getFavorite(userId, movie.id) : false;
-          return { ...movie, posterUrl, favorite, rating };
+          const isFavorite = await getFavorite(userId ?? 0, movie.id);
+          return { ...movie, posterUrl, rating, isFavorite };
         }),
       );
       dispatch(setMovies(moviesWithMoreData));
@@ -213,9 +214,12 @@ export const getFavorite = async (
   movieId: number,
 ): Promise<any> => {
   try {
+    if (userId === 0) return false;
+    console.log(userId, movieId);
     const res = await axios.get(
       `${endpoints.getFavoriteMovie(userId, movieId)}`,
     );
+    console.log(res.data);
     return res.data;
   } catch (err) {
     console.error(err);
@@ -228,6 +232,7 @@ export const setFavorite =
   (userId: number, movieId: number) => async (dispatch: any) => {
     try {
       await axios.post(`${endpoints.setFavoriteMovie(userId, movieId)}`);
+      dispatch(setFavouriteForMovie(movieId));
       dispatch(
         setNotification({
           open: true,

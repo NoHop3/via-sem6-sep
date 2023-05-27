@@ -112,9 +112,8 @@ export const AddToFavoritesButton = styled.button<{ disabled?: boolean }>`
   border-radius: 50%;
   font-size: 14px;
   border: none;
-  color: ${({ theme }) => theme.palette.text.primary};
-  background: ${({ theme }) =>
-    hexWithAlpha(theme.palette.primary.contrastText, 50)};
+  color: ${({ theme }) => theme.palette.primary.contrastText};
+  background: ${({ theme }) => hexWithAlpha(theme.palette.primary.main, 70)};
   opacity: ${({ disabled }) => (disabled ? "0.5" : "1")};
   pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
   cursor: pointer;
@@ -122,7 +121,7 @@ export const AddToFavoritesButton = styled.button<{ disabled?: boolean }>`
 
   &:hover,
   &:active {
-    background: ${({ theme }) => theme.palette.primary.contrastText};
+    background: ${({ theme }) => theme.palette.primary.main};
   }
 
   &::before {

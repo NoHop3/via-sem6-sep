@@ -17,6 +17,7 @@ import { AddToFavoritesButton } from "../shared/card/card.styles";
 
 export const _MovieCard = ({ ...props }: MovieCardProps) => {
   const [loaded, setLoaded] = useState(false);
+  const [favourite, setFavourite] = useState(props.isFavorite);
 
   const handleImageLoad = () => {
     setLoaded(true);
@@ -58,18 +59,19 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
       ) : (
         <StyledLoadingGridItem gridArea="rating" />
       )}
-      {props.showFavorite && !!props.userId && (
+      {props.showFavorite && (
         <AddToFavoritesButton
           type="button"
           disabled={!!props.disabledFavoriteButton}
           onClick={(e: React.MouseEvent) => {
             props.userId &&
               props.onAddToFavoritesClick?.(props.userId, props.id);
+            setFavourite(!favourite);
             e.stopPropagation();
           }}
           style={{ top: "unset", right: "unset" }}
         >
-          <FontAwesomeIcon icon={props.isFavorite ? faHeartSolid : faHeart} />
+          <FontAwesomeIcon icon={favourite ? faHeartSolid : faHeart} />
         </AddToFavoritesButton>
       )}
       {loaded ? (
