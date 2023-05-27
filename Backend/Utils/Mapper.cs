@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text;
+using Backend.Data.Abstraction;
 using Backend.DTOs;
 using Backend.Models;
 
@@ -8,12 +11,14 @@ public static class Mapper
     {
         var user = new User()
         {
+            Id = userDTO.Id,
             Email = userDTO.Email,
             Username = userDTO.Username,
             FirstName = userDTO.FirstName,
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
             HashedPasword = userDTO.Password,
+            APIKey = userDTO.APIKey!
         };
         return user;
     }
@@ -66,7 +71,7 @@ public static class Mapper
             UserId = reviewDTO.UserId,
             Username = reviewDTO.Username,
             MovieId = reviewDTO.MovieId,
-            ReviewText = reviewDTO.ReviewText,
+            ReviewText = reviewDTO.ReviewText
         };
 
         return review;
@@ -89,7 +94,7 @@ public static class Mapper
     public static IList<ReviewDTO> MapReviewToDTOList(IList<Review> reviews)
     {
         var reviewDTOs = new List<ReviewDTO>();
-        foreach(var review in reviews)
+        foreach (var review in reviews)
         {
             var reviewDTO = new ReviewDTO()
             {

@@ -27,7 +27,6 @@ internal class UserRepository : IUserRepository
         //Gerenate unique value for the user and hash their password
         user.Salt = AuthorizationProvider.GenerateSalt();
         user.HashedPasword = AuthorizationProvider.HashPasword(user.HashedPasword, user.Salt);
-        user.APIKey = AuthorizationProvider.GenerateAPIKey(user.Username);
 
         //Save the new user
         await _context.Users.AddAsync(user);
