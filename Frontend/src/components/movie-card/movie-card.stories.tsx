@@ -37,12 +37,16 @@ export const MovieCardStory: Story = () => {
     userId: 3,
     showFavorite: true,
     disabledFavoriteButton: false,
+    setUserReview: () => {
+      console.log("Setting user review");
+    },
     getUserReview: () => {
       console.log("Fetching user review");
     },
     userReview: {
       id: 1,
       userId: 3,
+      username: "User 1",
       movieId: 1,
       reviewText: "Review for a movie",
     },

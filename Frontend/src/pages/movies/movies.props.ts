@@ -10,11 +10,11 @@ export interface MovieProps {
   isLoading: boolean;
   page: number;
   total: number;
-  userReview?: UserReview;
+
+  setUserReview: (userId: number, movieId: number, review: UserReview) => void;
   getMovies: (skip: number, take: number, userId?: number) => void;
   getMovieDetailsFor: (id: number) => void;
   setFavorite: (userId: number, movieId: number) => void;
-  setUserReview: (userId: number, movieId: number, review: UserReview) => void;
   getUserReview: (userId: number, movieId: number) => void;
   setPage: (page: number) => void;
   setFilterByName: () => void;

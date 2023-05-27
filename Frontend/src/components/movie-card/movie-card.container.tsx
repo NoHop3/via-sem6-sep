@@ -8,20 +8,25 @@ import {
   MovieInfo,
   MovieButtonsWrapper,
 } from "./movie-card.styles";
+import { useTheme } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
 import { MovieCardProps } from "./movie-card.props";
 import { StyledLoadingGridItem } from "../../styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { AddToFavoritesButton } from "../shared/card/card.styles";
+import { _Dialog as ReviewDialog } from "../shared/dialog/dialog.container";
 
 export const _MovieCard = ({ ...props }: MovieCardProps) => {
   const [loaded, setLoaded] = useState(false);
   const [favourite, setFavourite] = useState(props.isFavorite);
-
+  const [openReviewDialog, setOpenReviewDialog] = useState(false);
+  const theme = useTheme();
   const handleImageLoad = () => {
     setLoaded(true);
   };
+
   return (
     <MovieGrid>
       {loaded ? (
@@ -94,11 +99,53 @@ export const _MovieCard = ({ ...props }: MovieCardProps) => {
             text={"Review"}
             onClick={() => {
               !!props.userId && props.getUserReview?.(props.userId, props.id);
+              setOpenReviewDialog(true);
             }}
           />
         </MovieButtonsWrapper>
       ) : (
         <StyledLoadingGridItem gridArea="button" />
+      )}
+
+      {!!props.userId && (
+        <Backdrop
+          open={openReviewDialog}
+          sx={{ color: "#fff", zIndex: theme.zIndex.drawer + 1 }}
+        >
+          <ReviewDialog
+            style={{ zIndex: 1000 }}
+            open={openReviewDialog}
+            onClose={() => {
+              setOpenReviewDialog(false);
+            }}
+            title={"Leave a review for this movie"}
+            children={
+              <textarea
+                value={props.userReview?.reviewText ?? ""}
+                onChange={(e) => {
+                  console.log(e.target.value, props.userReview?.reviewText);
+                }}
+                style={{
+                  width: "90%",
+                  height: "100px",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                }}
+              />
+            }
+            options={["Save", "Close"]}
+            onOptionClick={(option) => {
+              if (option === "Save") {
+                !!props.userId &&
+                  !!props.userReview &&
+                  props.setUserReview(props.userId, props.id, props.userReview);
+                setOpenReviewDialog(false);
+              } else {
+                setOpenReviewDialog(false);
+              }
+            }}
+          />
+        </Backdrop>
       )}
     </MovieGrid>
   );

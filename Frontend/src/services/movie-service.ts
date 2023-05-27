@@ -215,11 +215,9 @@ export const getFavorite = async (
 ): Promise<any> => {
   try {
     if (userId === 0) return false;
-    console.log(userId, movieId);
     const res = await axios.get(
       `${endpoints.getFavoriteMovie(userId, movieId)}`,
     );
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.error(err);
@@ -270,13 +268,6 @@ export const getUserReview =
       })
       .catch((err) => {
         console.error(err);
-        dispatch(
-          setNotification({
-            open: true,
-            type: "error",
-            message: `Could not get user review!`,
-          }),
-        );
       });
   };
 // #endregion
@@ -287,10 +278,13 @@ export const setUserReview =
   async (dispatch: any) => {
     try {
       await axios.post(endpoints.setUserReview(), {
-        data: {
-          userId,
-          movieId,
-          reviewText: review.reviewText,
+        UserId: userId,
+        MovieId: movieId,
+        Username: review.username,
+        ReviewText: review.reviewText,
+
+        headers: {
+          "Content-Type": "application/json",
         },
       });
       dispatch(

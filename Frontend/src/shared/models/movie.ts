@@ -28,6 +28,7 @@ export interface MovieDetails {
 export interface UserReview {
   id?: number;
   userId: number;
+  username: string;
   movieId: number;
   reviewText: string;
 }
