@@ -8,7 +8,7 @@ export interface Person {
 
 export interface PersonMovie {
   personId: number;
-  title: string;
+  name: string;
   year?: number;
-  role: string;
+  type: string;
 }

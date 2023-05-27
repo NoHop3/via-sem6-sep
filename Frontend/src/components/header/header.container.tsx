@@ -27,7 +27,9 @@ import ThemeIcon from "@mui/icons-material/Brightness6";
 import { HeaderProps } from "./header.props";
 import { ThemeDialog } from "../theme-dialog/theme-dialog";
 import { _Dialog as SearchDialog } from "../shared/dialog/dialog.container";
+import { _Backdrop as Backdrop } from "../shared/backdrop/backdrop";
 import { Card as SearchResultItem } from "../shared/card/card.container";
+import { StyledTypography } from "../../styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -99,6 +101,7 @@ export const _Header = (props: HeaderProps) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
+  const TAKE_AMOUNT = 20;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -168,7 +171,7 @@ export const _Header = (props: HeaderProps) => {
                     const target = e.target as
                       | HTMLInputElement
                       | HTMLTextAreaElement;
-                    props.onSearch?.(target.value);
+                    props.onSearch?.(target.value, 0, TAKE_AMOUNT);
                     setOpenSearchDialog(true);
                   }
                 }}
@@ -203,30 +206,43 @@ export const _Header = (props: HeaderProps) => {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-
       <ThemeDialog
         open={openThemeDialog}
         onClose={() => {
           setOpenThemeDialog(false);
         }}
       />
-
-      {props.searchResults && (
+      {props.isSearching ? (
+        <Backdrop />
+      ) : (
         <SearchDialog
           open={openSearchDialog}
           onClose={() => {
             setOpenSearchDialog(false);
           }}
-          title={`Showing ${props.totalResults ?? 0} results for ${
-            props.searchPhrase ?? ""
-          }`}
-          children={props.searchResults.map((result) => (
-            <SearchResultItem
-              title={result.name}
-              id={result.id}
-              description=""
-            />
-          ))}
+          title={
+            props.isSearching
+              ? "Searching..."
+              : `Total ${props.totalResults ?? 0} results for ${
+                  props.searchPhrase ?? ""
+                }, currently showing ${TAKE_AMOUNT}`
+          }
+          children={
+            props.searchResults && props.searchResults?.length > 0 ? (
+              props.searchResults?.map((result, i) => (
+                <SearchResultItem
+                  id={result.Id}
+                  key={i}
+                  date={String(result.Year) ?? "N/A"}
+                  title={result.Name}
+                  description={result.Type}
+                  imgSource={result.Poster}
+                />
+              ))
+            ) : (
+              <StyledTypography>Nothing found.</StyledTypography>
+            )
+          }
           options={["Save", "Close"]}
           onOptionClick={(option) => {
             switch (option) {
@@ -240,7 +256,6 @@ export const _Header = (props: HeaderProps) => {
           }}
         />
       )}
-
       <Box component="nav">
         <Drawer
           anchor="right"

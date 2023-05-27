@@ -5,14 +5,14 @@ const omdbUrl = "https://www.omdbapi.com/";
 export const endpoints = {
   // #region MovieController
   getMovies: (skip: number, take: number) =>
-    `${baseUrl}/Movie?=${skip}&=${take}`,
+    `${baseUrl}/Movie?skip=${skip}&take=${take}`,
   getMovieWith: (id: number) => `${baseUrl}/Movie/${id}`,
   getStarsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Stars`,
   getDirectorsForMovie: (id: number) => `${baseUrl}/Movie/${id}/Directors`,
   // #endregion
   // #region PersonController
   getPeople: (skip: number, take: number) =>
-    `${baseUrl}/Person?=${skip}&=${take}`,
+    `${baseUrl}/Person?skip=${skip}&take=${take}`,
   getPersonMovies: (id: number) => `${baseUrl}/Person/${id}/Movies`,
   // #endregion
   // #region MoviewRatingController
@@ -34,8 +34,8 @@ export const endpoints = {
     `${baseUrl}/Favourite/${userId}/${movieId}`,
   // #endregion
   // #region SearchController
-  search: (searchPhrase: string) =>
-    `${baseUrl}/Search?searchPhrase=${searchPhrase}`,
+  search: (searchPhrase: string, skip: number, take: number) =>
+    `${baseUrl}/Home/Search?searchPhrase=${searchPhrase}&skip=${skip}&limit=${take}`,
   // #endregion
   // #region AuthenticationController
   signIn: () => `${baseUrl}/Authentication/Login`,

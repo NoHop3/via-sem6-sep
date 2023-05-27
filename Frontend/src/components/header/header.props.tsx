@@ -10,5 +10,5 @@ export interface HeaderProps {
   children?: React.ReactElement;
 
   onSearchPhraseChange?: (query: string) => void;
-  onSearch?: (searchPhrase: string) => void;
+  onSearch?: (searchPhrase: string, skip: number, take: number) => void;
 }

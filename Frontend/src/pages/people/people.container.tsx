@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { Card as PersonCard } from "../../components";
@@ -7,11 +7,34 @@ import { StyledPeoplePageWrapper, StyledPeopleGrid } from "./people.styles";
 import { type PeopleProps } from "./people.props";
 import { PersonMovie } from "../../shared/models/person";
 
+const Pagination = ({ count, page, onChange }) => (
+  <StyledPagination
+    count={count}
+    page={page}
+    defaultPage={1}
+    onChange={onChange}
+    size="large"
+  />
+);
+
 export const _People = (props: PeopleProps) => {
+  const { isLoading, people, total, getPeople } = props;
+  const { search } = useLocation();
+  const { page = "1" } = queryString.parse(search);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { isLoading, people, page, total, getPeople, setPage } = props;
-  const queryStrings = queryString.parse(useLocation().search);
+
+  const PAGE_SIZE = 18;
+
+  const generateDescription = useCallback((movies: PersonMovie[]) => {
+    let description = "";
+    if (!movies) return description + " N/A";
+    movies.forEach((movie) => {
+      description += `${(movie.name as string) ?? "N/A"}, ${
+        movie.year ?? "N/A"
+      }, ${(movie.type as string) ?? "N/A"}\n`;
+    });
+    return description;
+  }, []);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -20,34 +43,19 @@ export const _People = (props: PeopleProps) => {
     navigate(`/people?page=${value}`);
   };
 
-  const generateDescription = (movies: PersonMovie[]) => {
-    let description = "";
-    if (movies === undefined) return description + " N/A";
-    movies.forEach((movie) => {
-      description += `${movie.title ?? "N/A"}, ${movie.year ?? "N/A"}, ${
-        movie.role ?? "N/A"
-      }\n`;
-    });
-    return description;
-  };
-
   useEffect(() => {
-    navigate(`/people?page=${page}`);
-    queryString.parse(location.search);
-    setPage(Number(queryStrings.page) || page);
-    getPeople(Number(queryStrings.page) || page, 18);
-  }, [location.search, setPage, queryStrings.page, getPeople, navigate, page]);
+    navigate(`/people?page=${page?.toString() ?? "1"}`);
+    getPeople(Number(page), PAGE_SIZE);
+  }, [navigate, getPeople, page]);
 
   return (
     <StyledPeoplePageWrapper>
       {!isLoading ? (
         <>
-          <StyledPagination
-            count={Math.ceil(total / 18)}
-            page={page}
-            defaultPage={1}
+          <Pagination
+            count={Math.ceil(total / PAGE_SIZE)}
+            page={Number(page)}
             onChange={handlePageChange}
-            size="large"
           />
 
           <StyledPeopleGrid container>
@@ -63,12 +71,10 @@ export const _People = (props: PeopleProps) => {
             ))}
           </StyledPeopleGrid>
 
-          <StyledPagination
-            count={Math.ceil(total / 18)}
-            page={page}
-            defaultPage={1}
+          <Pagination
+            count={Math.ceil(total / PAGE_SIZE)}
+            page={Number(page)}
             onChange={handlePageChange}
-            size="large"
           />
         </>
       ) : (

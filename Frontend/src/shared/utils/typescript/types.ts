@@ -10,9 +10,10 @@ export interface Notification {
 }
 
 export interface SearchResultItem {
-  id: number;
-  name: string;
-  type: "Movie" | "Celebrity";
-  year?: number;
-  poster?: string;
+  Id: number;
+  Name: string;
+  Rating?: number;
+  Type: string;
+  Year?: number;
+  Poster?: string;
 }

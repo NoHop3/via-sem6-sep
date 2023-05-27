@@ -1,5 +1,6 @@
 using Backend.Data.Abstraction;
 using Backend.DTOs;
+using Backend.Models;
 using Backend.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController: ControllerBase
+public class AuthenticationController : ControllerBase
 {
     private readonly IUserRepository _repository;
     public AuthenticationController(IUserRepository repository)
@@ -16,16 +17,16 @@ public class AuthenticationController: ControllerBase
     }
     [HttpPost]
     [Route("Login")]
-    public async Task<ActionResult<UserDTO>> Login([FromBody] UserDTO userDTO)
+    public async Task<ActionResult<UserDTO>> Login([FromBody] LoginUser userDTO)
     {
         var user = await _repository.GetUserByUsername(userDTO.Username);
-        if(user == null)
+        if (user == null)
         {
-            return BadRequest("Incorrect username"); 
+            return BadRequest("Incorrect username");
         }
         bool correctPassword = AuthorizationProvider.VerifyPasword(userDTO.Password, user);
 
-        if(!correctPassword)
+        if (!correctPassword)
         {
             return BadRequest("Incorrect password");
         }

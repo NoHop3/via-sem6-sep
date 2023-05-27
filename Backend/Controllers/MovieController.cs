@@ -15,11 +15,11 @@ namespace Backend.Controllers
             _repository = repository;
         }
 
-        // GET: api/Movies?skip=0&limit=10
+        // GET: api/Movies?skip=0&take=10
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery]int skip, int limit)
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies([FromQuery] int skip, [FromQuery] int take)
         {
-            var movies = await _repository.GetMoviesLimit(skip, limit);
+            var movies = await _repository.GetMoviesLimit(skip, take);
             if (movies.Count == 0)
             {
                 return NotFound();
@@ -68,6 +68,6 @@ namespace Backend.Controllers
             return Ok(directors);
         }
         //GET: api/Movie/5/Reviews
-   
+
     }
 }

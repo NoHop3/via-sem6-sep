@@ -8,16 +8,13 @@ public static class Mapper
     {
         var user = new User()
         {
-            Id = userDTO.Id,
             Email = userDTO.Email,
             Username = userDTO.Username,
             FirstName = userDTO.FirstName,
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
             HashedPasword = userDTO.Password,
-            //APIKey = userDTO.APIKey
         };
-        //user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         return user;
     }
 

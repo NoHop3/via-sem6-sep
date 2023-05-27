@@ -9,10 +9,8 @@ export const signIn =
   (username: string, password: string) => (dispatch: any) => {
     axios
       .post(endpoints.signIn(), {
-        data: {
-          username,
-          password,
-        },
+        Username: username,
+        Password: password,
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,16 +45,12 @@ export const signIn =
 export const signUp = (user: RegisteredUser) => (dispatch: any) => {
   axios
     .post(endpoints.signUp(), {
-      data: {
-        //! needs changing
-        userDto: user,
-        username: user.username,
-        password: user.password,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        birthYear: user.year,
-      },
+      username: user.username,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      birthYear: user.birthYear,
       headers: {
         "Content-Type": "application/json",
       },

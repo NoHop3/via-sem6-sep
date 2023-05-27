@@ -7,8 +7,10 @@ import { _Button as Button } from "./shared/button/button";
 import { ThemeDialog } from "./theme-dialog/theme-dialog";
 import { _Dialog as Dialog } from "./shared/dialog/dialog.container";
 import { _ColorPicker as ColorPicker } from "./color-picker/color-picker";
+import { _Backdrop as Backdrop } from "./shared/backdrop/backdrop";
 
 export {
+  Backdrop,
   MovieCard,
   BottomNavigation,
   Header,
