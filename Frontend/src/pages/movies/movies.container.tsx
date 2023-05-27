@@ -59,7 +59,7 @@ export const _Movies = (props: MovieProps) => {
   );
 
   const handleUserReviewChange = useCallback(() => {
-    setTempReview(userReview);
+    setTempReview(userReview as UserReview);
   }, [userReview]);
 
   useEffect(() => {
