@@ -297,7 +297,7 @@ export const _Movies = (props: MovieProps) => {
               } else {
                 setIsReviewDialogOpen(false);
                 clearUserReview();
-                setTempReview(userReview);
+                setTempReview(userReview as UserReview);
               }
             }}
           />
