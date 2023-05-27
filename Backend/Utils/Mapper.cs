@@ -18,9 +18,8 @@ public static class Mapper
             LastName = userDTO.LastName,
             BirthYear = userDTO.BirthYear,
             HashedPasword = userDTO.Password,
-            //APIKey = userDTO.APIKey
+            APIKey = userDTO.APIKey
         };
-        //user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         return user;
     }
 
