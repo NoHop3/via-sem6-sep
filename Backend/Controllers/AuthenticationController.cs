@@ -39,8 +39,6 @@ public class AuthenticationController: ControllerBase
     {
         userDTO.APIKey = AuthorizationProvider.GenerateAPIKey(userDTO.Username);
         var user = Mapper.MapUserFromDTO(userDTO);
-        user.Salt = AuthorizationProvider.GenerateSalt();
-        user.HashedPasword = AuthorizationProvider.HashPasword(userDTO.Password, user.Salt);
         try
         {
             await _repository.AddUser(user);
