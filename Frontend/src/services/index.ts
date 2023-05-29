@@ -2,6 +2,7 @@ import {
   getMovieDetailsFor,
   getMovieWith,
   getMovies,
+  getHighestRated,
   setFavorite,
   setUserReview,
   getUserReview,
@@ -17,6 +18,7 @@ import { signIn, signUp } from "./user-service";
 export const services = {
   getMovieWith,
   getMovies,
+  getHighestRated,
   getMovieDetailsFor,
   setFavorite,
   setUserReview,

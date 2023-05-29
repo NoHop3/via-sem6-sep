@@ -9,4 +9,5 @@ export interface CardProps {
   disabledFavoriteButton?: boolean;
 
   onAddToFavoritesClick?: (id: number) => void;
+  onCardClick?: (id: number) => void;
 }

@@ -1,9 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { Movie, UserReview } from "../models/movie";
+import { ResultItem } from "../utils/typescript/types";
 
 export interface MovieStore {
   movies: Movie[];
   filteredMovies: Movie[];
+  highestRated: ResultItem[];
   movie: Movie;
   isLoading: boolean;
   page: number;
@@ -20,6 +22,7 @@ export interface MovieStore {
 const initialState: MovieStore = {
   movies: [] as Movie[],
   filteredMovies: [] as Movie[],
+  highestRated: [] as ResultItem[],
   movie: {
     id: 0,
     title: "",
@@ -141,6 +144,9 @@ const movieSlice = createSlice({
     setCurrentlyReviewingMovieId(state, action: PayloadAction<number>) {
       state.currentlyReviewingMovieId = action.payload;
     },
+    setHighestRated(state, action: PayloadAction<ResultItem[]>) {
+      state.highestRated = action.payload;
+    },
   },
 });
 
@@ -160,4 +166,5 @@ export const {
   setFavouriteForMovie,
   setIsReviewDialogOpen,
   setCurrentlyReviewingMovieId,
+  setHighestRated,
 } = movieSlice.actions;

@@ -1,35 +1,35 @@
 // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
-import * as React from "react";
-import { styled, alpha, useTheme } from "@mui/material/styles";
-import { Logo, StyledLink } from "./header.styles";
-import { type NavItem } from "../../shared/utils/typescript/types";
-import { useNavigate } from "react-router-dom";
+import ThemeIcon from "@mui/icons-material/Brightness6";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  InputBase,
-  useScrollTrigger,
-  Slide,
-  Typography,
+  AppBar,
+  Button,
   Divider,
+  Drawer,
+  IconButton,
+  InputBase,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
-  AppBar,
+  Slide,
   Toolbar,
-  Button,
-  IconButton,
-  Drawer,
+  Typography,
+  useScrollTrigger,
 } from "@mui/material";
+import { alpha, styled, useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
-import ThemeIcon from "@mui/icons-material/Brightness6";
-import { HeaderProps } from "./header.props";
-import { ThemeDialog } from "../theme-dialog/theme-dialog";
-import { _Dialog as SearchDialog } from "../shared/dialog/dialog.container";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { type NavItem } from "../../shared/utils/typescript/types";
+import { StyledTypography } from "../../styles";
 import { _Backdrop as Backdrop } from "../shared/backdrop/backdrop";
 import { Card as SearchResultItem } from "../shared/card/card.container";
-import { StyledTypography } from "../../styles";
+import { _Dialog as SearchDialog } from "../shared/dialog/dialog.container";
+import { ThemeDialog } from "../theme-dialog/theme-dialog";
+import { HeaderProps } from "./header.props";
+import { Logo, StyledLink } from "./header.styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -86,14 +86,6 @@ function HideOnScroll(props: HeaderProps) {
   );
 }
 
-const drawerWidth = 240;
-const navItems: NavItem[] = [
-  { name: "Home", path: "/" },
-  { name: "Movies", path: "/movies" },
-  { name: "People", path: "/people" },
-  { name: "Sign In", path: "/sign-in" },
-];
-
 export const _Header = (props: HeaderProps) => {
   const [openThemeDialog, setOpenThemeDialog] = React.useState(false);
   const [openSearchDialog, setOpenSearchDialog] = React.useState(false);
@@ -102,13 +94,28 @@ export const _Header = (props: HeaderProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const TAKE_AMOUNT = 20;
+  const [page, setPage] = React.useState(0);
+
+  const drawerWidth = 240;
+  const navItems: NavItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Movies", path: "/movies" },
+    { name: "People", path: "/people" },
+    props.isLoggedIn
+      ? { name: "Logout", path: "/logout" }
+      : { name: "Sign in", path: "/sign-in" },
+  ];
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleDrawerClick = (path: string) => {
-    navigate(path);
+    if (path === "/logout") {
+      props.onLogout?.();
+    } else {
+      navigate(path);
+    }
   };
 
   const drawer = (
@@ -225,7 +232,11 @@ export const _Header = (props: HeaderProps) => {
               ? "Searching..."
               : `Total ${props.totalResults ?? 0} results for ${
                   props.searchPhrase ?? ""
-                }, currently showing ${TAKE_AMOUNT}`
+                }, currently showing ${
+                  (props.totalResults as number) < TAKE_AMOUNT
+                    ? (props.totalResults as number)
+                    : TAKE_AMOUNT
+                }`
           }
           children={
             props.searchResults && props.searchResults?.length > 0 ? (
@@ -243,11 +254,16 @@ export const _Header = (props: HeaderProps) => {
               <StyledTypography>Nothing found.</StyledTypography>
             )
           }
-          options={["Save", "Close"]}
+          options={["More", "Close"]}
           onOptionClick={(option) => {
             switch (option) {
-              case "Save":
-                alert("Save");
+              case "More":
+                props.onSearch?.(
+                  props.searchPhrase as string,
+                  page * TAKE_AMOUNT,
+                  TAKE_AMOUNT,
+                );
+                setPage(page + 1);
                 break;
               case "Close":
                 setOpenSearchDialog(false);

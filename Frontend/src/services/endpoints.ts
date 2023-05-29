@@ -33,9 +33,10 @@ export const endpoints = {
   getFavoriteMovie: (userId: number, movieId: number) =>
     `${baseUrl}/Favourite/${userId}/${movieId}`,
   // #endregion
-  // #region SearchController
+  // #region HomeController
   search: (searchPhrase: string, skip: number, take: number) =>
     `${baseUrl}/Home/Search?searchPhrase=${searchPhrase}&skip=${skip}&limit=${take}`,
+  getHighestRating: () => `${baseUrl}/Home/HighestRatings`,
   // #endregion
   // #region AuthenticationController
   signIn: () => `${baseUrl}/Authentication/Login`,

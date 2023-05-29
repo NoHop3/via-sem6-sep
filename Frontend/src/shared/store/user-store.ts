@@ -58,7 +58,7 @@ const userSlice = createSlice({
     setIsLoggedIn(state, action: PayloadAction<boolean>) {
       state.isLoggedIn = action.payload;
     },
-    reset(state, action: PayloadAction<UserStore>) {
+    reset(state) {
       state = initialState;
     },
   },

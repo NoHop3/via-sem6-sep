@@ -7,7 +7,7 @@ import {
 } from "../shared/store/search-store";
 import { setNotification } from "../shared/store/notification-store";
 import { endpoints } from "./endpoints";
-import { SearchResultItem } from "../shared/utils/typescript/types";
+import { ResultItem } from "../shared/utils/typescript/types";
 
 // #region search
 export const search =
@@ -22,7 +22,7 @@ export const search =
             dispatch(setTotalResults(x.data.total));
 
             await Promise.all(
-              x.data.result.map(async (item: SearchResultItem) => {
+              x.data.result.map(async (item: ResultItem) => {
                 item.type === "Movie"
                   ? (item.poster = await getMoviePosterFor(item.id))
                   : (item.poster =

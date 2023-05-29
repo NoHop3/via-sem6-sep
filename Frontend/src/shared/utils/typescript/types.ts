@@ -9,7 +9,7 @@ export interface Notification {
   message: string;
 }
 
-export interface SearchResultItem {
+export interface ResultItem {
   id: number;
   name: string;
   rating?: number;

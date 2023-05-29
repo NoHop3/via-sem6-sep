@@ -6,12 +6,14 @@ import { type AppDispatch } from "../../shared/store/app-thunk";
 import { _Header } from "./header.container";
 import { setSearchPhrase } from "../../shared/store/search-store";
 import { services } from "../../services";
+import { reset } from "../../shared/store/user-store";
 
 const mapStateToProps = (state: ApplicationState) => ({
   isSearching: state.search.isSearching,
   searchPhrase: state.search.searchPhrase,
   totalResults: state.search.totalResults,
   searchResults: state.search.searchResults,
+  isLoggedIn: state.user.isLoggedIn,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => {
@@ -19,6 +21,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
     {
       onSearchPhraseChange: setSearchPhrase,
       onSearch: services.search,
+      onLogout: reset,
     },
     dispatch,
   );
