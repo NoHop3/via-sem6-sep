@@ -7,6 +7,7 @@ import {
   setIsLoading,
   setMovie,
   setMovies,
+  setHighestRated,
   setTotal,
   setUserReview as setUserReviewAction,
   clearUserReview,
@@ -320,6 +321,40 @@ export const getMovieReviews = async (movieId: number): Promise<any> => {
     return res.data;
   } catch (err) {
     console.error(err);
+  }
+};
+// #endregion
+
+// #region getHighestRating
+export const getHighestRated = () => async (dispatch: any) => {
+  dispatch(setIsLoading(true));
+  try {
+    const res = await axios.get(endpoints.getHighestRating());
+    const highestRatedData = await Promise.all(
+      res.data.map(async (resultItem: any) => {
+        const poster = await getMoviePosterFor(resultItem.id);
+        return { ...resultItem, poster };
+      }),
+    );
+    dispatch(setHighestRated(highestRatedData));
+    dispatch(
+      setNotification({
+        open: true,
+        type: "success",
+        message: `Highest rated movies were fetched successfully!`,
+      }),
+    );
+  } catch (err) {
+    dispatch(
+      setNotification({
+        open: true,
+        type: "error",
+        message: `Highest rated movies were not fetched!`,
+      }),
+    );
+    throw err;
+  } finally {
+    dispatch(setIsLoading(false));
   }
 };
 // #endregion

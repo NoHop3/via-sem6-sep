@@ -1,4 +1,4 @@
-import { _Home as Home } from "./home/home";
+import { Home } from "./home/home.container";
 import { _Error as Error } from "./error/error";
 import { Movies } from "./movies/movies";
 import { MovieDetails } from "./movie-details/movie-details";

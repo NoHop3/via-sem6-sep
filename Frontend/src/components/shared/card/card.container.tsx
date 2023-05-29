@@ -21,7 +21,12 @@ export const Card = React.memo((props: CardProps) => {
   return (
     <CardWrapper>
       <ItemImageWrapper>
-        <ImageContainer data-search-result-image>
+        <ImageContainer
+          data-search-result-image
+          onClick={() => {
+            props.onCardClick?.(props.id);
+          }}
+        >
           {props.imgSource ? (
             <LazyImage src={props.imgSource} />
           ) : (

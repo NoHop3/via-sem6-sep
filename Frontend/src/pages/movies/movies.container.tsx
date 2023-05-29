@@ -1,27 +1,27 @@
+import AbcIcon from "@mui/icons-material/Abc";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import PinIcon from "@mui/icons-material/Pin";
+import { Divider, IconButton, useTheme } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
+import queryString from "query-string";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import queryString from "query-string";
 import { MovieCard } from "../../components";
+import { _Dialog as ReviewDialog } from "../../components/shared/dialog/dialog.container";
+import { UserReview } from "../../shared/models/movie";
 import {
   StyledCircularProgress,
   StyledPagination,
   StyledTypography,
 } from "../../styles";
+import { type MovieProps } from "./movies.props";
 import {
   StyledFilterWrapper,
-  StyledMoviePageWrapper,
-  StyledMovieGrid,
   StyledMovieCardWrapper,
+  StyledMovieGrid,
+  StyledMoviePageWrapper,
 } from "./movies.styles";
-import { type MovieProps } from "./movies.props";
-import { Divider, IconButton, useTheme } from "@mui/material";
-import AbcIcon from "@mui/icons-material/Abc";
-import PinIcon from "@mui/icons-material/Pin";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import Backdrop from "@mui/material/Backdrop";
-import { _Dialog as ReviewDialog } from "../../components/shared/dialog/dialog.container";
-import { UserReview } from "../../shared/models/movie";
 
 export const _Movies = (props: MovieProps) => {
   const theme = useTheme();

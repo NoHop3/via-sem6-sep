@@ -77,7 +77,7 @@ namespace Backend.Data
 
         public async Task<IList<ResultItemDTO>> GetMoviesWithHighestRating(int limit)
         {
-            var movies = await _context.Ratings.Include(x=>x.Movie).OrderBy(x=>x.Rating).Take(limit).ToListAsync();
+            var movies = await _context.Ratings.Include(x=>x.Movie).OrderByDescending(x=>x.Rating).Take(limit).ToListAsync();
             IList<ResultItemDTO> resultItems = new List<ResultItemDTO>();
             foreach(var movie in movies)
             {

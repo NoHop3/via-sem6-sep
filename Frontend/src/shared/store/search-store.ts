@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { SearchResultItem } from "../utils/typescript/types";
+import { ResultItem } from "../utils/typescript/types";
 
 export interface SearchStore {
   isSearching: boolean;
   searchPhrase: string;
   totalResults: number;
-  searchResults: SearchResultItem[];
+  searchResults: ResultItem[];
 }
 
 const initialState: SearchStore = {
@@ -31,7 +31,7 @@ const searchSlice = createSlice({
     setTotalResults(state, action: PayloadAction<number>) {
       state.totalResults = action.payload;
     },
-    setSearchResults(state, action: PayloadAction<SearchResultItem[]>) {
+    setSearchResults(state, action: PayloadAction<ResultItem[]>) {
       state.searchResults = action.payload;
     },
     reset(state, action: PayloadAction<SearchStore>) {

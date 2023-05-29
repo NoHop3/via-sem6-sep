@@ -75,7 +75,7 @@ export const _MovieDetails = (props: MovieDetailsProps) => {
               ))}
               {rating?.rating !== 0 && (
                 <MovieDetailsInfoItem label="Rating">
-                  {rating?.rating}
+                  {rating?.rating as number}
                 </MovieDetailsInfoItem>
               )}
             </MovieDetailsInfo>
