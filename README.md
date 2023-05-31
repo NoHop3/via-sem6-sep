@@ -1,7 +1,23 @@
 # via-sem6-sep
 
-#### TODO: Check this https://github.com/jonico/awesome-runners for when we want to implement an action (CI/CD)
+## Links
+Project is hosted on
+```
+https://moviesdb.azurewebsites.net
+```
+API URL (Example query)
+```
+https://moviesdbapi.azurewebsites.net/api/Movie/60144
+```
+
 ### Docker
+To run the images locally:  
+*In Backend/Dockerfile:*  
+Change ASPNETCORE_ENVIRONMENT="Production" to ASPNETCORE_ENVIRONMENT="Test"  
+*In Frontent/.env.production*  
+Change REACT_APP_API_URL=https://moviesdbapi.azurewebsites.net/api to REACT_APP_API_URL=http://localhost:5001/api  
+
+
 To update the images open terminal in via-sem6-sep and run:
 ```
 cd Frontend
@@ -19,7 +35,4 @@ Run the following command to stop the application:
 ```
 docker compose down
 ```
-Example request
-```
-http://localhost:5001/api/Movie/60144
-```
+
