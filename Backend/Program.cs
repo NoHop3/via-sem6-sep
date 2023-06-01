@@ -19,10 +19,21 @@ var configuration = builder.Configuration
                           .AddEnvironmentVariables();//provider.GetRequiredService<IConfiguration>();
 
 var connectionString = provider.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<MyDbContext>(options =>
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<MyDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+}
+else
+{
+    builder.Services.AddDbContext<MyDbContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+}
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
@@ -46,11 +57,11 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = "";
-    });
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = "";
+});
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

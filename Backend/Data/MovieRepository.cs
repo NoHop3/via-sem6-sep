@@ -52,7 +52,7 @@ namespace Backend.Data
 
         public async Task<IList<ResultItemDTO>> GetMovieBySearchPhase(string searchPhrase, int skip, int limit)
         {
-            var movies = await _context.Ratings.Include(x=>x.Movie).Where(x=>x.Movie.Title.Contains(searchPhrase)).OrderBy(x=>x.Id).Skip(skip).Take(limit).ToListAsync();
+            var movies = await _context.Ratings.Include(x=>x.Movie).Where(x=>x.Movie.Title.Contains(searchPhrase)).Skip(skip).Take(limit).ToListAsync();
             IList<ResultItemDTO> resultItems = new List<ResultItemDTO>();
             foreach(var movie in movies)
             {
