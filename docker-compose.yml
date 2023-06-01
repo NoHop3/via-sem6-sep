@@ -8,10 +8,12 @@ services:
     container_name: 'sep6_backend_container'
     ports:
       - 5001:5001
+      - 80:5001
     environment:
       - frontend_url=http://localhost:3000
     volumes:
       - ./Backend:/app/db
+      #- ${HOME}/.aspnet/https:/https/
     networks:
       - sep6_network
 
